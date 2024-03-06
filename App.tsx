@@ -1,14 +1,14 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import {StatusBar} from 'react-native';
+import BottomTaps from './src/navigation/BottomTaps';
+import {NavigationContainer} from '@react-navigation/native';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView>
+    <NavigationContainer>
       <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View />
-      </ScrollView>
-    </SafeAreaView>
+      <BottomTaps />
+    </NavigationContainer>
   );
 }
 
