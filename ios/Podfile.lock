@@ -9,8 +9,19 @@ PODS:
     - React-Core (= 0.73.5)
     - React-jsi (= 0.73.5)
     - ReactCommon/turbomodule/core (= 0.73.5)
+  - Firebase/Auth (10.22.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 10.22.0)
   - Firebase/CoreOnly (10.22.0):
     - FirebaseCore (= 10.22.0)
+  - FirebaseAppCheckInterop (10.22.0)
+  - FirebaseAuth (10.22.0):
+    - FirebaseAppCheckInterop (~> 10.17)
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+    - RecaptchaInterop (~> 100.0)
   - FirebaseCore (10.22.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -19,15 +30,29 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleUtilities/AppDelegateSwizzler (7.13.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+    - GoogleUtilities/Privacy
   - GoogleUtilities/Environment (7.13.0):
     - GoogleUtilities/Privacy
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleUtilities/Logger (7.13.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (7.13.0):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
+    - GoogleUtilities/Reachability
   - "GoogleUtilities/NSData+zlib (7.13.0)":
     - GoogleUtilities/Privacy
   - GoogleUtilities/Privacy (7.13.0)
+  - GoogleUtilities/Reachability (7.13.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GTMSessionFetcher/Core (3.3.1)
   - hermes-engine (0.73.5):
     - hermes-engine/Pre-built (= 0.73.5)
   - hermes-engine/Pre-built (0.73.5)
@@ -1073,9 +1098,14 @@ PODS:
     - React-jsi (= 0.73.5)
     - React-logger (= 0.73.5)
     - React-perflogger (= 0.73.5)
+  - RecaptchaInterop (100.0.0)
   - RNFBApp (19.0.1):
     - Firebase/CoreOnly (= 10.22.0)
     - React-Core
+  - RNFBAuth (19.0.1):
+    - Firebase/Auth (= 10.22.0)
+    - React-Core
+    - RNFBApp
   - RNScreens (3.29.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1140,6 +1170,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1147,12 +1178,16 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Firebase
+    - FirebaseAppCheckInterop
+    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreInternal
     - fmt
     - GoogleUtilities
+    - GTMSessionFetcher
     - libevent
     - PromisesObjC
+    - RecaptchaInterop
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1255,6 +1290,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNFBAuth:
+    :path: "../node_modules/@react-native-firebase/auth"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
@@ -1268,11 +1305,14 @@ SPEC CHECKSUMS:
   FBLazyVector: 56e0e498dbb513b96c40bac6284729ba4e62672d
   FBReactNativeSpec: 146c741a3f40361f6bc13a4ba284678cbedb5881
   Firebase: 797fd7297b7e1be954432743a0b3f90038e45a71
+  FirebaseAppCheckInterop: 58db3e9494751399cf3e7b7e3e705cff71099153
+  FirebaseAuth: bbe4c68f958504ba9e54aee181adbdf5b664fbc6
   FirebaseCore: 0326ec9b05fbed8f8716cddbf0e36894a13837f7
   FirebaseCoreInternal: bca337352024b18424a61e478460547d46c4c753
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
+  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   hermes-engine: 1d1835b2cc54c381909d94d1b3c8e0a2f1a94a0e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -1318,7 +1358,9 @@ SPEC CHECKSUMS:
   React-runtimescheduler: ed71ec64a3e5cf509d74dfe9e25d72b04c84a3ad
   React-utils: 74fc896195fb41a1f7dcd5737d89be59c1fdccc4
   ReactCommon: ab6655d0224cf39c997ea634d257c609d345e23d
+  RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNFBApp: d0be9224f318cfd6501f1f83809453800cd04868
+  RNFBAuth: f0722d3ea63e6b5c2ed67c8d19acb17d5738438b
   RNScreens: a4d9ce8f68f833f4e42410140eafd88e38bba163
   RNVectorIcons: 81e919c3a9e56e4916f9e74cfe9cd2e489146f08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
