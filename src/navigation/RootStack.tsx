@@ -3,6 +3,7 @@ import React from 'react';
 import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import BottomTaps from './BottomTaps';
+import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,11 @@ export default function RootStack() {
         name="SignUpScreen"
         component={SignUpScreen}
         options={{title: '회원가입'}}
+      />
+      <Stack.Screen
+        name="ConfirmEmailScreen"
+        component={ConfirmEmailScreen}
+        options={{title: '이메일 인증'}}
       />
       <Stack.Screen
         name="BottomTaps"

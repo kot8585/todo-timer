@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {Pressable, SafeAreaView, Text, View} from 'react-native';
 import UnderlineInput from '../components/UnderlineInput';
+import {signIn} from '../../lib/auth';
 
+//TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
   //파라미터로 navigation을 받아오는거랑 const navigation = useNavigation()을 쓰는거랑 뭐가 다르지
 
   const [form, setForm] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
   });
 
   const handleChangeText = (name: string, value: string) => {
@@ -17,6 +18,7 @@ export default function LogInScreen({navigation}: any) {
 
   const handleSubmit = () => {
     console.log('회원가입 form 출력', form);
+    signIn({email: form.email, password: form.password});
   };
 
   return (

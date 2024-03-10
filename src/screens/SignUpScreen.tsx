@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import {Text, Pressable, TextInput, Keyboard, Alert} from 'react-native';
-import UnderlineInput from '../components/UnderlineInput';
+import {Alert, Keyboard, Pressable, Text, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {signUp} from '../../lib/auth';
+import {sendEmail, signUp} from '../../lib/auth';
+import UnderlineInput from '../components/UnderlineInput';
 
-export default function SignUpScreen() {
+export default function SignUpScreen({navigation}: any) {
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -28,18 +28,13 @@ export default function SignUpScreen() {
   };
 
   const handleSubmit = async () => {
-    // 이메일이 비어있는지 확인
-    // 이메일 타입인지 확인
-    // 아니라면 에러메세지 보여주기
-    // 비밀번호가 8자리가 넘는지 확인
-    // 아니라면 비밀번호에 에러메세지 보여주기
-    // 비밀번호가 일치하는지 확인
-    // 아니라면 비밀번호확인에 에러메세지 보여주기
     Keyboard.dismiss();
     const {email, password, confirmPassword} = form;
     const info = {email, password};
 
     console.log('errorMsg', validateMsg);
+    //TODO: 프론트랑 백엔드 에러메세지 어떻게 구분??
+    //TODO: 올바른 이메일 형식인지 파이어베이스도 확인하는데 프론트에서도 할필요가 있을끼?
     if (email.trim().length < 5) {
       setValidateMsg({
         ...validateMsg,
@@ -55,7 +50,7 @@ export default function SignUpScreen() {
       console.log('비번 에러');
       setValidateMsg({
         ...validateMsg,
-        [password]: '비밀번호는 8자 이상이여야 합니다.',
+        passwordMsg: '비밀번호는 8자 이상이여야 합니다.',
       });
       if (passwordRef.current) {
         passwordRef.current.focus();
@@ -67,7 +62,7 @@ export default function SignUpScreen() {
       console.log('비번확인 에러');
       setValidateMsg({
         ...validateMsg,
-        [confirmPassword]: '비밀번호가 일치하지 않습니다.',
+        confirmPasswordMsg: '비밀번호가 일치하지 않습니다.',
       });
       if (confirmPasswordRef.current) {
         confirmPasswordRef.current.focus();
@@ -76,15 +71,17 @@ export default function SignUpScreen() {
     }
 
     // setLoading(true);
-    // try {
-    //   const {user} = await signUp(info);
-    //   console.log(user);
-    // } catch (e) {
-    //   Alert.alert('실패');
-    //   console.log(e);
-    // } finally {
-    //   // setLoading(false);
-    // }
+    try {
+      const {user} = await signUp(info);
+      await sendEmail(user);
+      console.log('user: ', user);
+      navigation.navigate('ConfirmEmailScreen');
+    } catch (e) {
+      Alert.alert('실패');
+      console.log(e);
+    } finally {
+      // setLoading(false);
+    }
   };
 
   return (
@@ -106,7 +103,6 @@ export default function SignUpScreen() {
         autoComplete="email"
         keyboardType="email-address"
       />
-      {/* 이게 왜 에러나지? */}
       {validateMsg.emailMsg && <Text>{validateMsg.emailMsg}</Text>}
       <UnderlineInput
         placeholder="비밀번호"
