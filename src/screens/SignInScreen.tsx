@@ -22,7 +22,8 @@ export default function LogInScreen({navigation}: any) {
   const handleSubmit = () => {
     Keyboard.dismiss();
     console.log('회원가입 form 출력', form);
-    signIn({email: form.email, password: form.password});
+    const user = signIn({email: form.email, password: form.password});
+    console.log('로그인된 유저', user);
   };
 
   return (

@@ -1,11 +1,26 @@
 import React, {useRef, useState} from 'react';
-import {Alert, Keyboard, StyleSheet, Text, TextInput} from 'react-native';
+import {Alert, Keyboard, StyleSheet, Text, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {sendEmail, signUp} from '../../lib/auth';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
+import ValidateMessage from '../components/ValidateMessage';
 
 export default function SignUpScreen({navigation}: any) {
+  function emailValidate(email: string) {
+    return (
+      email.trim().length > 4 && email.includes('@') && email.includes('.')
+    );
+  }
+
+  function passwordValidate(password: string) {
+    return password.trim().length > 7;
+  }
+
+  function confirmPasswordValidate(password: string, confirmPassword: string) {
+    return password === confirmPassword;
+  }
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -30,13 +45,12 @@ export default function SignUpScreen({navigation}: any) {
 
   const handleSubmit = async () => {
     Keyboard.dismiss();
-    const {email, password, confirmPassword} = form;
+    const {email, password} = form;
     const info = {email, password};
 
     console.log('errorMsg', validateMsg);
-    //TODO: 프론트랑 백엔드 에러메세지 어떻게 구분??
-    //TODO: 올바른 이메일 형식인지 파이어베이스도 확인하는데 프론트에서도 할필요가 있을끼?
-    if (email.trim().length < 5) {
+
+    if (!emailValidate(email)) {
       setValidateMsg({
         ...validateMsg,
         emailMsg: '올바른 이메일 형식이 아닙니다',
@@ -47,7 +61,7 @@ export default function SignUpScreen({navigation}: any) {
       return;
     }
 
-    if (password.trim().length < 8) {
+    if (!passwordValidate(password)) {
       console.log('비번 에러');
       setValidateMsg({
         ...validateMsg,
@@ -59,7 +73,7 @@ export default function SignUpScreen({navigation}: any) {
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (!confirmPasswordValidate) {
       console.log('비번확인 에러');
       setValidateMsg({
         ...validateMsg,
@@ -87,50 +101,76 @@ export default function SignUpScreen({navigation}: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BorderBottomInput
-        placeholder="이메일"
-        value={form.email}
-        onChangeText={(text: string) => handleChangeText('email', text)}
-        onSubmitEditing={() => {
-          console.log('이메일 호출', passwordRef);
-          if (passwordRef.current) {
-            passwordRef.current.focus();
-          }
-        }}
-        ref={emailRef}
-        autoFocus
-        autoCapitalize="none"
-        autoCorrect={false}
-        autoComplete="email"
-        keyboardType="email-address"
-      />
-      {validateMsg.emailMsg && <Text>{validateMsg.emailMsg}</Text>}
-      <BorderBottomInput
-        placeholder="비밀번호(8자 이상)"
-        value={form.password}
-        onChangeText={(text: string) => handleChangeText('password', text)}
-        onSubmitEditing={() => {
-          console.log('비밀번호 호출', confirmPasswordRef);
-          if (confirmPasswordRef.current) {
-            confirmPasswordRef.current.focus();
-          }
-        }}
-        ref={passwordRef}
-        // secureTextEntry
-      />
-      {validateMsg.passwordMsg && <Text>{validateMsg.passwordMsg}</Text>}
-      <BorderBottomInput
-        placeholder="비밀번호 확인(8자 이상)"
-        value={form.confirmPassword}
-        onChangeText={(text: string) =>
-          handleChangeText('confirmPassword', text)
-        }
-        ref={confirmPasswordRef}
-        // secureTextEntry
-      />
-      {validateMsg.confirmPasswordMsg && (
-        <Text>{validateMsg.confirmPasswordMsg}</Text>
-      )}
+      <View>
+        <BorderBottomInput
+          placeholder="이메일"
+          value={form.email}
+          onChangeText={(text: string) => {
+            handleChangeText('email', text);
+            if (validateMsg.emailMsg && emailValidate(text)) {
+              validateMsg.emailMsg = undefined;
+            }
+          }}
+          onSubmitEditing={() => {
+            console.log('이메일 호출', passwordRef);
+            if (passwordRef.current) {
+              passwordRef.current.focus();
+            }
+          }}
+          ref={emailRef}
+          autoFocus
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="email"
+          keyboardType="email-address"
+        />
+        {validateMsg.emailMsg && (
+          <ValidateMessage message={validateMsg.emailMsg} />
+        )}
+      </View>
+      <View>
+        <BorderBottomInput
+          placeholder="비밀번호(8자 이상)"
+          value={form.password}
+          onChangeText={(text: string) => {
+            handleChangeText('password', text);
+            if (validateMsg.passwordMsg && passwordValidate(text)) {
+              validateMsg.passwordMsg = undefined;
+            }
+          }}
+          onSubmitEditing={() => {
+            console.log('비밀번호 호출', confirmPasswordRef);
+            if (confirmPasswordRef.current) {
+              confirmPasswordRef.current.focus();
+            }
+          }}
+          ref={passwordRef}
+          secureTextEntry
+        />
+        {validateMsg.passwordMsg && (
+          <ValidateMessage message={validateMsg.passwordMsg} />
+        )}
+      </View>
+      <View>
+        <BorderBottomInput
+          placeholder="비밀번호 확인(8자 이상)"
+          value={form.confirmPassword}
+          onChangeText={(text: string) => {
+            handleChangeText('confirmPassword', text);
+            if (
+              validateMsg.confirmPasswordMsg &&
+              confirmPasswordValidate(form.password, text)
+            ) {
+              validateMsg.confirmPasswordMsg = undefined;
+            }
+          }}
+          ref={confirmPasswordRef}
+          secureTextEntry
+        />
+        {validateMsg.confirmPasswordMsg && (
+          <ValidateMessage message={validateMsg.confirmPasswordMsg} />
+        )}
+      </View>
       <BackgroundColorButton text="회원가입" onPress={handleSubmit} />
     </SafeAreaView>
   );
