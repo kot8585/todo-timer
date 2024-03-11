@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
-import {Alert, Modal, Pressable, Text, View} from 'react-native';
+import {Alert, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {changeEmail, getLogInUser, sendEmail} from '../../lib/auth';
+import {Colors} from '../assets/color';
+import BackgroundColorButton from '../components/BackgroundColorButton';
+import TextButton from '../components/TextButton';
+import EmailConfirmModal from '../components/EmailConfirmModal';
 
 //TODO: 버튼 연타 방지하기
 export default function ConfirmEmailScreen({navigation}: any) {
@@ -18,14 +22,13 @@ export default function ConfirmEmailScreen({navigation}: any) {
   };
   // 로그인된 유저  가져오기
   return (
-    <View>
-      <Text>
-        이메일이 {user?.email}로 전송되었습니다. 이메일의 링크를 클릭한 후 아래
-        "인증하기"버튼을 눌러주세요.
+    <View style={styles.container}>
+      <Text style={styles.textContainer}>
+        이메일이 "{user?.email}"로 전송되었습니다. 이메일의 링크를 클릭한 후에
+        아래 "인증하기" 버튼을 눌러주세요.
       </Text>
-      <Pressable onPress={handleConfirm}>
-        <Text>인증하기</Text>
-      </Pressable>
+
+      <BackgroundColorButton text="인증하기" onPress={handleConfirm} />
       <Pressable
         onPress={async () => {
           try {
@@ -39,30 +42,25 @@ export default function ConfirmEmailScreen({navigation}: any) {
             console.log(e);
           }
         }}>
-        <Text>이메일 변경</Text>
+        <TextButton
+          text="이메일 변경"
+          onPress={() => console.log('SignUpScreen')}
+        />
       </Pressable>
-      <Modal visible={showModal}>
-        <Text>이메일이 인증되지 않았습니다.</Text>
-        <Text>인증 이메일을 다시 받으시겠습니까?</Text>
-        <View style={{flexDirection: 'row'}}>
-          <Pressable
-            onPress={async () => {
-              // //TODO: loading바 보여주기
-
-              const result = await sendEmail(user);
-
-              Alert.alert(
-                `${user?.email}로 인증 이메일이 다시 전송되었습니다. `,
-              );
-              setShowModal(false);
-            }}>
-            <Text>확인</Text>
-          </Pressable>
-          <Pressable onPress={() => setShowModal(false)}>
-            <Text>취소</Text>
-          </Pressable>
-        </View>
-      </Modal>
+      <EmailConfirmModal visible={showModal} setShowModal={setShowModal} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 16,
+    marginTop: 16,
+    gap: 18,
+    alignItems: 'stretch',
+  },
+  textContainer: {
+    color: Colors.light.bodyDefault,
+    fontSize: 16,
+  },
+});

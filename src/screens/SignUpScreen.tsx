@@ -1,8 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {Alert, Keyboard, Pressable, Text, TextInput} from 'react-native';
+import {Alert, Keyboard, StyleSheet, Text, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {sendEmail, signUp} from '../../lib/auth';
-import UnderlineInput from '../components/UnderlineInput';
+import BackgroundColorButton from '../components/BackgroundColorButton';
+import BorderBottomInput from '../components/BorderBottomInput';
 
 export default function SignUpScreen({navigation}: any) {
   const [form, setForm] = useState({
@@ -85,8 +86,8 @@ export default function SignUpScreen({navigation}: any) {
   };
 
   return (
-    <SafeAreaView>
-      <UnderlineInput
+    <SafeAreaView style={styles.container}>
+      <BorderBottomInput
         placeholder="이메일"
         value={form.email}
         onChangeText={(text: string) => handleChangeText('email', text)}
@@ -104,8 +105,8 @@ export default function SignUpScreen({navigation}: any) {
         keyboardType="email-address"
       />
       {validateMsg.emailMsg && <Text>{validateMsg.emailMsg}</Text>}
-      <UnderlineInput
-        placeholder="비밀번호"
+      <BorderBottomInput
+        placeholder="비밀번호(8자 이상)"
         value={form.password}
         onChangeText={(text: string) => handleChangeText('password', text)}
         onSubmitEditing={() => {
@@ -118,8 +119,8 @@ export default function SignUpScreen({navigation}: any) {
         // secureTextEntry
       />
       {validateMsg.passwordMsg && <Text>{validateMsg.passwordMsg}</Text>}
-      <UnderlineInput
-        placeholder="비밀번호 확인"
+      <BorderBottomInput
+        placeholder="비밀번호 확인(8자 이상)"
         value={form.confirmPassword}
         onChangeText={(text: string) =>
           handleChangeText('confirmPassword', text)
@@ -130,9 +131,17 @@ export default function SignUpScreen({navigation}: any) {
       {validateMsg.confirmPasswordMsg && (
         <Text>{validateMsg.confirmPasswordMsg}</Text>
       )}
-      <Pressable onPress={handleSubmit}>
-        <Text>회원가입</Text>
-      </Pressable>
+      <BackgroundColorButton text="회원가입" onPress={handleSubmit} />
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 16,
+    paddingHorizontal: 16,
+    marginTop: 16,
+    gap: 14,
+    alignItems: 'stretch',
+  },
+});

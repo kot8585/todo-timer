@@ -4,12 +4,16 @@ import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import BottomTaps from './BottomTaps';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
+import {Colors} from '../assets/color';
 
 const Stack = createNativeStackNavigator();
 
 export default function RootStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        contentStyle: {backgroundColor: Colors.light.background},
+      }}>
       <Stack.Screen
         name="LogInScreen"
         component={LogInScreen}
