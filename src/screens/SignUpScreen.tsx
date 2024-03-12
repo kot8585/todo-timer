@@ -7,20 +7,6 @@ import BorderBottomInput from '../components/BorderBottomInput';
 import ValidateMessage from '../components/ValidateMessage';
 
 export default function SignUpScreen({navigation}: any) {
-  function emailValidate(email: string) {
-    return (
-      email.trim().length > 4 && email.includes('@') && email.includes('.')
-    );
-  }
-
-  function passwordValidate(password: string) {
-    return password.trim().length > 7;
-  }
-
-  function confirmPasswordValidate(password: string, confirmPassword: string) {
-    return password === confirmPassword;
-  }
-
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -50,6 +36,7 @@ export default function SignUpScreen({navigation}: any) {
 
     console.log('errorMsg', validateMsg);
 
+    //signup validation
     if (!emailValidate(email)) {
       setValidateMsg({
         ...validateMsg,
@@ -174,6 +161,18 @@ export default function SignUpScreen({navigation}: any) {
       <BackgroundColorButton text="회원가입" onPress={handleSubmit} />
     </SafeAreaView>
   );
+}
+
+function emailValidate(email: string) {
+  return email.trim().length > 4 && email.includes('@') && email.includes('.');
+}
+
+function passwordValidate(password: string) {
+  return password.trim().length > 7;
+}
+
+function confirmPasswordValidate(password: string, confirmPassword: string) {
+  return password === confirmPassword;
 }
 
 const styles = StyleSheet.create({

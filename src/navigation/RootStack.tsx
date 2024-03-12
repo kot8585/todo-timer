@@ -5,6 +5,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import BottomTaps from './BottomTaps';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import {Colors} from '../assets/color';
+import ChangeEmailScreen from '../screens/ChangeEmailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,11 @@ export default function RootStack() {
         name="ConfirmEmailScreen"
         component={ConfirmEmailScreen}
         options={{title: '이메일 인증'}}
+      />
+      <Stack.Screen
+        name="ChangeEmailScreen"
+        component={ChangeEmailScreen}
+        options={{title: '이메일 변경'}}
       />
       <Stack.Screen
         name="BottomTaps"

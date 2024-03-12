@@ -1,19 +1,27 @@
-import React, {useState} from 'react';
-import {Alert, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
-import {changeEmail, getLogInUser, sendEmail} from '../../lib/auth';
+import auth from '@react-native-firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
+import {changeEmail, getLogInUser} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
-import TextButton from '../components/TextButton';
 import EmailConfirmModal from '../components/EmailConfirmModal';
+import TextButton from '../components/TextButton';
 
 //TODO: 버튼 연타 방지하기
 export default function ConfirmEmailScreen({navigation}: any) {
-  let user = getLogInUser();
+  const [user, setUser] = useState(getLogInUser());
+  console.log('confirmEmailScreen 처음의 user: ', user);
+  useEffect(() => {
+    auth().onAuthStateChanged(user => {
+      console.log('변경 탐지됌 : ', user);
+      setUser(user);
+    });
+  }, [user]);
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleConfirm = () => {
-    //TODO: 회원정보가 바뀌었는데 탐지가 안됌
+  const handleConfirm = async () => {
+    await auth().currentUser?.reload();
     if (user?.emailVerified) {
       navigation.navigate('BottomTaps');
     } else {
@@ -44,7 +52,9 @@ export default function ConfirmEmailScreen({navigation}: any) {
         }}>
         <TextButton
           text="이메일 변경"
-          onPress={() => console.log('SignUpScreen')}
+          onPress={() => {
+            navigation.navigate('ChangeEmailScreen');
+          }}
         />
       </Pressable>
       <EmailConfirmModal visible={showModal} setShowModal={setShowModal} />

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Keyboard, SafeAreaView, StyleSheet, View} from 'react-native';
-import {signIn} from '../../lib/auth';
+import {getLogInUser, signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
@@ -9,6 +9,12 @@ import TextButton from '../components/TextButton';
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
   //파라미터로 navigation을 받아오는거랑 const navigation = useNavigation()을 쓰는거랑 뭐가 다르지
+  //TODO: 이렇게 하면 왜 안되지???
+  // const user = getLogInUser();
+  // console.log('user 정보: ', user);
+  // if (user) {
+  //   navigation.navigate('BottomTaps');
+  // }
 
   const [form, setForm] = useState({
     email: '',
@@ -37,6 +43,7 @@ export default function LogInScreen({navigation}: any) {
         placeholder="비밀번호(8자 이상)"
         value={form.password}
         onChangeText={(text: string) => handleChangeText('password', text)}
+        secureTextEntry
       />
       <BackgroundColorButton text="로그인" onPress={handleSubmit} />
       <View style={styles.textButtons}>
