@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Keyboard, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  Keyboard,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {getLogInUser, signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
@@ -66,6 +73,9 @@ export default function LogInScreen({navigation}: any) {
           }}
         />
       </View>
+      <Pressable onPress={() => navigation.navigate('BottomTaps')}>
+        <Text>투두리스트로</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
