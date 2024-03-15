@@ -10,6 +10,23 @@ export type TodoType = {
   updatedAt: string;
 };
 
+export type CreateTodoType = {
+  userUid: string;
+  categoryIdx: number;
+  title: string;
+  startDate: string;
+};
+
+export type UpdateTodoType = {
+  idx: number;
+  userUid: string;
+  categoryIdx: number;
+  title: string;
+  startDate: string;
+  isCompleted: boolean;
+  executionTime: number;
+};
+
 export type CategoryType = {
   idx: number;
   userUid: string;

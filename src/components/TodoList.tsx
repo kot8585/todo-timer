@@ -1,7 +1,9 @@
 import React from 'react';
-import {SectionList, StyleSheet, Text, View} from 'react-native';
+import {SectionList, StyleSheet, Text} from 'react-native';
 import {useQuery} from 'react-query';
 import {getCategoryAndTodos} from '../../api/category';
+import Category from './Category';
+import Todo from './Todo';
 
 type TodoListProps = {
   uid: string | undefined;
@@ -26,27 +28,8 @@ export default function TodoList({uid}: TodoListProps) {
     <SectionList
       sections={data}
       keyExtractor={index => index.title}
-      renderItem={({item}) => (
-        <View
-          style={{
-            flexDirection: 'row',
-            borderBottomColor: '#DADADA',
-            borderBottomWidth: 1,
-          }}>
-          <Text style={{fontSize: 16}}>{item.title}</Text>
-          {/* 시간은 어떻게 보여주지!!! */}
-        </View>
-      )}
-      renderSectionHeader={({section}) => (
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 7,
-          }}>
-          <View style={{width: 5, backgroundColor: section.color}} />
-          <Text style={{fontSize: 16, fontWeight: '600'}}>{section.title}</Text>
-        </View>
-      )}
+      renderItem={({item}) => <Todo todo={item} />}
+      renderSectionHeader={({section}) => <Category category={section} />}
       style={styles.container}
     />
   );
