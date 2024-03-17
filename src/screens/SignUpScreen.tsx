@@ -1,18 +1,11 @@
 import React, {useRef, useState} from 'react';
-import {
-  Alert,
-  Keyboard,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Alert, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {sendEmail, signUp} from '../../lib/auth';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
 import ValidateMessage from '../components/ValidateMessage';
+import useUserStore from '../store/userStore';
 
 export default function SignUpScreen({navigation}: any) {
   const [form, setForm] = useState({
@@ -82,7 +75,9 @@ export default function SignUpScreen({navigation}: any) {
 
     // setLoading(true);
     try {
+      //TODO: 에러처리 하기
       const {user} = await signUp(info);
+      useUserStore.setState({user: user});
       await sendEmail(user);
       console.log('user: ', user);
       navigation.navigate('ConfirmEmailScreen');

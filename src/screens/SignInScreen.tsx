@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -12,16 +12,20 @@ import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
 import TextButton from '../components/TextButton';
+import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
   //파라미터로 navigation을 받아오는거랑 const navigation = useNavigation()을 쓰는거랑 뭐가 다르지
-  //TODO: 이렇게 하면 왜 안되지???
-  // const user = getLogInUser();
-  // console.log('user 정보: ', user);
-  // if (user) {
-  //   navigation.navigate('BottomTaps');
-  // }
+  // useEffect(() => {
+  //   const user = getLogInUser();
+  //   console.log('user 정보: ', user);
+  //   //TODO: 필요한 정보만 등록하기
+  //   useUserStore.setState({user: user});
+  //   if (user) {
+  //     navigation.navigate('BottomTaps');
+  //   }
+  // }, [navigation]);
 
   const [form, setForm] = useState({
     email: '',

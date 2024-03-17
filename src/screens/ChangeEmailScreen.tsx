@@ -1,11 +1,14 @@
-import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import BorderBottomInput from '../components/BorderBottomInput';
+import {changeEmail} from '../../lib/auth';
 import BackgroundColorButton from '../components/BackgroundColorButton';
-import {changeEmail, getLogInUser} from '../../lib/auth';
+import BorderBottomInput from '../components/BorderBottomInput';
+import useUserStore from '../store/userStore';
 
 export default function ChangeEmailScreen({navigation}: any) {
+  const user = useUserStore(state => state.user);
+  const setUser = useUserStore(state => state.setUser);
   const [form, setForm] = useState({
     email: '',
   });
@@ -14,15 +17,17 @@ export default function ChangeEmailScreen({navigation}: any) {
   };
 
   const handleSubmit = async () => {
-    const user = getLogInUser();
     await changeEmail(user, form.email);
+
+    setUser({...user, email: form.email});
+
     navigation.navigate('ConfirmEmailScreen');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <BorderBottomInput
-        placeholder="변경할 무이메일"
+        placeholder="변경할 이메일"
         value={form.email}
         onChangeText={(text: string) => handleChangeText('email', text)}
       />

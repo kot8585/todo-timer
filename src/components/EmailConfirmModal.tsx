@@ -1,14 +1,15 @@
 import React from 'react';
 import {Alert, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
-import {getLogInUser, sendEmail} from '../../lib/auth';
+import {sendEmail} from '../../lib/auth';
 import {Colors} from '../assets/color';
+import useUserStore from '../store/userStore';
 
 export default function EmailConfirmModal({visible, setShowModal}) {
+  const user = useUserStore(state => state.user);
   const handleConfirm = async () => {
-    let user = getLogInUser();
     // //TODO: loading바 보여주기
 
-    const result = await sendEmail(user);
+    await sendEmail(user);
 
     //TODO: toast 띄우기
     Alert.alert(`${user?.email}로 인증 이메일이 다시 전송되었습니다. `);
