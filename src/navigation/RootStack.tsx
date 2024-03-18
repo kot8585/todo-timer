@@ -1,11 +1,11 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import LogInScreen from '../screens/SignInScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import BottomTaps from './BottomTaps';
-import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import {Colors} from '../assets/color';
 import ChangeEmailScreen from '../screens/ChangeEmailScreen';
+import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
+import HomeScreen from '../screens/HomeScreen';
+import LogInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,8 +36,8 @@ export default function RootStack() {
         options={{title: '이메일 변경'}}
       />
       <Stack.Screen
-        name="BottomTaps"
-        component={BottomTaps}
+        name="HomeScreen"
+        component={HomeScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

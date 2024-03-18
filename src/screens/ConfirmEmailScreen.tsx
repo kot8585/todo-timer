@@ -23,7 +23,7 @@ export default function ConfirmEmailScreen({navigation}: any) {
   const handleConfirm = async () => {
     await auth().currentUser?.reload();
     if (user?.emailVerified) {
-      navigation.navigate('BottomTaps');
+      navigation.navigate('HomeScreen');
     } else {
       setShowModal(true);
     }
@@ -45,7 +45,7 @@ export default function ConfirmEmailScreen({navigation}: any) {
             console.log(result);
             //TODO: 변경된 유저로 저장해야됌
             Alert.alert('이메일 변경이 완료되었습니다.');
-            navigation.navigate('BottomTaps');
+            navigation.navigate('HomeTaps');
           } catch (e) {
             console.log(e);
           }

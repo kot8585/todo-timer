@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -7,12 +7,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {getLogInUser, signIn} from '../../lib/auth';
+import {signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
 import TextButton from '../components/TextButton';
-import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
@@ -23,7 +22,7 @@ export default function LogInScreen({navigation}: any) {
   //   //TODO: 필요한 정보만 등록하기
   //   useUserStore.setState({user: user});
   //   if (user) {
-  //     navigation.navigate('BottomTaps');
+  //     navigation.navigate('HomeScreen');
   //   }
   // }, [navigation]);
 
@@ -77,7 +76,7 @@ export default function LogInScreen({navigation}: any) {
           }}
         />
       </View>
-      <Pressable onPress={() => navigation.navigate('BottomTaps')}>
+      <Pressable onPress={() => navigation.navigate('HomeScreen')}>
         <Text>투두리스트로</Text>
       </Pressable>
     </SafeAreaView>
