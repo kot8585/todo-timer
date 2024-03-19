@@ -36,3 +36,16 @@ export type CategoryType = {
   updatedAt: string;
   todos: TodoType[];
 };
+
+export type TimelineType = {
+  idx: number;
+  // 이거 string 맞나!!
+  todoIdx: number;
+  startDate: string;
+  startHour: number;
+  startMinute: number;
+  endHour: number;
+  endMinute: number;
+  durationTime: number;
+  todo: TodoType;
+};
