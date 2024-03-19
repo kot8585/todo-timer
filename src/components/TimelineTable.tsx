@@ -12,8 +12,11 @@ export default function TimelineTable() {
     for (let hour = 5; hour <= 28; hour++) {
       // 시간에 따른 문자열 생성
       const hourText = (hour % 24).toString().padStart(2, '0');
+
+      // row 생성
       timeTableData.push(
         <View key={hour} style={styles.row}>
+          {/* 컬럼 생성 */}
           <Text style={styles.hourText}>{hourText}</Text>
 
           {/* 10분 간격의 컬럼 생성 */}
