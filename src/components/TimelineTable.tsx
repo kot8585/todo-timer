@@ -3,8 +3,10 @@ import {View, Text, StyleSheet} from 'react-native';
 import {useQuery} from 'react-query';
 import {getTimelines} from '../../api/timeline';
 import TimelineEvent from './TimelineEvent';
+import useUserStore from '../store/userStore';
 
 export default function TimelineTable() {
+  const user = useUserStore(state => state.user);
   // 시간표 데이터를 생성하는 함수
   const generateTimeTableData = () => {
     let timeTableData = [];
@@ -30,7 +32,7 @@ export default function TimelineTable() {
   };
 
   const result = useQuery(['timelines'], () =>
-    getTimelines('2024-03-20T05:00:00.000Z'),
+    getTimelines(user?.uid, '2024-03-20T05:00:00.000Z'),
   );
   const {data, error, isLoading} = result;
   return (

@@ -1,9 +1,9 @@
-import {View, Text, StyleSheet, Button} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
-import {createTimeline} from '../../api/timeline';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {useMutation} from 'react-query';
+import {createTimeline} from '../../api/timeline';
 
 export default function TimerScreen() {
   const route = useRoute();
