@@ -29,9 +29,10 @@ export default function TimelineTable() {
     return timeTableData;
   };
 
-  const result = useQuery(['timelines'], () => getTimelines('2024-03-13'));
+  const result = useQuery(['timelines'], () =>
+    getTimelines('2024-03-20T05:00:00.000Z'),
+  );
   const {data, error, isLoading} = result;
-  console.log('timeline data', data);
   return (
     <View style={styles.container}>
       {generateTimeTableData()}

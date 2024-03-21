@@ -6,12 +6,14 @@ import {TodoType} from '../../api/types';
 import {Colors} from '../assets/color';
 import {deleteTodo} from '../../api/todo';
 import WriteTodoModal from './WriteTodoModal';
+import {useNavigation} from '@react-navigation/native';
 
 type TodoProps = {
   todo: TodoType;
 };
 
 export default function Todo({todo}: TodoProps) {
+  const navigation = useNavigation();
   const [showEditDeleteModal, setShowEditDeleteModal] = useState(false);
   const [showConfirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [showTodoModal, setShowTodoModal] = useState(false);
@@ -29,7 +31,8 @@ export default function Todo({todo}: TodoProps) {
 
   return (
     <View>
-      <View
+      <Pressable
+        onPress={() => navigation.push('TimerScreen', todo)}
         style={{
           flexDirection: 'row',
           borderBottomColor: '#DADADA',
@@ -43,7 +46,7 @@ export default function Todo({todo}: TodoProps) {
           <Icon name="dots-vertical" size={16} />
         </Pressable>
         {/* 시간은 어떻게 보여주지!!! */}
-      </View>
+      </Pressable>
       <Modal visible={showEditDeleteModal} transparent={true}>
         <Pressable
           onPress={() => {

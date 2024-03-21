@@ -6,6 +6,7 @@ import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import TimerScreen from '../screens/TimerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,11 @@ export default function RootStack() {
         name="HomeScreen"
         component={HomeScreen}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TimerScreen"
+        component={TimerScreen}
+        options={{title: '타이머'}}
       />
     </Stack.Navigator>
   );

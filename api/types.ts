@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export type TodoType = {
   idx: number;
   userUid: string;
@@ -41,11 +43,18 @@ export type TimelineType = {
   idx: number;
   // 이거 string 맞나!!
   todoIdx: number;
-  startDate: string;
   startHour: number;
   startMinute: number;
   endHour: number;
   endMinute: number;
-  durationTime: number;
-  todo: TodoType;
+  elapsedTime: number;
+  todoTitle: string;
+  categoryColor: string;
+};
+
+export type CreateTimelineType = {
+  todoIdx: number;
+  startDateTime: dayjs.Dayjs;
+  endDateTime: dayjs.Dayjs;
+  elapsedTime: number;
 };

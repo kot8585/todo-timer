@@ -11,14 +11,16 @@ export default function TimelineEvent({
   date,
   timelineEvent,
 }: TimelineEventProps) {
+  console.log('TimelineEvent', timelineEvent);
   const height = 25;
 
   const viewCount =
     (timelineEvent.endHour % 24) - (timelineEvent.startHour % 24) + 1;
 
-  function calculateWidth(i) {
+  function calculateWidth(i: number): number {
     if (viewCount === 1) {
-      return timelineEvent.durationTime;
+      // 초 단위라서 분 단위로 바꿔줌
+      return timelineEvent.elapsedTime / 60;
     }
     if (i === 1) {
       return 60 - timelineEvent.startMinute;
@@ -36,26 +38,24 @@ export default function TimelineEvent({
 
     //다음날로 넘어갈 수도 있으니까 24로 나눔
     for (let i = 1; i <= viewCount; i++) {
-      //TODO: 20 맞는지 확인하기
+      const numberStartHour = Number(timelineEvent.startHour);
       const top =
-        timelineEvent.startHour + i >= 6
-          ? (timelineEvent.startHour + i - 6) * height +
-            (timelineEvent.startHour + i - 6)
-          : (timelineEvent.startHour + i + 20) * height +
-            (timelineEvent.startHour + i + 20);
-
+        numberStartHour + i >= 6
+          ? (numberStartHour + i - 6) * height + (numberStartHour + i - 6)
+          : (numberStartHour + i + 18) * height + (numberStartHour + i + 18);
       const width = calculateWidth(i) * 1.5;
       const left = i === 1 ? timelineEvent.startMinute * 1.5 + 10 : 10;
 
       timeTableData.push(
         <View
+          key={timelineEvent.idx + '' + i}
           style={{
             position: 'absolute',
             top: top,
             height: height,
             left: `${left}%`,
             width: `${width}%`,
-            backgroundColor: '#FFAAAA',
+            backgroundColor: timelineEvent.categoryColor,
             marginLeft: 1,
             // opacity: 0.7,
           }}
