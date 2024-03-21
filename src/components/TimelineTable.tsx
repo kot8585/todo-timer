@@ -4,6 +4,7 @@ import {useQuery} from 'react-query';
 import {getTimelines} from '../../api/timeline';
 import TimelineEvent from './TimelineEvent';
 import useUserStore from '../store/userStore';
+import dayjs from 'dayjs';
 
 export default function TimelineTable() {
   const user = useUserStore(state => state.user);
@@ -31,8 +32,12 @@ export default function TimelineTable() {
     return timeTableData;
   };
 
+  const startDateTime = dayjs()
+    .set('hour', 5)
+    .set('minute', 0)
+    .set('second', 0);
   const result = useQuery(['timelines'], () =>
-    getTimelines(user?.uid, '2024-03-20T05:00:00.000Z'),
+    getTimelines(user?.uid, startDateTime),
   );
   const {data, error, isLoading} = result;
   return (

@@ -10,7 +10,6 @@ export default function TimerScreen() {
   const navigation = useNavigation();
 
   const {idx, title} = route.params;
-  console.log('todo: ', idx, title);
 
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const startDateTimeRef = useRef<dayjs.Dayjs>(dayjs());
@@ -40,12 +39,13 @@ export default function TimerScreen() {
   });
 
   // TODO: 할일 완료 버튼 누르면???
-  const handleStop = () => {
+  const handleStop = (action: string) => {
     const timeline = {
       todoIdx: idx,
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),
       elapsedTime: elapsedTime,
+      action: action,
     };
     // mutation
     createTimelineMutation.mutate(timeline);
@@ -64,8 +64,8 @@ export default function TimerScreen() {
     <View style={styles.container}>
       <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
       <View style={styles.buttonContainer}>
-        <Button title="중지" onPress={handleStop} />
-        <Button title="할일완료" onPress={handleStop} />
+        <Button title="중지" onPress={() => handleStop('stop')} />
+        <Button title="할일완료" onPress={() => handleStop('complete')} />
       </View>
     </View>
   );

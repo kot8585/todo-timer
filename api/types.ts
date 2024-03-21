@@ -57,4 +57,5 @@ export type CreateTimelineType = {
   startDateTime: dayjs.Dayjs;
   endDateTime: dayjs.Dayjs;
   elapsedTime: number;
+  action: 'stop' | 'complete';
 };

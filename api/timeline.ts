@@ -1,7 +1,11 @@
 import {CreateTimelineType, TimelineType} from './types';
 import client from './client';
+import dayjs from 'dayjs';
 
-export async function getTimelines(userUid: string | undefined, date: string) {
+export async function getTimelines(
+  userUid: string | undefined,
+  date: dayjs.Dayjs,
+) {
   const response = await client.get<TimelineType[]>('/timelines', {
     params: {
       userUid: userUid,
