@@ -1,17 +1,15 @@
 import React from 'react';
 import {SectionList, StyleSheet, Text, View} from 'react-native';
-import {useQuery} from 'react-query';
-import {getCategoryAndTodos} from '../../api/category';
+import useTodo from '../hooks/useTodos';
+import useUserStore from '../store/userStore';
 import Category from './Category';
 import Todo from './Todo';
-import useUserStore from '../store/userStore';
 
 export default function TodoList() {
   const user = useUserStore(state => state.user);
-  const result = useQuery(['todos', user?.uid], () =>
-    getCategoryAndTodos(user?.uid),
-  );
-  const {data, error, isLoading} = result;
+  const {
+    getAllTodos: {data, isLoading, error},
+  } = useTodo();
 
   if (isLoading) {
     return <Text>로딩 중...</Text>;

@@ -16,6 +16,7 @@ export default function EmailConfirmModal({visible, setShowModal}) {
     Alert.alert(`${user?.email}로 인증 이메일이 다시 전송되었습니다. `);
     setShowModal(false);
   };
+
   return (
     <CustomModal visible={visible} setModalVisible={setShowModal}>
       <Text style={styles.buttonText}>이메일이 인증되지 않았습니다.</Text>
