@@ -6,6 +6,7 @@ import {getTimelines} from '../../api/timeline';
 import CreateTimelineModal from '../components/CreateTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useUserStore from '../store/userStore';
+import {TimelineType} from '../../api/types';
 
 export default function TimelineScreen() {
   const user = useUserStore(state => state.user);
@@ -53,6 +54,12 @@ export default function TimelineScreen() {
     getTimelines(user?.uid, startDateTime),
   );
   const {data, error, isLoading} = result;
+  console.log('타임라인 데이터', data);
+
+  const [showUpdateTimelineModal, setShowUpdateTimelineModal] =
+    useState<boolean>(false);
+
+  const updateTimelineRef = useRef<undefined | TimelineType>(undefined);
 
   return (
     <ScrollView style={styles.container}>
@@ -64,6 +71,8 @@ export default function TimelineScreen() {
             timelineEvent={timelineEvent}
             date="2024-03-13"
             key={timelineEvent.idx}
+            updateTimelineRef={updateTimelineRef}
+            setShowUpdateTimelineModal={setShowUpdateTimelineModal}
           />
         ))}
       </View>
@@ -72,6 +81,13 @@ export default function TimelineScreen() {
         setModalVisible={setShowModal}
         clickedTime={clickedTime.current.toString()}
       />
+      {showUpdateTimelineModal && (
+        <CreateTimelineModal
+          visible={showUpdateTimelineModal}
+          setModalVisible={setShowUpdateTimelineModal}
+          updateTimeline={updateTimelineRef.current}
+        />
+      )}
     </ScrollView>
   );
 }

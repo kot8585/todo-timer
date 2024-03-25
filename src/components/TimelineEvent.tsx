@@ -1,17 +1,22 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Pressable} from 'react-native';
 import {TimelineType} from '../../api/types';
 
 type TimelineEventProps = {
   date: string;
   timelineEvent: TimelineType;
+  updateTimelineRef: React.MutableRefObject<TimelineType | undefined>;
+  setShowUpdateTimelineModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function TimelineEvent({
   date,
   timelineEvent,
+  updateTimelineRef,
+  setShowUpdateTimelineModal,
 }: TimelineEventProps) {
   console.log('TimelineEvent', timelineEvent);
+
   const height = 25;
 
   const viewCount =
@@ -34,6 +39,7 @@ export default function TimelineEvent({
   }
 
   const generateTimeTableData = () => {
+    console.log('색깔 왜 안나옴', timelineEvent.todoColor);
     let timeTableData = [];
 
     //다음날로 넘어갈 수도 있으니까 24로 나눔
@@ -47,15 +53,19 @@ export default function TimelineEvent({
       const left = i === 1 ? timelineEvent.startMinute * 1.5 + 10 : 10;
 
       timeTableData.push(
-        <View
+        <Pressable
           key={timelineEvent.idx + '' + i}
+          onPress={() => {
+            updateTimelineRef.current = timelineEvent;
+            setShowUpdateTimelineModal(true);
+          }}
           style={{
             position: 'absolute',
             top: top,
             height: height,
             left: `${left}%`,
             width: `${width}%`,
-            backgroundColor: timelineEvent.color,
+            backgroundColor: timelineEvent.todoColor,
             marginLeft: 1,
             // opacity: 0.7,
           }}

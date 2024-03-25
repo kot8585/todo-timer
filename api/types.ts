@@ -51,7 +51,7 @@ export type TimelineType = {
   endMinute: number;
   elapsedTime: number;
   todoTitle: string;
-  color: string;
+  todoColor: string;
 };
 
 export type CreateTimelineType = {
@@ -60,4 +60,12 @@ export type CreateTimelineType = {
   endDateTime: dayjs.Dayjs;
   elapsedTime: number;
   action: 'stop' | 'complete';
+};
+
+export type UpdateTimelineRequest = {
+  idx: number;
+  todoIdx: number;
+  startDateTime: dayjs.Dayjs;
+  endDateTime: dayjs.Dayjs;
+  elapsedTime: number;
 };

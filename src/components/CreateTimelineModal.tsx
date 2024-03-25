@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   Modal,
   Pressable,
   SectionList,
@@ -14,11 +15,15 @@ import {Colors} from '../assets/color';
 import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import useTimeline from '../hooks/useTimeline';
+import {TimelineType} from '../../api/types';
 
 type CreateTimelineModalProps = {
   visible: boolean;
   setModalVisible: (value: boolean) => void;
-  clickedTime: string;
+  //timline 생성할때만 값이 있음
+  clickedTime?: string;
+  //timline 수정할때만 값이 있음
+  updateTimeline?: TimelineType;
 };
 
 // TODO: 디자인이 뭔가 이상....
@@ -36,43 +41,54 @@ export default function CreateTimelineModal({
   visible,
   setModalVisible,
   clickedTime,
+  updateTimeline,
 }: CreateTimelineModalProps) {
   const [showTodoListModal, setShowTodoListModal] = useState(false);
 
   // 이거 모달을 보여줄때만 필요한거라  모달 안보여주면 가져올 필요없는데
+  // 수정일때도 바로 query 날릴 필요 없음
   const {
     getAllTodos: {data: todos},
   } = useTodo();
 
   const [form, setForm] = useState({
-    todoIdx: undefined,
-    todoColor: '#696969',
-    todoTitle: '작성된 할일이 없습니다',
-    date: '2024-03-12',
-    startHour: '',
-    startMinute: '',
-    endHour: '',
-    endMinute: '',
+    todoIdx: updateTimeline ? updateTimeline.todoIdx : undefined,
+    todoColor: updateTimeline ? updateTimeline.todoColor : '#696969',
+    todoTitle: updateTimeline
+      ? updateTimeline.todoTitle
+      : '작성된 할일이 없습니다',
+    date: '2024-03-25',
+    startHour: updateTimeline ? updateTimeline.startHour.toString() : '',
+    startMinute: updateTimeline ? updateTimeline.startMinute.toString() : '',
+    endHour: updateTimeline ? updateTimeline.endHour.toString() : '',
+    endMinute: updateTimeline ? updateTimeline.endMinute.toString() : '',
   });
 
   //데이터를 useQuery로 가져와서 데이터가 있으면 첫번째 아이템으로 todo 화면을 세팅해주기
   //근데 이게 처음에만 ㅐㅎ야되는데.....어떻게 처음에만 세ㅇ팅을 할 수 있지?
   useEffect(() => {
-    if (todos && todos.length > 0) {
-      setForm(prevForm => ({
-        ...prevForm,
-        todoIdx: todos[0].idx,
-        todoColor: todos[0].color,
-        todoTitle: todos[0].title,
-      }));
+    if (clickedTime) {
+      if (todos && todos.length > 0) {
+        setForm(prevForm => ({
+          ...prevForm,
+          todoIdx: todos[0].idx,
+          todoColor: todos[0].color,
+          todoTitle: todos[0].title,
+        }));
+      }
     }
-  }, [todos]);
+  }, [todos, clickedTime]);
 
   const handleChangeText = (name: string, value: string) => {
     setForm({...form, [name]: value});
   };
-  const {createTimelineMutation} = useTimeline();
+  const {
+    createTimelineMutation,
+    updateTimelineMutation,
+    deleteTimelineMutation,
+  } = useTimeline();
 
+  // 이거를 add나 update로 바꿔야하는데 말이지
   const handleSubmit = async () => {
     //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
     const startHour = parseInt(form.startHour);
@@ -94,6 +110,37 @@ export default function CreateTimelineModal({
     };
 
     createTimelineMutation.mutate(CreateTimelineRequest);
+    setModalVisible(false);
+  };
+
+  const handleUpdate = async () => {
+    //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
+    const startHour = parseInt(form.startHour);
+    const startDateTime = dayjs(calculateDate('2024-03-25', startHour))
+      .hour(startHour)
+      .minute(parseInt(form.startMinute));
+
+    const endHour = parseInt(form.endHour);
+    const endDateTime = dayjs(calculateDate('2024-03-25', endHour))
+      .hour(endHour)
+      .minute(parseInt(form.endHour));
+
+    const UpdateTimelineRequest = {
+      idx: updateTimeline!.idx,
+      todoIdx: form.todoIdx,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      elapsedTime: endDateTime.diff(startDateTime, 'second'),
+    };
+
+    updateTimelineMutation.mutate(UpdateTimelineRequest);
+    setModalVisible(false);
+  };
+
+  const handleDelete = (idx: number) => {
+    deleteTimelineMutation.mutate(idx);
+    Alert.alert('타임라인이 삭제되었습니다.');
+    setModalVisible(false);
   };
 
   const handleTodoPress = () => {
@@ -116,7 +163,11 @@ export default function CreateTimelineModal({
             <TextInput
               keyboardType="numeric"
               style={[styles.inputTime, styles.timeText]}
-              placeholder={clickedTime}
+              placeholder={
+                clickedTime
+                  ? (parseInt(clickedTime) + 1).toString()
+                  : updateTimeline!.startHour.toString()
+              }
               value={form.startHour}
               onChangeText={(text: string) =>
                 handleChangeText('startHour', text)
@@ -135,7 +186,11 @@ export default function CreateTimelineModal({
             <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
             <TextInput
               keyboardType="numeric"
-              placeholder={(parseInt(clickedTime) + 1).toString()}
+              placeholder={
+                clickedTime
+                  ? (parseInt(clickedTime) + 1).toString()
+                  : updateTimeline!.endHour.toString()
+              }
               value={form.endHour}
               onChangeText={(text: string) => handleChangeText('endHour', text)}
               style={[styles.inputTime, styles.timeText]}
@@ -151,9 +206,21 @@ export default function CreateTimelineModal({
               style={[styles.inputTime, styles.timeText]}
             />
           </View>
-          <Pressable onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>추가</Text>
-          </Pressable>
+
+          {clickedTime ? (
+            <Pressable onPress={handleSubmit} style={styles.button}>
+              <Text style={styles.buttonText}>추가</Text>
+            </Pressable>
+          ) : (
+            <View style={{flexDirection: 'row'}}>
+              <Pressable onPress={() => handleDelete(updateTimeline!.idx)}>
+                <Text>삭제하기</Text>
+              </Pressable>
+              <Pressable onPress={handleUpdate}>
+                <Text>수정하기</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       </CustomModal>
       <Modal visible={showTodoListModal} transparent={true}>
