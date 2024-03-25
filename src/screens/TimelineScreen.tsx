@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useQuery} from 'react-query';
 import {getTimelines} from '../../api/timeline';
@@ -10,8 +10,10 @@ import useUserStore from '../store/userStore';
 export default function TimelineScreen() {
   const user = useUserStore(state => state.user);
   const [showModal, setShowModal] = useState(false);
+  const clickedTime = useRef(5);
   const handlePress = hour => {
     // date받아야되는데
+    clickedTime.current = hour;
     setShowModal(true);
   };
   // 시간표 데이터를 생성하는 함수
@@ -65,7 +67,11 @@ export default function TimelineScreen() {
           />
         ))}
       </View>
-      <CreateTimelineModal visible={showModal} setModalVisible={setShowModal} />
+      <CreateTimelineModal
+        visible={showModal}
+        setModalVisible={setShowModal}
+        clickedTime={clickedTime.current.toString()}
+      />
     </ScrollView>
   );
 }

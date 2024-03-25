@@ -10,6 +10,7 @@ export type TodoType = {
   executionTime: number;
   createdAt: string;
   updatedAt: string;
+  color: string;
 };
 
 export type CreateTodoType = {
@@ -17,6 +18,7 @@ export type CreateTodoType = {
   categoryIdx: number;
   title: string;
   startDate: string;
+  color: string;
 };
 
 export type UpdateTodoType = {
@@ -49,7 +51,7 @@ export type TimelineType = {
   endMinute: number;
   elapsedTime: number;
   todoTitle: string;
-  categoryColor: string;
+  color: string;
 };
 
 export type CreateTimelineType = {

@@ -41,6 +41,7 @@ export default function Category({category}: CategoryProps) {
         visible={showTodoModal}
         setShowTodoModal={setShowTodoModal}
         categoryIdx={category.idx}
+        categoryColor={category.color}
       />
     </View>
   );

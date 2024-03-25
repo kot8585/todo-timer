@@ -55,7 +55,7 @@ export default function TimelineEvent({
             height: height,
             left: `${left}%`,
             width: `${width}%`,
-            backgroundColor: timelineEvent.categoryColor,
+            backgroundColor: timelineEvent.color,
             marginLeft: 1,
             // opacity: 0.7,
           }}

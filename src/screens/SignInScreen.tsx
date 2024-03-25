@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -7,24 +7,24 @@ import {
   Text,
   View,
 } from 'react-native';
-import {signIn} from '../../lib/auth';
+import {getLogInUser, signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/BackgroundColorButton';
 import BorderBottomInput from '../components/BorderBottomInput';
 import TextButton from '../components/TextButton';
+import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
-  //파라미터로 navigation을 받아오는거랑 const navigation = useNavigation()을 쓰는거랑 뭐가 다르지
-  // useEffect(() => {
-  //   const user = getLogInUser();
-  //   console.log('user 정보: ', user);
-  //   //TODO: 필요한 정보만 등록하기
-  //   useUserStore.setState({user: user});
-  //   if (user) {
-  //     navigation.navigate('HomeScreen');
-  //   }
-  // }, [navigation]);
+  useEffect(() => {
+    const user = getLogInUser();
+    console.log('user 정보: ', user);
+    //TODO: 필요한 정보만 등록하기
+    useUserStore.setState({user: user});
+    if (user) {
+      navigation.navigate('HomeScreen');
+    }
+  }, [navigation]);
 
   const [form, setForm] = useState({
     email: '',
@@ -35,11 +35,13 @@ export default function LogInScreen({navigation}: any) {
     setForm({...form, [name]: value});
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     Keyboard.dismiss();
     console.log('회원가입 form 출력', form);
-    const user = signIn({email: form.email, password: form.password});
+    const user = await signIn({email: form.email, password: form.password});
     console.log('로그인된 유저', user);
+    useUserStore.setState({user: user.user});
+    navigation.navigate('HomeScreen');
   };
 
   return (

@@ -16,6 +16,7 @@ type WriteTodoModal = {
   visible: boolean;
   setShowTodoModal: React.Dispatch<React.SetStateAction<boolean>>;
   categoryIdx: number;
+  categoryColor: string;
   todo?: TodoType;
 };
 
@@ -23,6 +24,7 @@ export default function WriteTodoModal({
   visible,
   setShowTodoModal,
   categoryIdx,
+  categoryColor,
   todo,
 }: WriteTodoModal) {
   const createTodoMutation = useMutation(createTodo, {
@@ -65,6 +67,8 @@ export default function WriteTodoModal({
           userUid: 'WouU7QJQKrTyvYXWgXLrgyyf9dh1',
           startDate: '2024-03-15',
           categoryIdx: categoryIdx,
+          // 일단 todoColor는 catgory를 따라가도록 할게. 나중에 설정할 수 있도록 해야함
+          color: categoryColor,
         });
     //이거 성공하면 뭐해야되지?
   };
