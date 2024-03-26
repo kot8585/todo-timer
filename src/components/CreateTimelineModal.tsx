@@ -16,6 +16,7 @@ import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import useTimeline from '../hooks/useTimeline';
 import {TimelineType} from '../../api/types';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 type CreateTimelineModalProps = {
   visible: boolean;
@@ -44,6 +45,7 @@ export default function CreateTimelineModal({
   updateTimeline,
 }: CreateTimelineModalProps) {
   const [showTodoListModal, setShowTodoListModal] = useState(false);
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
   // 이거 모달을 보여줄때만 필요한거라  모달 안보여주면 가져올 필요없는데
   // 수정일때도 바로 query 날릴 필요 없음
@@ -57,7 +59,7 @@ export default function CreateTimelineModal({
     todoTitle: updateTimeline
       ? updateTimeline.todoTitle
       : '작성된 할일이 없습니다',
-    date: '2024-03-25',
+    date: selectedDate,
     startHour: updateTimeline ? updateTimeline.startHour.toString() : '',
     startMinute: updateTimeline ? updateTimeline.startMinute.toString() : '',
     endHour: updateTimeline ? updateTimeline.endHour.toString() : '',
@@ -86,20 +88,20 @@ export default function CreateTimelineModal({
     createTimelineMutation,
     updateTimelineMutation,
     deleteTimelineMutation,
-  } = useTimeline();
+  } = useTimeline(selectedDate);
 
   // 이거를 add나 update로 바꿔야하는데 말이지
   const handleSubmit = async () => {
     //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
     const startHour = parseInt(form.startHour);
-    const startDateTime = dayjs(calculateDate('2024-03-25', startHour))
+    const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
       .minute(parseInt(form.startMinute));
 
     const endHour = parseInt(form.endHour);
-    const endDateTime = dayjs(calculateDate('2024-03-25', endHour))
+    const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
-      .minute(parseInt(form.endHour));
+      .minute(parseInt(form.endMinute));
 
     const CreateTimelineRequest = {
       todoIdx: form.todoIdx,
@@ -109,6 +111,7 @@ export default function CreateTimelineModal({
       action: 'stop',
     };
 
+    console.log('CreateTimelineRequest', CreateTimelineRequest);
     createTimelineMutation.mutate(CreateTimelineRequest);
     setModalVisible(false);
   };
@@ -116,12 +119,12 @@ export default function CreateTimelineModal({
   const handleUpdate = async () => {
     //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
     const startHour = parseInt(form.startHour);
-    const startDateTime = dayjs(calculateDate('2024-03-25', startHour))
+    const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
       .minute(parseInt(form.startMinute));
 
     const endHour = parseInt(form.endHour);
-    const endDateTime = dayjs(calculateDate('2024-03-25', endHour))
+    const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
       .minute(parseInt(form.endHour));
 

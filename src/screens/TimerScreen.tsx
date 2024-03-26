@@ -2,10 +2,11 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {useMutation} from 'react-query';
-import {createTimeline} from '../../api/timeline';
+import useTimeline from '../hooks/useTimeline';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function TimerScreen() {
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -27,16 +28,7 @@ export default function TimerScreen() {
     return () => clearInterval(interval);
   }, []);
 
-  const createTimelineMutation = useMutation(createTimeline, {
-    onError: (error, variables, context) => {
-      // 오류 발생 시 처리
-      console.log('useMutation 에러', error);
-    },
-    onSuccess: (data, variables, context) => {
-      // 성공 시 처리
-      console.log('useMutation 성공', data);
-    },
-  });
+  const {createTimelineMutation} = useTimeline(selectedDate);
 
   // TODO: 할일 완료 버튼 누르면???
   const handleStop = (action: string) => {

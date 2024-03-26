@@ -1,11 +1,13 @@
 import client from './client';
 import {CategoryType} from './types';
 
-export async function getCategoryAndTodos(userUid: string) {
+export async function getCategoryAndTodos(userUid: string, date: string) {
+  console.log('datedate', date);
   const response = await client.get<CategoryType[]>('/categories', {
     params: {
       userUid: userUid,
       getTodos: true,
+      selectedDate: date,
     },
   });
 

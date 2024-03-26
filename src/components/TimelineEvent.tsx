@@ -3,14 +3,12 @@ import {Pressable} from 'react-native';
 import {TimelineType} from '../../api/types';
 
 type TimelineEventProps = {
-  date: string;
   timelineEvent: TimelineType;
   updateTimelineRef: React.MutableRefObject<TimelineType | undefined>;
   setShowUpdateTimelineModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function TimelineEvent({
-  date,
   timelineEvent,
   updateTimelineRef,
   setShowUpdateTimelineModal,
@@ -67,7 +65,7 @@ export default function TimelineEvent({
             width: `${width}%`,
             backgroundColor: timelineEvent.todoColor,
             marginLeft: 1,
-            // opacity: 0.7,
+            opacity: 0.7,
           }}
         />,
       );

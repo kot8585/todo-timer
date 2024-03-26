@@ -7,8 +7,11 @@ import CreateTimelineModal from '../components/CreateTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useUserStore from '../store/userStore';
 import {TimelineType} from '../../api/types';
+import useSelectedDateStore from '../store/selecteDateStore';
+import useTimeline from '../hooks/useTimeline';
 
 export default function TimelineScreen() {
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const user = useUserStore(state => state.user);
   const [showModal, setShowModal] = useState(false);
   const clickedTime = useRef(5);
@@ -45,15 +48,11 @@ export default function TimelineScreen() {
     }
     return timeTableData;
   };
+  const {
+    getAllTimeline: {data, isLoading, error},
+  } = useTimeline(selectedDate);
+  // 얘 어디다가 넣지
 
-  const startDateTime = dayjs()
-    .set('hour', 5)
-    .set('minute', 0)
-    .set('second', 0);
-  const result = useQuery(['timelines'], () =>
-    getTimelines(user?.uid, startDateTime),
-  );
-  const {data, error, isLoading} = result;
   console.log('타임라인 데이터', data);
 
   const [showUpdateTimelineModal, setShowUpdateTimelineModal] =
@@ -69,18 +68,19 @@ export default function TimelineScreen() {
         {data?.map(timelineEvent => (
           <TimelineEvent
             timelineEvent={timelineEvent}
-            date="2024-03-13"
             key={timelineEvent.idx}
             updateTimelineRef={updateTimelineRef}
             setShowUpdateTimelineModal={setShowUpdateTimelineModal}
           />
         ))}
       </View>
-      <CreateTimelineModal
-        visible={showModal}
-        setModalVisible={setShowModal}
-        clickedTime={clickedTime.current.toString()}
-      />
+      {showModal && (
+        <CreateTimelineModal
+          visible={showModal}
+          setModalVisible={setShowModal}
+          clickedTime={clickedTime.current.toString()}
+        />
+      )}
       {showUpdateTimelineModal && (
         <CreateTimelineModal
           visible={showUpdateTimelineModal}

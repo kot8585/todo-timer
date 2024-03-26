@@ -4,12 +4,15 @@ import useTodo from '../hooks/useTodos';
 import useUserStore from '../store/userStore';
 import Category from './Category';
 import Todo from './Todo';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function TodoList() {
   const user = useUserStore(state => state.user);
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
+  console.log('selectedDate', selectedDate);
   const {
     getAllTodos: {data, isLoading, error},
-  } = useTodo();
+  } = useTodo(selectedDate);
 
   if (isLoading) {
     return <Text>로딩 중...</Text>;
