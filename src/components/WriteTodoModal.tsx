@@ -95,6 +95,8 @@ export default function WriteTodoModal({
             autoComplete="off"
             autoFocus
             enterKeyHint="done"
+            placeholderTextColor={Colors.light.inActiveBody}
+            style={styles.input}
           />
         </KeyboardAvoidingView>
       </Pressable>
@@ -113,8 +115,12 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: Colors.light.background,
     elevation: 2,
-    borderRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
     alignItems: 'flex-end',
-    padding: 12,
+    padding: 10,
+  },
+  input: {
+    width: '100%',
   },
 });

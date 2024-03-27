@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TodoType} from '../../api/types';
 import {Colors} from '../assets/color';
@@ -7,6 +7,7 @@ import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import WriteTodoModal from './WriteTodoModal';
 import useSelectedDateStore from '../store/selecteDateStore';
+import DefaultText from './ui/DefaultText';
 
 type TodoProps = {
   todo: TodoType;
@@ -27,18 +28,16 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
     <View>
       <Pressable
         onPress={() => todoHandlePress(todo)}
-        style={{
-          flexDirection: 'row',
-          borderBottomColor: '#DADADA',
-          borderBottomWidth: 1,
-        }}>
-        <Text style={{fontSize: 16}}>{todo.title}</Text>
+        style={styles.todoContainer}>
+        <View style={styles.todoColor(todo.color)} />
+        <DefaultText text={todo.title} style={styles.todoText} />
+        <View style={{flexGrow: 1}} />
         {showDotsIcon && (
           <Pressable
             onPress={() => {
               setShowEditDeleteModal(true);
             }}>
-            <Icon name="dots-vertical" size={16} />
+            <Icon name="dots-vertical" size={16} style={styles.icon} />
           </Pressable>
         )}
         {/* 시간은 어떻게 보여주지!!! */}
@@ -105,6 +104,28 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
 }
 
 const styles = StyleSheet.create({
+  todoContainer: {
+    flexDirection: 'row',
+    borderBottomColor: '#DADADA',
+    borderBottomWidth: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    gap: 5,
+  },
+  todoColor: (backgroundColor: string) => ({
+    width: 5,
+    backgroundColor: backgroundColor,
+    height: '100%',
+    borderRadius: 4,
+  }),
+  todoText: {
+    ...Platform.select({
+      android: {lineHeight: 17},
+    }),
+  },
+  icon: {
+    color: Colors.light.captionDefault,
+  },
   buttonText: {
     fontSize: 14,
     color: Colors.light.bodyDefault,
