@@ -10,30 +10,30 @@ export default function TimerScreen() {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const {idx, title} = route.params;
-
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const startDateTimeRef = useRef<dayjs.Dayjs>(dayjs());
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (route.params) {
+      let interval: NodeJS.Timeout;
 
-    interval = setInterval(() => {
-      const currentTime = dayjs();
-      const difference = currentTime.diff(startDateTimeRef.current, 'second');
+      interval = setInterval(() => {
+        const currentTime = dayjs();
+        const difference = currentTime.diff(startDateTimeRef.current, 'second');
 
-      setElapsedTime(difference);
-    }, 1000);
+        setElapsedTime(difference);
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [route.params]);
 
   const {createTimelineMutation} = useTimeline(selectedDate);
 
   // TODO: 할일 완료 버튼 누르면???
   const handleStop = (action: string) => {
     const timeline = {
-      todoIdx: idx,
+      todoIdx: route.params ? route.params.idx : 1,
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),
       elapsedTime: elapsedTime,
@@ -54,6 +54,7 @@ export default function TimerScreen() {
 
   return (
     <View style={styles.container}>
+      {route.params ? <Text>{route.params.title}</Text> : <Text>안녕</Text>}
       <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
       <View style={styles.buttonContainer}>
         <Button title="중지" onPress={() => handleStop('stop')} />

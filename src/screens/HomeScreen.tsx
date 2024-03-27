@@ -8,6 +8,7 @@ import CalendarModal from '../components/CalendarModal';
 import useSelectedDateStore from '../store/selecteDateStore';
 import 'dayjs/locale/ko'; // 한국어 locale을 추가
 import dayjs from 'dayjs';
+import TimerScreen from './TimerScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -31,6 +32,7 @@ export default function HomeScreen() {
           tabBarItemStyle: {width: 100},
           tabBarStyle: {backgroundColor: 'powderblue'},
         }}>
+        <Tab.Screen name="Timer" component={TimerScreen} />
         <Tab.Screen name="TodoList" component={TodoList} />
         <Tab.Screen name="Timeline" component={TimelineScreen} />
       </Tab.Navigator>
