@@ -15,8 +15,9 @@ import {Colors} from '../assets/color';
 import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import useTimeline from '../hooks/useTimeline';
-import {TimelineType} from '../../api/types';
+import {TimelineType, TodoType} from '../../api/types';
 import useSelectedDateStore from '../store/selecteDateStore';
+import TodoList from './TodoList';
 
 type CreateTimelineModalProps = {
   visible: boolean;
@@ -151,6 +152,16 @@ export default function CreateTimelineModal({
     setShowTodoListModal(true);
     console.log('showTodoListModal', showTodoListModal);
   };
+
+  const todoHandlePress = (todo: TodoType) => {
+    setForm(form => ({
+      ...form,
+      todoIdx: todo.idx,
+      todoColor: todo.color,
+      todoTitle: todo.title,
+    }));
+    setShowTodoListModal(false);
+  };
   return (
     <View>
       <CustomModal visible={visible} setModalVisible={setModalVisible}>
@@ -226,57 +237,21 @@ export default function CreateTimelineModal({
           )}
         </View>
       </CustomModal>
-      <Modal visible={showTodoListModal} transparent={true}>
-        {showTodoListModal && (
-          <Pressable
-            onPress={() => {
-              setShowTodoListModal(false);
-            }}
-            style={styles.background}>
-            <View style={styles.underWhiteBox}>
-              <SectionList
-                sections={todos}
-                keyExtractor={index => index.title}
-                renderItem={({item}) => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        setForm(form => ({
-                          ...form,
-                          todoIdx: item.idx,
-                          todoColor: item.color,
-                          todoTitle: item.title,
-                        }));
-                        setShowTodoListModal(false);
-                      }}
-                      style={{
-                        flexDirection: 'row',
-                        borderBottomColor: '#DADADA',
-                        borderBottomWidth: 1,
-                      }}>
-                      <Text style={{fontSize: 16}}>{item.title}</Text>
-                    </Pressable>
-                  );
-                }}
-                renderSectionHeader={({section}) => (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 7,
-                    }}>
-                    <View style={{width: 5, backgroundColor: section.color}} />
-                    <Text style={{fontSize: 16, fontWeight: '600'}}>
-                      {section.title}
-                    </Text>
-                    <Text>0h 00m</Text>
-                  </View>
-                )}
-                style={styles.container}
-              />
-            </View>
-          </Pressable>
-        )}
-      </Modal>
+      {showTodoListModal && (
+        <Modal visible={showTodoListModal} transparent={true}>
+          {showTodoListModal && (
+            <Pressable
+              onPress={() => {
+                setShowTodoListModal(false);
+              }}
+              style={styles.background}>
+              <View style={styles.underWhiteBox}>
+                <TodoList data={todos} todoHandlePress={todoHandlePress} />
+              </View>
+            </Pressable>
+          )}
+        </Modal>
+      )}
     </View>
   );
 }

@@ -8,19 +8,25 @@ type TodoListProps = {
   data: CategoryType[] | [];
   categoryHandlePress: (category: CategoryType) => void;
   todoHandlePress: (todo: TodoType) => void;
+  showDotsIcon: boolean;
 };
 
 export default function TodoList({
   data,
   categoryHandlePress,
   todoHandlePress,
+  showDotsIcon,
 }: TodoListProps) {
   return (
     <SectionList
       sections={data}
       keyExtractor={index => index.title}
       renderItem={({item}) => (
-        <Todo todo={item} todoHandlePress={todoHandlePress} />
+        <Todo
+          todo={item}
+          todoHandlePress={todoHandlePress}
+          showDotsIcon={showDotsIcon}
+        />
       )}
       renderSectionHeader={({section}) => (
         <Category category={section} handlePress={categoryHandlePress} />

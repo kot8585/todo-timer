@@ -48,6 +48,7 @@ export default function TodoListScreen() {
         data={data}
         categoryHandlePress={categoryHandlePress}
         todoHandlePress={todoHandlePress}
+        showDotsIcon={true}
       />
       {showTodoModal && (
         <WriteTodoModal

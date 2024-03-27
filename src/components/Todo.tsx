@@ -10,9 +10,10 @@ import WriteTodoModal from './WriteTodoModal';
 type TodoProps = {
   todo: TodoType;
   todoHandlePress: (todo: TodoType) => void;
+  showDotsIcon: boolean;
 };
 
-export default function Todo({todo, todoHandlePress}: TodoProps) {
+export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
   const [showEditDeleteModal, setShowEditDeleteModal] = useState(false);
   const [showConfirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [showTodoModal, setShowTodoModal] = useState(false);
@@ -28,12 +29,14 @@ export default function Todo({todo, todoHandlePress}: TodoProps) {
           borderBottomWidth: 1,
         }}>
         <Text style={{fontSize: 16}}>{todo.title}</Text>
-        <Pressable
-          onPress={() => {
-            setShowEditDeleteModal(true);
-          }}>
-          <Icon name="dots-vertical" size={16} />
-        </Pressable>
+        {showDotsIcon && (
+          <Pressable
+            onPress={() => {
+              setShowEditDeleteModal(true);
+            }}>
+            <Icon name="dots-vertical" size={16} />
+          </Pressable>
+        )}
         {/* 시간은 어떻게 보여주지!!! */}
       </Pressable>
       {showEditDeleteModal && (
