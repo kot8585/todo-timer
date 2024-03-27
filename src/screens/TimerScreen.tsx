@@ -54,7 +54,11 @@ export default function TimerScreen() {
 
   return (
     <View style={styles.container}>
-      {route.params ? <Text>{route.params.title}</Text> : <Text>안녕</Text>}
+      {route.params ? (
+        <Text>{route.params.title}</Text>
+      ) : (
+        <Text>투두를 선택해주세요</Text>
+      )}
       <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
       <View style={styles.buttonContainer}>
         <Button title="중지" onPress={() => handleStop('stop')} />

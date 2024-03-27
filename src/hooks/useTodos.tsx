@@ -1,7 +1,8 @@
-import {useQuery} from 'react-query';
+import {useMutation, useQuery} from 'react-query';
 import {getCategoryAndTodos} from '../../api/category';
 import useUserStore from '../store/userStore';
 import useSelectedDateStore from '../store/selecteDateStore';
+import {deleteTodo} from '../../api/todo';
 
 export default function useTodo() {
   // 얘도 date를 상태에서 빼는거야??? 인자로 안주고? useTodo(selectedDate)했는 데 undefined뜸
@@ -23,5 +24,16 @@ export default function useTodo() {
     {enabled: !!userUid},
   );
 
-  return {getAllTodos};
+  const deleteTodoMutation = useMutation(deleteTodo, {
+    onError: (error, variables, context) => {
+      // 오류 발생 시 처리
+      console.log('useMutation 에러', error);
+    },
+    onSuccess: (data, variables, context) => {
+      // 성공 시 처리
+      console.log('useMutation 성공', data);
+    },
+  });
+
+  return {getAllTodos, deleteTodoMutation};
 }

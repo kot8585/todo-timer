@@ -1,39 +1,27 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useMutation} from 'react-query';
-import {deleteTodo} from '../../api/todo';
 import {TodoType} from '../../api/types';
 import {Colors} from '../assets/color';
+import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import WriteTodoModal from './WriteTodoModal';
 
 type TodoProps = {
   todo: TodoType;
+  todoHandlePress: (todo: TodoType) => void;
 };
 
-export default function Todo({todo}: TodoProps) {
-  const navigation = useNavigation();
+export default function Todo({todo, todoHandlePress}: TodoProps) {
   const [showEditDeleteModal, setShowEditDeleteModal] = useState(false);
   const [showConfirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [showTodoModal, setShowTodoModal] = useState(false);
-
-  const deleteTodoMutation = useMutation(deleteTodo, {
-    onError: (error, variables, context) => {
-      // 오류 발생 시 처리
-      console.log('useMutation 에러', error);
-    },
-    onSuccess: (data, variables, context) => {
-      // 성공 시 처리
-      console.log('useMutation 성공', data);
-    },
-  });
+  const {deleteTodoMutation} = useTodo();
 
   return (
     <View>
       <Pressable
-        onPress={() => navigation.push('TimerScreen', todo)}
+        onPress={() => todoHandlePress(todo)}
         style={{
           flexDirection: 'row',
           borderBottomColor: '#DADADA',
@@ -48,57 +36,63 @@ export default function Todo({todo}: TodoProps) {
         </Pressable>
         {/* 시간은 어떻게 보여주지!!! */}
       </Pressable>
-
-      <CustomModal
-        visible={showEditDeleteModal}
-        setModalVisible={setShowEditDeleteModal}>
-        <Pressable
-          onPress={() => {
-            setShowEditDeleteModal(false);
-            setShowTodoModal(true);
-            // 수정 컴포넌트 보여주기 근데 Todo정보를 어떻게 넘겨주지..!
-          }}>
-          <Text style={styles.buttonText}>수정하기</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            setShowEditDeleteModal(false);
-            setConfirmDeleteModal(true);
-          }}>
-          <Text style={styles.buttonText}>삭제하기</Text>
-        </Pressable>
-      </CustomModal>
-
-      <CustomModal
-        visible={showConfirmDeleteModal}
-        setModalVisible={setConfirmDeleteModal}>
-        <Text style={styles.buttonText}>할일을 삭제하시겠어요?</Text>
-
-        <View style={styles.buttons}>
+      {showEditDeleteModal && (
+        <CustomModal
+          visible={showEditDeleteModal}
+          setModalVisible={setShowEditDeleteModal}>
           <Pressable
             onPress={() => {
-              console.log('할일 삭제');
-              deleteTodoMutation.mutate(todo.idx);
-            }}
-            style={styles.button}>
-            <Text style={styles.buttonText}>확인</Text>
+              setShowEditDeleteModal(false);
+              setShowTodoModal(true);
+              // 수정 컴포넌트 보여주기 근데 Todo정보를 어떻게 넘겨주지..!
+            }}>
+            <Text style={styles.buttonText}>수정하기</Text>
           </Pressable>
           <Pressable
             onPress={() => {
-              setConfirmDeleteModal(false);
-            }}
-            style={styles.button}>
-            <Text style={styles.buttonText}>취소</Text>
+              setShowEditDeleteModal(false);
+              setConfirmDeleteModal(true);
+            }}>
+            <Text style={styles.buttonText}>삭제하기</Text>
           </Pressable>
-        </View>
-      </CustomModal>
+        </CustomModal>
+      )}
 
-      <WriteTodoModal
-        visible={showTodoModal}
-        setShowTodoModal={setShowTodoModal}
-        categoryIdx={todo.categoryIdx}
-        todo={todo}
-      />
+      {/* 이거 TodoListScreen에서만 필요한건데 상위로 빼내야할까...? */}
+      {showConfirmDeleteModal && (
+        <CustomModal
+          visible={showConfirmDeleteModal}
+          setModalVisible={setConfirmDeleteModal}>
+          <Text style={styles.buttonText}>할일을 삭제하시겠어요?</Text>
+
+          <View style={styles.buttons}>
+            <Pressable
+              onPress={() => {
+                console.log('할일 삭제');
+                deleteTodoMutation.mutate(todo.idx);
+              }}
+              style={styles.button}>
+              <Text style={styles.buttonText}>확인</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setConfirmDeleteModal(false);
+              }}
+              style={styles.button}>
+              <Text style={styles.buttonText}>취소</Text>
+            </Pressable>
+          </View>
+        </CustomModal>
+      )}
+
+      {showTodoModal && (
+        <WriteTodoModal
+          visible={showTodoModal}
+          setShowTodoModal={setShowTodoModal}
+          categoryIdx={todo.categoryIdx}
+          todo={todo}
+        />
+      )}
     </View>
   );
 }

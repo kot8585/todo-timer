@@ -2,7 +2,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import React, {useState} from 'react';
 import {Pressable, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import TodoList from '../components/TodoList';
+import TodoListScreen from './TodoListScreen';
 import TimelineScreen from './TimelineScreen';
 import CalendarModal from '../components/CalendarModal';
 import useSelectedDateStore from '../store/selecteDateStore';
@@ -33,7 +33,7 @@ export default function HomeScreen() {
           tabBarStyle: {backgroundColor: 'powderblue'},
         }}>
         <Tab.Screen name="Timer" component={TimerScreen} />
-        <Tab.Screen name="TodoList" component={TodoList} />
+        <Tab.Screen name="TodoList" component={TodoListScreen} />
         <Tab.Screen name="Timeline" component={TimelineScreen} />
       </Tab.Navigator>
       <CalendarModal

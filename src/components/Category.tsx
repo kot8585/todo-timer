@@ -1,23 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Pressable, Text, View} from 'react-native';
-import {TodoType} from '../../api/types';
-import WriteTodoModal from './WriteTodoModal';
+import {CategoryType} from '../../api/types';
 
 type CategoryProps = {
-  category: {
-    idx: number;
-    userUid: string;
-    title: string;
-    color: string;
-    createdAt: string;
-    updatedAt: string;
-    data: TodoType[];
-  };
+  //이거 클래스로 만들어서 하는게 편할거같은데
+  category: CategoryType;
+  handlePress?: (category: CategoryType) => void;
 };
 
-export default function Category({category}: CategoryProps) {
-  const [showTodoModal, setShowTodoModal] = useState(false);
-
+export default function Category({category, handlePress}: CategoryProps) {
   return (
     <View>
       <View
@@ -26,10 +17,7 @@ export default function Category({category}: CategoryProps) {
           gap: 7,
         }}>
         <Pressable
-          onPress={() => {
-            console.log('클릭되었지: ', category.idx);
-            setShowTodoModal(true);
-          }}>
+          onPress={handlePress ? () => handlePress(category) : () => {}}>
           <View style={{width: 5, backgroundColor: category.color}} />
           <Text style={{fontSize: 16, fontWeight: '600'}}>
             {category.title}
@@ -37,12 +25,6 @@ export default function Category({category}: CategoryProps) {
         </Pressable>
         <Text>0h 00m</Text>
       </View>
-      <WriteTodoModal
-        visible={showTodoModal}
-        setShowTodoModal={setShowTodoModal}
-        categoryIdx={category.idx}
-        categoryColor={category.color}
-      />
     </View>
   );
 }

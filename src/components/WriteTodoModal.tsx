@@ -71,6 +71,7 @@ export default function WriteTodoModal({
           color: categoryColor,
         });
     //이거 성공하면 뭐해야되지?
+    setShowTodoModal(false);
   };
 
   const handleChangeText = (name: string, value: string) => {

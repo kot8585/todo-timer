@@ -38,6 +38,16 @@ export type CategoryType = {
   color: string;
   createdAt: string;
   updatedAt: string;
+  data: TodoType[];
+};
+
+export type GetCategoryAndTodosResponse = {
+  idx: number;
+  userUid: string;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
   todos: TodoType[];
 };
 
