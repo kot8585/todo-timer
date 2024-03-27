@@ -6,6 +6,7 @@ import {Colors} from '../assets/color';
 import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';
 import WriteTodoModal from './WriteTodoModal';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 type TodoProps = {
   todo: TodoType;
@@ -14,10 +15,13 @@ type TodoProps = {
 };
 
 export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
+
   const [showEditDeleteModal, setShowEditDeleteModal] = useState(false);
   const [showConfirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [showTodoModal, setShowTodoModal] = useState(false);
-  const {deleteTodoMutation} = useTodo();
+
+  const {deleteTodoMutation} = useTodo(selectedDate);
 
   return (
     <View>

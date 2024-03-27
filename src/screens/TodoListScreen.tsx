@@ -18,6 +18,7 @@ export default function TodoListScreen() {
   };
 
   //Todo.tsx에서 가져옴
+  //TODO: Tap만 옆으로 가게 하기
   const todoHandlePress = (todo: TodoType) => {
     navigation.push('TimerScreen', todo);
   };

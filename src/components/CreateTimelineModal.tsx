@@ -4,19 +4,18 @@ import {
   Alert,
   Modal,
   Pressable,
-  SectionList,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Colors} from '../assets/color';
-import useTodo from '../hooks/useTodos';
-import CustomModal from './CustomModal';
-import useTimeline from '../hooks/useTimeline';
 import {TimelineType, TodoType} from '../../api/types';
+import {Colors} from '../assets/color';
+import useTimeline from '../hooks/useTimeline';
+import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
+import CustomModal from './CustomModal';
 import TodoList from './TodoList';
 
 type CreateTimelineModalProps = {
@@ -52,7 +51,7 @@ export default function CreateTimelineModal({
   // 수정일때도 바로 query 날릴 필요 없음
   const {
     getAllTodos: {data: todos},
-  } = useTodo();
+  } = useTodo(selectedDate);
 
   const [form, setForm] = useState({
     todoIdx: updateTimeline ? updateTimeline.todoIdx : undefined,
