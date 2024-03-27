@@ -246,7 +246,10 @@ export default function CreateTimelineModal({
               }}
               style={styles.background}>
               <View style={styles.underWhiteBox}>
-                <TodoList data={todos} todoHandlePress={todoHandlePress} />
+                <TodoList
+                  todoHandlePress={todoHandlePress}
+                  showDotsIcon={false}
+                />
               </View>
             </Pressable>
           )}
