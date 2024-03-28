@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {getCategoryAndTodos} from '../../api/category';
-import {deleteTodo} from '../../api/todo';
+import {createTodo, deleteTodo, updateTodo} from '../../api/todo';
 import useUserStore from '../store/userStore';
 
 export default function useTodo(selectedDate: string) {
@@ -22,6 +22,34 @@ export default function useTodo(selectedDate: string) {
     {enabled: !!userUid},
   );
 
+  const createTodoMutation = useMutation(createTodo, {
+    onError: (error, variables, context) => {
+      // 오류 발생 시 처리
+      console.log('useMutation 에러', error);
+    },
+    onSuccess: (data, variables, context) => {
+      // 성공 시 처리
+      queryClient.invalidateQueries({
+        queryKey: ['todos', userUid, selectedDate],
+      });
+      console.log('useMutation 성공', data);
+    },
+  });
+
+  const updateTodoMutation = useMutation(updateTodo, {
+    onError: (error, variables, context) => {
+      // 오류 발생 시 처리
+      console.log('useMutation 에러', error);
+    },
+    onSuccess: (data, variables, context) => {
+      // 성공 시 처리
+      queryClient.invalidateQueries({
+        queryKey: ['todos', userUid, selectedDate],
+      });
+      console.log('useMutation 성공', data);
+    },
+  });
+
   const deleteTodoMutation = useMutation(deleteTodo, {
     onError: (error, variables, context) => {
       // 오류 발생 시 처리
@@ -36,5 +64,10 @@ export default function useTodo(selectedDate: string) {
     },
   });
 
-  return {getAllTodos, deleteTodoMutation};
+  return {
+    getAllTodos,
+    createTodoMutation,
+    updateTodoMutation,
+    deleteTodoMutation,
+  };
 }

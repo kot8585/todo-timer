@@ -7,10 +7,10 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import {useMutation} from 'react-query';
-import {createTodo, updateTodo} from '../../api/todo';
-import {Colors} from '../assets/color';
 import {TodoType} from '../../api/types';
+import {Colors} from '../assets/color';
+import useSelectedDateStore from '../store/selecteDateStore';
+import useTodo from '../hooks/useTodos';
 
 type WriteTodoModal = {
   visible: boolean;
@@ -27,28 +27,8 @@ export default function WriteTodoModal({
   categoryColor,
   todo,
 }: WriteTodoModal) {
-  const createTodoMutation = useMutation(createTodo, {
-    onError: (error, variables, context) => {
-      // 오류 발생 시 처리
-      console.log('useMutation 에러', error);
-    },
-    onSuccess: (data, variables, context) => {
-      // 성공 시 처리
-      console.log('useMutation 성공', data);
-    },
-  });
-
-  const updateTodoMutation = useMutation(updateTodo, {
-    onError: (error, variables, context) => {
-      // 오류 발생 시 처리
-      console.log('useMutation 에러', error);
-    },
-    onSuccess: (data, variables, context) => {
-      // 성공 시 처리
-      console.log('useMutation 성공', data);
-    },
-  });
-
+  const selectedDate = useSelectedDateStore(state => state.selectedDate);
+  const {createTodoMutation, updateTodoMutation} = useTodo(selectedDate);
   //
   const [form, setForm] = useState({
     title: todo ? todo.title : '',
@@ -65,7 +45,7 @@ export default function WriteTodoModal({
       : createTodoMutation.mutate({
           ...form,
           userUid: 'WouU7QJQKrTyvYXWgXLrgyyf9dh1',
-          startDate: '2024-03-15',
+          startDate: selectedDate,
           categoryIdx: categoryIdx,
           // 일단 todoColor는 catgory를 따라가도록 할게. 나중에 설정할 수 있도록 해야함
           color: categoryColor,

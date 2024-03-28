@@ -30,7 +30,7 @@ export default function TimerScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const navigation = useNavigation();
 
-  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [executionTime, setexecutionTime] = useState<number>(0);
   const startDateTimeRef = useRef<dayjs.Dayjs>(dayjs());
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function TimerScreen() {
         const currentTime = dayjs();
         const difference = currentTime.diff(startDateTimeRef.current, 'second');
 
-        setElapsedTime(difference);
+        setexecutionTime(difference);
       }, 1000);
 
       return () => clearInterval(interval);
@@ -56,7 +56,7 @@ export default function TimerScreen() {
       todoIdx: route.params ? route.params.idx : 1,
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),
-      elapsedTime: elapsedTime,
+      executionTime: executionTime,
       action: action,
     };
     // mutation
@@ -97,7 +97,7 @@ export default function TimerScreen() {
             <Icon name="chevron-right" size={22} style={styles.icon} />
           </Pressable>
         )}
-        <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
+        <Text style={styles.timer}>{formatTime(executionTime)}</Text>
         <View style={styles.buttonContainer}>
           <Pressable onPress={() => handleStop('stop')}>
             <DefaultText text="중지" />

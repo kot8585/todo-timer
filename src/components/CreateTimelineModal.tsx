@@ -92,7 +92,7 @@ export default function CreateTimelineModal({
 
   // 이거를 add나 update로 바꿔야하는데 말이지
   const handleSubmit = async () => {
-    //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
+    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
@@ -107,7 +107,7 @@ export default function CreateTimelineModal({
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
-      elapsedTime: endDateTime.diff(startDateTime, 'second'),
+      executionTime: endDateTime.diff(startDateTime, 'second'),
       action: 'stop',
     };
 
@@ -117,7 +117,7 @@ export default function CreateTimelineModal({
   };
 
   const handleUpdate = async () => {
-    //TODO: elapsedTime이 1분 이하일 경우 추가하지 않도록 하기s
+    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
@@ -133,7 +133,7 @@ export default function CreateTimelineModal({
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
-      elapsedTime: endDateTime.diff(startDateTime, 'second'),
+      executionTime: endDateTime.diff(startDateTime, 'second'),
     };
 
     updateTimelineMutation.mutate(UpdateTimelineRequest);

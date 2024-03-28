@@ -24,6 +24,11 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
 
   const {deleteTodoMutation} = useTodo(selectedDate);
 
+  const formattedTime = dayjs()
+    .startOf('day')
+    .add(todo.executionTime, 'second')
+    .format('H[h] m[m]');
+
   return (
     <View>
       <Pressable
@@ -32,12 +37,13 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
         <View style={styles.todoColor(todo.color)} />
         <DefaultText text={todo.title} style={styles.todoText} />
         <View style={{flexGrow: 1}} />
+        <Text style={styles.timeText}>{formattedTime}</Text>
         {showDotsIcon && (
           <Pressable
             onPress={() => {
               setShowEditDeleteModal(true);
             }}>
-            <Icon name="dots-vertical" size={16} style={styles.icon} />
+            <Icon name="dots-vertical" size={18} style={styles.icon} />
           </Pressable>
         )}
         {/* 시간은 어떻게 보여주지!!! */}
@@ -120,8 +126,12 @@ const styles = StyleSheet.create({
   }),
   todoText: {
     ...Platform.select({
-      android: {lineHeight: 20},
+      android: {lineHeight: 22},
     }),
+  },
+  timeText: {
+    color: Colors.light.captionDefault,
+    fontSize: 14,
   },
   icon: {
     color: Colors.light.captionDefault,

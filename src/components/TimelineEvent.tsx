@@ -23,7 +23,7 @@ export default function TimelineEvent({
   function calculateWidth(i: number): number {
     if (viewCount === 1) {
       // 초 단위라서 분 단위로 바꿔줌
-      return timelineEvent.elapsedTime / 60;
+      return timelineEvent.executionTime / 60;
     }
     if (i === 1) {
       return 60 - timelineEvent.startMinute;

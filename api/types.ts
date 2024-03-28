@@ -7,10 +7,10 @@ export type TodoType = {
   title: string;
   startDate: string;
   isCompleted: boolean;
-  executionTime: number;
   createdAt: string;
   updatedAt: string;
   color: string;
+  executionTime: number;
 };
 
 export type CreateTodoType = {
@@ -36,6 +36,7 @@ export type CategoryType = {
   userUid: string;
   title: string;
   color: string;
+  executionTime: number;
   createdAt: string;
   updatedAt: string;
   data: TodoType[];
@@ -59,7 +60,7 @@ export type TimelineType = {
   startMinute: number;
   endHour: number;
   endMinute: number;
-  elapsedTime: number;
+  executionTime: number;
   todoTitle: string;
   todoColor: string;
 };
@@ -68,7 +69,7 @@ export type CreateTimelineType = {
   todoIdx: number;
   startDateTime: dayjs.Dayjs;
   endDateTime: dayjs.Dayjs;
-  elapsedTime: number;
+  executionTime: number;
   action: 'stop' | 'complete';
 };
 
@@ -77,5 +78,5 @@ export type UpdateTimelineRequest = {
   todoIdx: number;
   startDateTime: dayjs.Dayjs;
   endDateTime: dayjs.Dayjs;
-  elapsedTime: number;
+  executionTime: number;
 };
