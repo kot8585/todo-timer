@@ -8,6 +8,7 @@ import CustomModal from './CustomModal';
 import WriteTodoModal from './WriteTodoModal';
 import useSelectedDateStore from '../store/selecteDateStore';
 import DefaultText from './ui/DefaultText';
+import dayjs from 'dayjs';
 
 type TodoProps = {
   todo: TodoType;
@@ -27,7 +28,7 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
   const formattedTime = dayjs()
     .startOf('day')
     .add(todo.executionTime, 'second')
-    .format('H[h] m[m]');
+    .format('H[h] mm[m]');
 
   return (
     <View>

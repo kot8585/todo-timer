@@ -20,7 +20,7 @@ export default function Category({
   const formattedTime = dayjs()
     .startOf('day')
     .add(category.executionTime, 'second')
-    .format('H[h] m[m]');
+    .format('H[h] mm[m]');
 
   return (
     <View style={styles.container}>
