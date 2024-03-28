@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   }),
   todoText: {
     ...Platform.select({
-      android: {lineHeight: 17},
+      android: {lineHeight: 20},
     }),
   },
   icon: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: Colors.light.buttonDefault,
     borderColor: Colors.light.borderDefault,
-    height: 40,
+    // height: 40,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

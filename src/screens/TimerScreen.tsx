@@ -1,13 +1,23 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+} from 'react-native';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
 import TodoList from '../components/TodoList';
 import useTodo from '../hooks/useTodos';
 import {Colors} from '../assets/color';
 import {TodoType} from '../../api/types';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DefaultText from '../components/ui/DefaultText';
 
 export default function TimerScreen() {
   const route = useRoute();
@@ -67,27 +77,34 @@ export default function TimerScreen() {
   } = useTodo(selectedDate);
 
   const todoHandlePress = (todo: TodoType) => {
+    console.log('todo 눌림');
     setTodoTitle(todo.title);
     todoIdxRef.current = todo.idx;
   };
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.timerContainer}>
         {route.params ? (
-          <Text>{route.params.title}</Text>
+          <DefaultText text={route.params.title} />
         ) : (
           <Pressable
             onPress={() => {
               setShowTodoListModal(true);
-            }}>
-            <Text>투두를 선택해주세요</Text>
+            }}
+            style={styles.todo}>
+            <Text style={styles.text}>투두를 선택해주세요</Text>
+            <Icon name="chevron-right" size={22} style={styles.icon} />
           </Pressable>
         )}
         <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
         <View style={styles.buttonContainer}>
-          <Button title="중지" onPress={() => handleStop('stop')} />
-          <Button title="할일완료" onPress={() => handleStop('complete')} />
+          <Pressable onPress={() => handleStop('stop')}>
+            <DefaultText text="중지" />
+          </Pressable>
+          <Pressable onPress={() => handleStop('complete')}>
+            <DefaultText text="완료" />
+          </Pressable>
         </View>
       </View>
       <Modal visible={showTodoListModal} transparent={true}>
@@ -111,14 +128,28 @@ export default function TimerScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: {flex: 1},
+  timerContainer: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  todo: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
+  text: {
+    fontSize: 14,
+    color: Colors.light.bodyDefault,
+    ...Platform.select({
+      android: {lineHeight: 18},
+    }),
+  },
+  icon: {color: Colors.light.iconDefault},
   timer: {
-    fontSize: 32,
+    fontSize: 40,
     marginBottom: 20,
+    color: Colors.light.bodyDefault,
   },
   buttonContainer: {
     flexDirection: 'row',

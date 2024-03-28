@@ -70,12 +70,12 @@ export default function CreateTimelineModal({
   //근데 이게 처음에만 ㅐㅎ야되는데.....어떻게 처음에만 세ㅇ팅을 할 수 있지?
   useEffect(() => {
     if (clickedTime) {
-      if (todos && todos.length > 0) {
+      if (todos && todos.length > 0 && todos[0].data.length > 0) {
         setForm(prevForm => ({
           ...prevForm,
           todoIdx: todos[0].idx,
           todoColor: todos[0].color,
-          todoTitle: todos[0].title,
+          todoTitle: todos[0].data[0].title,
         }));
       }
     }
