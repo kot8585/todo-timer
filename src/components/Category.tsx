@@ -4,6 +4,7 @@ import {CategoryType} from '../api/types';
 import {Colors} from '../assets/color';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
+import {useNavigation} from '@react-navigation/native';
 
 type CategoryProps = {
   //이거 클래스로 만들어서 하는게 편할거같은데
@@ -17,6 +18,7 @@ export default function Category({
   handlePress,
   showDotsIcon,
 }: CategoryProps) {
+  const navigation = useNavigation();
   const formattedTime = dayjs()
     .startOf('day')
     .add(category.executionTime, 'second')
@@ -32,9 +34,7 @@ export default function Category({
       <Text style={styles.timeText}>{formattedTime}</Text>
       {showDotsIcon && (
         <Pressable
-          onPress={() => {
-            // setShowEditDeleteModal(true);
-          }}>
+          onPress={() => navigation.push('EditCategoryScreen', category)}>
           <Icon name="dots-vertical" size={18} style={styles.icon} />
         </Pressable>
       )}

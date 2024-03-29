@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
-import {Colors} from '../assets/color';
+import {Colors} from '../../assets/color';
 
 // interface UnderlineInputProps extends TextInputProps {
 //   ref: any;

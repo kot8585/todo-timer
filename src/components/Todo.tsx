@@ -81,18 +81,17 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
           <View style={styles.buttons}>
             <Pressable
               onPress={() => {
-                console.log('할일 삭제');
-                deleteTodoMutation.mutate(todo.idx);
-              }}
-              style={styles.button}>
-              <Text style={styles.buttonText}>확인</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => {
                 setConfirmDeleteModal(false);
               }}
               style={styles.button}>
               <Text style={styles.buttonText}>취소</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                deleteTodoMutation.mutate(todo.idx);
+              }}
+              style={styles.button}>
+              <Text style={styles.buttonText}>삭제</Text>
             </Pressable>
           </View>
         </CustomModal>
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: Colors.light.buttonDefault,
     borderColor: Colors.light.borderDefault,
-    // height: 40,
+    height: 40,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

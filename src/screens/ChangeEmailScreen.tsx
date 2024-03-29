@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {changeEmail} from '../../lib/auth';
-import BackgroundColorButton from '../components/BackgroundColorButton';
-import BorderBottomInput from '../components/BorderBottomInput';
+import BackgroundColorButton from '../components/ui/BackgroundColorButton';
+import BorderBottomInput from '../components/ui/BorderBottomInput';
 import useUserStore from '../store/userStore';
 
 export default function ChangeEmailScreen({navigation}: any) {

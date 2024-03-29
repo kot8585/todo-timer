@@ -5,6 +5,7 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import {useNavigation} from '@react-navigation/native';
 
 export default function CustomDrawer(props) {
   return (

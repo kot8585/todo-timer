@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import {getLogInUser, signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
-import BackgroundColorButton from '../components/BackgroundColorButton';
-import BorderBottomInput from '../components/BorderBottomInput';
-import TextButton from '../components/TextButton';
+import BackgroundColorButton from '../components/ui/BackgroundColorButton';
+import BorderBottomInput from '../components/ui/BorderBottomInput';
+import TextButton from '../components/ui/TextButton';
 import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기

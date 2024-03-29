@@ -1,6 +1,6 @@
 import React from 'react';
 import {GestureResponderEvent, Pressable, StyleSheet, Text} from 'react-native';
-import {Colors} from '../assets/color';
+import {Colors} from '../../assets/color';
 
 type BackgroundColorButtonProps = {
   text: string;

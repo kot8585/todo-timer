@@ -1,5 +1,9 @@
 import client from './client';
-import {GetCategoryAndTodosResponse} from './types';
+import {
+  CreateCategoryType,
+  GetCategoryAndTodosResponse,
+  UpdateCategoryType,
+} from './types';
 
 export async function getCategoryAndTodos(userUid: string, date: string) {
   console.log('datedate', date);
@@ -21,4 +25,29 @@ export async function getCategoryAndTodos(userUid: string, date: string) {
 
   console.log('필드 변환: ', todosFieldToData);
   return todosFieldToData;
+}
+
+export async function createCategory(category: CreateCategoryType) {
+  category.userUid = 'WouU7QJQKrTyvYXWgXLrgyyf9dh1';
+  const response = await client.post<CreateCategoryType>(
+    '/categories',
+    category,
+  );
+
+  return response.data;
+}
+
+export async function updateCategory(category: UpdateCategoryType) {
+  const response = await client.put<UpdateCategoryType>(
+    `/categories/${category.idx}`,
+    category,
+  );
+
+  return response.data;
+}
+
+export async function deleteCategory(categoryIdx: number) {
+  const response = await client.delete(`/categories/${categoryIdx}`);
+
+  return response.data;
 }

@@ -80,3 +80,16 @@ export type UpdateTimelineRequest = {
   endDateTime: dayjs.Dayjs;
   executionTime: number;
 };
+
+export type CreateCategoryType = {
+  userUid?: string;
+  title: string;
+  color: string;
+};
+
+export type UpdateCategoryType = {
+  idx: number;
+  title?: string;
+  color?: string;
+  endDate?: string;
+};

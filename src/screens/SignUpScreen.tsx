@@ -2,8 +2,8 @@ import React, {useRef, useState} from 'react';
 import {Alert, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {sendEmail, signUp} from '../../lib/auth';
-import BackgroundColorButton from '../components/BackgroundColorButton';
-import BorderBottomInput from '../components/BorderBottomInput';
+import BackgroundColorButton from '../components/ui/BackgroundColorButton';
+import BorderBottomInput from '../components/ui/BorderBottomInput';
 import ValidateMessage from '../components/ValidateMessage';
 import useUserStore from '../store/userStore';
 

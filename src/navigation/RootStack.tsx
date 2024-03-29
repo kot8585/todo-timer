@@ -7,6 +7,7 @@ import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import TimerScreen from '../screens/TimerScreen';
 import DrawerStack from './DrawerStack';
+import EditCategoryScreen from '../screens/EditCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function RootStack() {
     <Stack.Navigator
       screenOptions={{
         contentStyle: {backgroundColor: Colors.light.background},
+        headerShown: false,
       }}>
       <Stack.Screen
         name="LogInScreen"
@@ -44,6 +46,11 @@ export default function RootStack() {
       <Stack.Screen
         name="TimerScreen"
         component={TimerScreen}
+        options={{title: '타이머'}}
+      />
+      <Stack.Screen
+        name="EditCategoryScreen"
+        component={EditCategoryScreen}
         options={{title: '타이머'}}
       />
     </Stack.Navigator>

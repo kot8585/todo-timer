@@ -19,7 +19,7 @@ export default function DrawerStack() {
         }}
       />
       <Drawer.Screen
-        name="Category"
+        name="CreateCategoryScreen"
         component={CreateCategoryScreen}
         options={{title: '카테고리 추가'}}
       />

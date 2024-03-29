@@ -3,9 +3,9 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import {changeEmail, getLogInUser} from '../../lib/auth';
 import {Colors} from '../assets/color';
-import BackgroundColorButton from '../components/BackgroundColorButton';
+import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import EmailConfirmModal from '../components/EmailConfirmModal';
-import TextButton from '../components/TextButton';
+import TextButton from '../components/ui/TextButton';
 
 //TODO: 버튼 연타 방지하기
 export default function ConfirmEmailScreen({navigation}: any) {
