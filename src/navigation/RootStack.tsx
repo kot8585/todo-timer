@@ -3,10 +3,10 @@ import React from 'react';
 import {Colors} from '../assets/color';
 import ChangeEmailScreen from '../screens/ChangeEmailScreen';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
-import HomeScreen from '../screens/HomeScreen';
 import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import TimerScreen from '../screens/TimerScreen';
+import DrawerStack from './DrawerStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +38,7 @@ export default function RootStack() {
       />
       <Stack.Screen
         name="HomeScreen"
-        component={HomeScreen}
+        component={DrawerStack}
         options={{headerShown: false}}
       />
       <Stack.Screen

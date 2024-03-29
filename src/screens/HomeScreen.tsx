@@ -28,7 +28,10 @@ export default function HomeScreen() {
             {dayjs(selectedDate).locale('ko').format('YYYY년 M월 D일(ddd)')}
           </Text>
         </Pressable>
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            navigation.openDrawer();
+          }}>
           <Icon name="menu" size={24} style={styles.icon} />
         </Pressable>
       </View>
