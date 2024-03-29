@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import {getCategoryAndTodos} from '../../api/category';
-import {createTodo, deleteTodo, updateTodo} from '../../api/todo';
+import {getCategoryAndTodos} from '../api/category';
+import {createTodo, deleteTodo, updateTodo} from '../api/todo';
 import useUserStore from '../store/userStore';
 
 export default function useTodo(selectedDate: string) {

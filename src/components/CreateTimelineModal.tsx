@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {TimelineType, TodoType} from '../../api/types';
+import {TimelineType, TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useTimeline from '../hooks/useTimeline';
 import useTodo from '../hooks/useTodos';

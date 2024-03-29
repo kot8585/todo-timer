@@ -15,7 +15,7 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import TodoList from '../components/TodoList';
 import useTodo from '../hooks/useTodos';
 import {Colors} from '../assets/color';
-import {TodoType} from '../../api/types';
+import {TodoType} from '../api/types';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DefaultText from '../components/ui/DefaultText';
 

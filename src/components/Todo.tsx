@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TodoType} from '../../api/types';
+import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useTodo from '../hooks/useTodos';
 import CustomModal from './CustomModal';

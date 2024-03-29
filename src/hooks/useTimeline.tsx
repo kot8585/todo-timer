@@ -4,7 +4,7 @@ import {
   deleteTimeline,
   getTimelines,
   updateTimeline,
-} from '../../api/timeline';
+} from '../api/timeline';
 import useUserStore from '../store/userStore';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';

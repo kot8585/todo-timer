@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable} from 'react-native';
-import {TimelineType} from '../../api/types';
+import {TimelineType} from '../api/types';
 
 type TimelineEventProps = {
   timelineEvent: TimelineType;

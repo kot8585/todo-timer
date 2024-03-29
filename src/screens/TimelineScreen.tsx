@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import React, {useRef, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useQuery} from 'react-query';
-import {getTimelines} from '../../api/timeline';
+import {getTimelines} from '../api/timeline';
 import CreateTimelineModal from '../components/CreateTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useUserStore from '../store/userStore';
-import {TimelineType} from '../../api/types';
+import {TimelineType} from '../api/types';
 import useSelectedDateStore from '../store/selecteDateStore';
 import useTimeline from '../hooks/useTimeline';
 

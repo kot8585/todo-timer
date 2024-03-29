@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {CategoryType} from '../../api/types';
+import {CategoryType} from '../api/types';
 import {Colors} from '../assets/color';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';

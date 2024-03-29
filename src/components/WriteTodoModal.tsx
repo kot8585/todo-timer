@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import {TodoType} from '../../api/types';
+import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useSelectedDateStore from '../store/selecteDateStore';
 import useTodo from '../hooks/useTodos';

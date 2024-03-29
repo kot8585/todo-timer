@@ -1,6 +1,6 @@
 import React from 'react';
 import {SectionList, StyleSheet, Text} from 'react-native';
-import {CategoryType, TodoType} from '../../api/types';
+import {CategoryType, TodoType} from '../api/types';
 import Category from './Category';
 import Todo from './Todo';
 import useTodo from '../hooks/useTodos';

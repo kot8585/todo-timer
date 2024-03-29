@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 import {View} from 'react-native';
-import {CategoryType, TodoType} from '../../api/types';
+import {CategoryType, TodoType} from '../api/types';
 import TodoList from '../components/TodoList';
 import WriteTodoModal from '../components/WriteTodoModal';
 
