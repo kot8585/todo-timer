@@ -6,12 +6,14 @@ type CustomModalProps = {
   visible: boolean;
   setModalVisible: (value: boolean) => void;
   children: ReactNode;
+  position: 'middle' | 'under';
 };
 
 export default function CustomModal({
   visible,
   setModalVisible,
   children,
+  position,
 }: CustomModalProps) {
   return (
     <Modal visible={visible} transparent={true}>
@@ -19,26 +21,50 @@ export default function CustomModal({
         onPress={() => {
           setModalVisible(false);
         }}
-        style={styles.background}>
-        <View style={styles.whiteBox}>{children}</View>
+        style={
+          position === 'middle'
+            ? styles.middleBackground
+            : styles.underBackground
+        }>
+        <View
+          style={
+            position === 'middle' ? styles.middleWhiteBox : styles.underWhiteBox
+          }>
+          {children}
+        </View>
       </Pressable>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  middleBackground: {
     backgroundColor: 'rgba(0,0,0,0.6)',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  whiteBox: {
+  underBackground: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  middleWhiteBox: {
     width: 300,
     backgroundColor: Colors.light.background,
     elevation: 2,
     borderRadius: 8,
     alignItems: 'center',
     padding: 12,
+  },
+  underWhiteBox: {
+    width: '100%',
+    backgroundColor: Colors.light.background,
+    elevation: 2,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+    alignItems: 'flex-end',
+    paddingBottom: 8,
   },
 });

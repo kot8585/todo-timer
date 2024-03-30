@@ -15,7 +15,10 @@ export default function CalendarModal({
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const setSelectedDate = useSelectedDateStore(state => state.setSelectedDate);
   return (
-    <CustomModal visible={visible} setModalVisible={setModalVisible}>
+    <CustomModal
+      visible={visible}
+      setModalVisible={setModalVisible}
+      position={'middle'}>
       <Calendar
         onDayPress={day => {
           setSelectedDate(day.dateString);

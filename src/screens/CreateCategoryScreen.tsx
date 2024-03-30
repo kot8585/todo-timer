@@ -8,6 +8,7 @@ import useCategory from '../hooks/useCategory';
 import useSelectedDateStore from '../store/selecteDateStore';
 import {CreateCategoryType} from '../api/types';
 import {useNavigation} from '@react-navigation/native';
+import ColorPaletteModal, {COLORS} from '../components/ColorPaletteModal';
 
 export default function CreateCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -15,42 +16,60 @@ export default function CreateCategoryScreen() {
   const navigation = useNavigation();
   const [form, setForm] = useState<CreateCategoryType>({
     title: '',
-    color: '#8E94C5',
+    color: COLORS[0],
   });
+  const [showColorPaletteModal, setShowColorPaletteModal] = useState(false);
 
   const handleChangeText = (name: string, value: string) => {
     setForm({...form, [name]: value});
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Icon name="chevron-left" size={28} style={styles.icon} />
-        <Text style={styles.headerText}>카테고리</Text>
-        <View />
-      </View>
-      <View style={styles.bodyContainer}>
-        <BorderBottomInput
-          placeholder="투두 입력"
-          value={form.title}
-          onChangeText={(text: string) => handleChangeText('title', text)}
-        />
-        <View style={styles.rowContainer}>
-          <DefaultText text={'색상'} />
-          <View style={styles.colorContainer}>
-            <View style={styles.color} />
-            <Icon name="menu-down" size={28} style={styles.icon} />
+    <View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon name="chevron-left" size={28} style={styles.icon} />
+          </Pressable>
+          <Text style={styles.headerText}>카테고리</Text>
+          <View />
+        </View>
+        <View style={styles.bodyContainer}>
+          <BorderBottomInput
+            placeholder="투두 입력"
+            value={form.title}
+            onChangeText={(text: string) => handleChangeText('title', text)}
+          />
+          <View style={styles.rowContainer}>
+            <DefaultText text={'색상'} />
+            <Pressable
+              style={styles.colorContainer}
+              onPress={() => {
+                setShowColorPaletteModal(true);
+              }}>
+              <View style={styles.color(form.color)} />
+              <Icon name="menu-down" size={28} style={styles.icon} />
+            </Pressable>
           </View>
         </View>
+        <Pressable
+          onPress={() => {
+            createCategoryMutation.mutate(form);
+            navigation.navigate('HomeScreen');
+          }}
+          style={styles.button}>
+          <Text style={styles.buttonText}>추가하기</Text>
+        </Pressable>
       </View>
-      <Pressable
-        onPress={() => {
-          createCategoryMutation.mutate(form);
-          navigation.navigate('HomeScreen');
-        }}
-        style={styles.button}>
-        <Text style={styles.buttonText}>추가하기</Text>
-      </Pressable>
+      <ColorPaletteModal
+        visible={showColorPaletteModal}
+        setModalVisible={setShowColorPaletteModal}
+        selectedColor={form.color}
+        setSelectedColor={color => setForm({...form, color})}
+      />
     </View>
   );
 }
@@ -91,12 +110,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  color: {
-    backgroundColor: '#ffc4c4',
+  color: (color: string) => ({
+    backgroundColor: color,
     width: 20,
     height: 20,
     borderRadius: 20,
-  },
+  }),
   buttonText: {
     fontSize: 14,
     color: Colors.light.bodyDefault,

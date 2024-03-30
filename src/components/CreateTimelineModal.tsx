@@ -163,7 +163,10 @@ export default function CreateTimelineModal({
   };
   return (
     <View>
-      <CustomModal visible={visible} setModalVisible={setModalVisible}>
+      <CustomModal
+        visible={visible}
+        setModalVisible={setModalVisible}
+        position={'middle'}>
         <View style={styles.container}>
           <Text style={styles.headerText}>시간기록 추가</Text>
           <Pressable onPress={handleTodoPress} style={styles.todo}>
@@ -237,22 +240,12 @@ export default function CreateTimelineModal({
         </View>
       </CustomModal>
       {showTodoListModal && (
-        <Modal visible={showTodoListModal} transparent={true}>
-          {showTodoListModal && (
-            <Pressable
-              onPress={() => {
-                setShowTodoListModal(false);
-              }}
-              style={styles.background}>
-              <View style={styles.underWhiteBox}>
-                <TodoList
-                  todoHandlePress={todoHandlePress}
-                  showDotsIcon={false}
-                />
-              </View>
-            </Pressable>
-          )}
-        </Modal>
+        <CustomModal
+          visible={showTodoListModal}
+          setModalVisible={setShowTodoListModal}
+          position={'under'}>
+          <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
+        </CustomModal>
       )}
     </View>
   );

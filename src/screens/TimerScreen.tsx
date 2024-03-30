@@ -1,23 +1,16 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Button,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-} from 'react-native';
-import useTimeline from '../hooks/useTimeline';
-import useSelectedDateStore from '../store/selecteDateStore';
-import TodoList from '../components/TodoList';
-import useTodo from '../hooks/useTodos';
-import {Colors} from '../assets/color';
-import {TodoType} from '../api/types';
+import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TodoType} from '../api/types';
+import {Colors} from '../assets/color';
+import CustomModal from '../components/CustomModal';
+import TodoList from '../components/TodoList';
 import DefaultText from '../components/ui/DefaultText';
+import useTimeline from '../hooks/useTimeline';
+import useTodo from '../hooks/useTodos';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function TimerScreen() {
   const route = useRoute();
@@ -107,22 +100,12 @@ export default function TimerScreen() {
           </Pressable>
         </View>
       </View>
-      <Modal visible={showTodoListModal} transparent={true}>
-        {showTodoListModal && (
-          <Pressable
-            onPress={() => {
-              setShowTodoListModal(false);
-            }}
-            style={styles.background}>
-            <View style={styles.underWhiteBox}>
-              <TodoList
-                todoHandlePress={todoHandlePress}
-                showDotsIcon={false}
-              />
-            </View>
-          </Pressable>
-        )}
-      </Modal>
+      <CustomModal
+        visible={showTodoListModal}
+        setModalVisible={setShowTodoListModal}
+        position={'under'}>
+        <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
+      </CustomModal>
     </View>
   );
 }

@@ -8,6 +8,7 @@ import useCategory from '../hooks/useCategory';
 import useSelectedDateStore from '../store/selecteDateStore';
 import dayjs from 'dayjs';
 import CustomModal from '../components/CustomModal';
+import ColorPaletteModal from '../components/ColorPaletteModal';
 
 export default function EditCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -23,6 +24,8 @@ export default function EditCategoryScreen() {
     title: category?.title,
     color: category?.color,
   });
+
+  const [showColorPaletteModal, setShowColorPaletteModal] = useState(false);
 
   const handleChangeText = (name: string, value: string) => {
     setForm({...form, [name]: value});
@@ -73,10 +76,14 @@ export default function EditCategoryScreen() {
         />
         <View style={styles.rowContainer}>
           <DefaultText text={'색상'} />
-          <View style={styles.colorContainer}>
+          <Pressable
+            style={styles.colorContainer}
+            onPress={() => {
+              setShowColorPaletteModal(true);
+            }}>
             <View style={styles.color(form.color)} />
             <Icon name="menu-down" size={28} style={styles.icon} />
-          </View>
+          </Pressable>
         </View>
       </View>
       <View style={styles.buttons}>
@@ -93,7 +100,8 @@ export default function EditCategoryScreen() {
       </View>
       <CustomModal
         visible={showDeleteConfirmModal}
-        setModalVisible={setShowDeleteConfirmModal}>
+        setModalVisible={setShowDeleteConfirmModal}
+        position={'middle'}>
         <Text>
           {category?.title}에 포함된 할일들이 모두 삭제됩니다. {'\n'}과거의
           할일들을 유지하고 싶다면 "종료하기" 버튼을 눌러주세요. {'\n'}정말
@@ -112,6 +120,12 @@ export default function EditCategoryScreen() {
           </Pressable>
         </View>
       </CustomModal>
+      <ColorPaletteModal
+        visible={showColorPaletteModal}
+        setModalVisible={setShowColorPaletteModal}
+        selectedColor={form.color}
+        setSelectedColor={color => setForm({...form, color})}
+      />
     </View>
   );
 }

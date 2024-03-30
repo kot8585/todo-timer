@@ -52,12 +52,12 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
       {showEditDeleteModal && (
         <CustomModal
           visible={showEditDeleteModal}
-          setModalVisible={setShowEditDeleteModal}>
+          setModalVisible={setShowEditDeleteModal}
+          position={'middle'}>
           <Pressable
             onPress={() => {
               setShowEditDeleteModal(false);
               setShowTodoModal(true);
-              // 수정 컴포넌트 보여주기 근데 Todo정보를 어떻게 넘겨주지..!
             }}>
             <Text style={styles.buttonText}>수정하기</Text>
           </Pressable>
@@ -75,7 +75,8 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
       {showConfirmDeleteModal && (
         <CustomModal
           visible={showConfirmDeleteModal}
-          setModalVisible={setConfirmDeleteModal}>
+          setModalVisible={setConfirmDeleteModal}
+          position={'middle'}>
           <Text style={styles.buttonText}>할일을 삭제하시겠어요?</Text>
 
           <View style={styles.buttons}>

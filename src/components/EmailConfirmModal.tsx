@@ -18,7 +18,10 @@ export default function EmailConfirmModal({visible, setShowModal}) {
   };
 
   return (
-    <CustomModal visible={visible} setModalVisible={setShowModal}>
+    <CustomModal
+      visible={visible}
+      setModalVisible={setShowModal}
+      position={'middle'}>
       <Text style={styles.buttonText}>이메일이 인증되지 않았습니다.</Text>
       <Text style={styles.buttonText}>인증 이메일을 다시 받으시겠습니까?</Text>
       <View style={styles.buttons}>
