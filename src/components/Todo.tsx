@@ -54,20 +54,22 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
           visible={showEditDeleteModal}
           setModalVisible={setShowEditDeleteModal}
           position={'middle'}>
-          <Pressable
-            onPress={() => {
-              setShowEditDeleteModal(false);
-              setShowTodoModal(true);
-            }}>
-            <Text style={styles.buttonText}>수정하기</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setShowEditDeleteModal(false);
-              setConfirmDeleteModal(true);
-            }}>
-            <Text style={styles.buttonText}>삭제하기</Text>
-          </Pressable>
+          <View style={styles.verticalButtons}>
+            <Pressable
+              onPress={() => {
+                setShowEditDeleteModal(false);
+                setShowTodoModal(true);
+              }}>
+              <Text style={styles.buttonText}>수정하기</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setShowEditDeleteModal(false);
+                setConfirmDeleteModal(true);
+              }}>
+              <Text style={styles.buttonText}>삭제하기</Text>
+            </Pressable>
+          </View>
         </CustomModal>
       )}
 
@@ -79,7 +81,7 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
           position={'middle'}>
           <Text style={styles.buttonText}>할일을 삭제하시겠어요?</Text>
 
-          <View style={styles.buttons}>
+          <View style={styles.horizontalButtons}>
             <Pressable
               onPress={() => {
                 setConfirmDeleteModal(false);
@@ -141,10 +143,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.light.bodyDefault,
   },
-  buttons: {
+  horizontalButtons: {
     marginTop: 12,
     flexDirection: 'row',
     gap: 8,
+  },
+  verticalButtons: {
+    gap: 10,
+    marginVertical: 4,
   },
   button: {
     backgroundColor: Colors.light.buttonDefault,

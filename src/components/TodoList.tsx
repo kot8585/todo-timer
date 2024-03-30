@@ -48,7 +48,7 @@ export default function TodoList({
         <Category
           category={section}
           handlePress={categoryHandlePress}
-          showDotsIcon={true}
+          showDotsIcon={showDotsIcon}
         />
       )}
       style={styles.container}

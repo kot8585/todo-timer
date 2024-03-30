@@ -9,6 +9,7 @@ import useUserStore from '../store/userStore';
 import {TimelineType} from '../api/types';
 import useSelectedDateStore from '../store/selecteDateStore';
 import useTimeline from '../hooks/useTimeline';
+import {Colors} from '../assets/color';
 
 export default function TimelineScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -51,9 +52,6 @@ export default function TimelineScreen() {
   const {
     getAllTimeline: {data, isLoading, error},
   } = useTimeline(selectedDate);
-  // 얘 어디다가 넣지
-
-  console.log('타임라인 데이터', data);
 
   const [showUpdateTimelineModal, setShowUpdateTimelineModal] =
     useState<boolean>(false);
@@ -94,19 +92,19 @@ export default function TimelineScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 16,
+    margin: 16,
   },
   timeTable: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: Colors.light.borderDefault,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: Colors.light.borderDefault,
   },
   hourText: {
     width: '10%', // 1열은 시간을 나타내므로 너비를 조절하여 글자에 맞게 설정
@@ -117,6 +115,6 @@ const styles = StyleSheet.create({
     width: '15%',
     height: 25,
     borderLeftWidth: 1,
-    borderColor: 'black',
+    borderColor: Colors.light.borderDefault,
   },
 });
