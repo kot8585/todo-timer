@@ -75,7 +75,7 @@ export default function WriteTodoModal({
             autoComplete="off"
             autoFocus
             enterKeyHint="done"
-            placeholderTextColor={Colors.light.inActiveBody}
+            placeholderTextColor={Colors.light.bodyInActive}
             style={styles.input}
           />
         </KeyboardAvoidingView>

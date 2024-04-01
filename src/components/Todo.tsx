@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View, Platform} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  Animated,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -9,6 +16,7 @@ import WriteTodoModal from './WriteTodoModal';
 import useSelectedDateStore from '../store/selecteDateStore';
 import DefaultText from './ui/DefaultText';
 import dayjs from 'dayjs';
+import {PanGestureHandler, State} from 'react-native-gesture-handler';
 
 type TodoProps = {
   todo: TodoType;
@@ -23,32 +31,62 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
   const [showConfirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [showTodoModal, setShowTodoModal] = useState(false);
 
-  const {deleteTodoMutation} = useTodo(selectedDate);
+  const {deleteTodoMutation, updateTodoMutation} = useTodo(selectedDate);
 
   const formattedTime = dayjs()
     .startOf('day')
     .add(todo.executionTime, 'second')
     .format('H[h] mm[m]');
 
+  const [offsetX] = useState(new Animated.Value(0));
+
+  const onGestureEvent = event => {
+    // offsetX 값 업데이트
+    offsetX.setValue(event.nativeEvent.translationX / 2);
+  };
+  const onHandlerStateChange = event => {
+    if (event.nativeEvent.state === State.END) {
+      // offsetX 값이 0으로 애니메이션
+      console.log('할일 완료');
+      Animated.spring(offsetX, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+
+      todo.isCompleted = true;
+      updateTodoMutation.mutate(todo);
+    }
+  };
   return (
     <View>
-      <Pressable
-        onPress={() => todoHandlePress(todo)}
-        style={styles.todoContainer}>
-        <View style={styles.todoColor(todo.color)} />
-        <DefaultText text={todo.title} style={styles.todoText} />
-        <View style={{flexGrow: 1}} />
-        <Text style={styles.timeText}>{formattedTime}</Text>
-        {showDotsIcon && (
-          <Pressable
-            onPress={() => {
-              setShowEditDeleteModal(true);
-            }}>
-            <Icon name="dots-vertical" size={18} style={styles.icon} />
-          </Pressable>
-        )}
-        {/* 시간은 어떻게 보여주지!!! */}
-      </Pressable>
+      <PanGestureHandler
+        onGestureEvent={onGestureEvent}
+        onHandlerStateChange={onHandlerStateChange}>
+        <Pressable onPress={() => todoHandlePress(todo)}>
+          <Animated.View
+            style={[
+              styles.todoContainer,
+              {transform: [{translateX: offsetX}]},
+            ]}>
+            <View style={styles.todoColor(todo.color)} />
+            {todo.isCompleted ? (
+              <Text style={styles.completeTodoText}>{todo.title}</Text>
+            ) : (
+              <DefaultText text={todo.title} style={styles.todoText} />
+            )}
+            <View style={{flexGrow: 1}} />
+            <Text style={styles.timeText}>{formattedTime}</Text>
+            {showDotsIcon && (
+              <Pressable
+                onPress={() => {
+                  setShowEditDeleteModal(true);
+                }}>
+                <Icon name="dots-vertical" size={18} style={styles.icon} />
+              </Pressable>
+            )}
+          </Animated.View>
+        </Pressable>
+      </PanGestureHandler>
       {showEditDeleteModal && (
         <CustomModal
           visible={showEditDeleteModal}
@@ -128,6 +166,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   }),
   todoText: {
+    ...Platform.select({
+      android: {lineHeight: 22},
+    }),
+  },
+  completeTodoText: {
+    fontSize: 16,
+    textDecorationLine: 'line-through',
+    color: Colors.light.bodyInActive,
     ...Platform.select({
       android: {lineHeight: 22},
     }),

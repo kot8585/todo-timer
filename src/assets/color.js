@@ -3,7 +3,7 @@ export const Colors = {
   light: {
     background: '#FFFFFF',
     bodyDefault: '#222222',
-    inActiveBody: '#8E8E93',
+    bodyInActive: '#8E8E93',
     captionDefault: '#9F9F9F',
     buttonDefault: '#E5E5E5',
     buttonText: '#626262',

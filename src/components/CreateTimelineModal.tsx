@@ -27,9 +27,6 @@ type CreateTimelineModalProps = {
   updateTimeline?: TimelineType;
 };
 
-// TODO: 디자인이 뭔가 이상....
-//
-
 function calculateDate(date: string, hour: number) {
   const dateFormat = dayjs(date);
   if (hour < 5) {
