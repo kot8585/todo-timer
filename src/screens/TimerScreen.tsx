@@ -15,8 +15,12 @@ import useSelectedDateStore from '../store/selecteDateStore';
 export default function TimerScreen() {
   const route = useRoute();
   const [showTodoListModal, setShowTodoListModal] = useState(false);
-  const [todo, setTodo] = useState(route.params || undefined);
-
+  const [todo, setTodo] = useState(route.params?.todo);
+  useEffect(() => {
+    if (route.params?.todo) {
+      setTodo(route.params.todo);
+    }
+  }, [route.params?.todo]);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const navigation = useNavigation();
 

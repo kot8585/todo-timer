@@ -38,16 +38,6 @@ export default function RootStack() {
         component={ChangeEmailScreen}
         options={{title: '이메일 변경'}}
       />
-      <Stack.Screen
-        name="HomeScreen"
-        component={DrawerStack}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="EditCategoryScreen"
-        component={EditCategoryScreen}
-        options={{title: '카테고리'}}
-      />
     </Stack.Navigator>
   );
 }

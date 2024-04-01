@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     color: '#F44D5E',
   },
   button: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: Colors.light.buttonDefault,
     borderColor: Colors.light.borderDefault,
     height: 40,
     borderRadius: 8,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {getLogInUser, signIn} from '../../lib/auth';
+import {signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
@@ -16,16 +16,6 @@ import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
-  useEffect(() => {
-    const user = getLogInUser();
-    console.log('user 정보: ', user);
-    //TODO: 필요한 정보만 등록하기
-    useUserStore.setState({user: user});
-    if (user) {
-      navigation.navigate('HomeScreen');
-    }
-  }, [navigation]);
-
   const [form, setForm] = useState({
     email: '',
     password: '',

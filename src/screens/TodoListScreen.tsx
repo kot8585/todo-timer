@@ -8,7 +8,6 @@ import WriteTodoModal from '../components/WriteTodoModal';
 export default function TodoListScreen() {
   const navigation = useNavigation();
 
-  //category.tsx에서 가져옴
   const [showTodoModal, setShowTodoModal] = useState(false);
   const clickedCategoryRef = useRef<CategoryType>();
   const categoryHandlePress = (category: CategoryType) => {
@@ -17,14 +16,11 @@ export default function TodoListScreen() {
     setShowTodoModal(true);
   };
 
-  //Todo.tsx에서 가져옴
-  //TODO: Tap만 옆으로 가게 하기
   const todoHandlePress = (todo: TodoType) => {
-    navigation.push('HomeScreen', {
-      screen: 'Home',
+    navigation.navigate('HomeScreen', {
+      screen: 'Timer',
       params: {
-        screen: 'Timer',
-        todo: todo,
+        todo,
       },
     });
   };

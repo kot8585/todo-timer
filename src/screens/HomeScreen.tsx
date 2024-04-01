@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import CalendarModal from '../components/CalendarModal';
-import useSelectedDateStore from '../store/selecteDateStore';
-import 'dayjs/locale/ko'; // 한국어 locale을 추가
+import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko'; // 한국어 locale을 추가
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../assets/color';
+import CalendarModal from '../components/CalendarModal';
 import MainTap from '../navigation/MainTap';
-import {useNavigation} from '@react-navigation/native';
-import DrawerStack from '../navigation/DrawerStack';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function HomeScreen() {
   const [showCalendarModal, setShowCalendarModal] = useState(false);

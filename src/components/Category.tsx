@@ -34,7 +34,7 @@ export default function Category({
       <Text style={styles.timeText}>{formattedTime}</Text>
       {showDotsIcon && (
         <Pressable
-          onPress={() => navigation.push('EditCategoryScreen', category)}>
+          onPress={() => navigation.navigate('EditCategoryScreen', category)}>
           <Icon name="dots-vertical" size={18} style={styles.icon} />
         </Pressable>
       )}
