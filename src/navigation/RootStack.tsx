@@ -44,14 +44,9 @@ export default function RootStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="TimerScreen"
-        component={TimerScreen}
-        options={{title: '타이머'}}
-      />
-      <Stack.Screen
         name="EditCategoryScreen"
         component={EditCategoryScreen}
-        options={{title: '타이머'}}
+        options={{title: '카테고리'}}
       />
     </Stack.Navigator>
   );

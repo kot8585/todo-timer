@@ -15,29 +15,35 @@ import useSelectedDateStore from '../store/selecteDateStore';
 export default function TimerScreen() {
   const route = useRoute();
   const [showTodoListModal, setShowTodoListModal] = useState(false);
-  const [todoTitle, setTodoTitle] = useState(
-    route.params?.title || '투두를 선택해주세요',
-  );
-  const todoIdxRef = useRef(route.params?.idx);
+  const [todo, setTodo] = useState(route.params || undefined);
 
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const navigation = useNavigation();
 
-  const [executionTime, setexecutionTime] = useState<number>(0);
+  const [executionTime, setExecutionTime] = useState<number>(0);
   const startDateTimeRef = useRef<dayjs.Dayjs>(dayjs());
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startTimer = () => {
+    startDateTimeRef.current = dayjs();
+    intervalRef.current = setInterval(() => {
+      const currentTime = dayjs();
+      const difference = currentTime.diff(startDateTimeRef.current, 'second');
+      setExecutionTime(difference);
+    }, 1000);
+  };
+
+  const endTimer = () => {
+    clearInterval(intervalRef.current!);
+    intervalRef.current = null;
+    setExecutionTime(0);
+  };
 
   useEffect(() => {
     if (route.params) {
-      let interval: NodeJS.Timeout;
+      startTimer();
 
-      interval = setInterval(() => {
-        const currentTime = dayjs();
-        const difference = currentTime.diff(startDateTimeRef.current, 'second');
-
-        setexecutionTime(difference);
-      }, 1000);
-
-      return () => clearInterval(interval);
+      return endTimer;
     }
   }, [route.params]);
 
@@ -45,8 +51,9 @@ export default function TimerScreen() {
 
   // TODO: 할일 완료 버튼 누르면???
   const handleStop = (action: string) => {
+    endTimer();
     const timeline = {
-      todoIdx: route.params ? route.params.idx : 1,
+      todoIdx: todo?.idx,
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),
       executionTime: executionTime,
@@ -54,7 +61,7 @@ export default function TimerScreen() {
     };
     // mutation
     createTimelineMutation.mutate(timeline);
-    navigation.navigate('HomeScreen');
+    navigation.navigate('TodoList');
   };
 
   const formatTime = (seconds: number): string => {
@@ -65,36 +72,38 @@ export default function TimerScreen() {
     return formattedTime;
   };
 
-  const {
-    getAllTodos: {data, isLoading, error},
-  } = useTodo(selectedDate);
-
   const todoHandlePress = (todo: TodoType) => {
     console.log('todo 눌림');
-    setTodoTitle(todo.title);
-    todoIdxRef.current = todo.idx;
+    setTodo(todo);
+    setShowTodoListModal(false);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.timerContainer}>
-        {route.params ? (
-          <DefaultText text={route.params.title} />
-        ) : (
-          <Pressable
-            onPress={() => {
-              setShowTodoListModal(true);
-            }}
-            style={styles.todo}>
-            <Text style={styles.text}>투두를 선택해주세요</Text>
-            <Icon name="chevron-right" size={22} style={styles.icon} />
-          </Pressable>
-        )}
+        <Pressable
+          onPress={() => {
+            setShowTodoListModal(true);
+          }}
+          disabled={!!intervalRef.current}
+          style={styles.todo}>
+          <Text style={styles.text}>
+            {todo?.title || '투두를 선택해주세요'}
+          </Text>
+          <Icon name="chevron-right" size={22} style={styles.icon} />
+        </Pressable>
+
         <Text style={styles.timer}>{formatTime(executionTime)}</Text>
         <View style={styles.buttonContainer}>
-          <Pressable onPress={() => handleStop('stop')}>
-            <DefaultText text="중지" />
-          </Pressable>
+          {intervalRef.current ? (
+            <Pressable onPress={() => handleStop('stop')}>
+              <DefaultText text="중지" />
+            </Pressable>
+          ) : (
+            <Pressable onPress={startTimer} disabled={!todo?.title}>
+              <DefaultText text="시작" />
+            </Pressable>
+          )}
           <Pressable onPress={() => handleStop('complete')}>
             <DefaultText text="완료" />
           </Pressable>
