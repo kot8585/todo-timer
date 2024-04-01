@@ -9,7 +9,6 @@ import CustomModal from '../components/CustomModal';
 import TodoList from '../components/TodoList';
 import DefaultText from '../components/ui/DefaultText';
 import useTimeline from '../hooks/useTimeline';
-import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function TimerScreen() {
@@ -53,7 +52,6 @@ export default function TimerScreen() {
 
   const {createTimelineMutation} = useTimeline(selectedDate);
 
-  // TODO: 할일 완료 버튼 누르면???
   const handleStop = (action: string) => {
     endTimer();
     const timeline = {
@@ -91,6 +89,7 @@ export default function TimerScreen() {
           }}
           disabled={!!intervalRef.current}
           style={styles.todo}>
+          <View style={styles.todoColor(todo?.color || '#a4a4a4')} />
           <Text style={styles.text}>
             {todo?.title || '투두를 선택해주세요'}
           </Text>
@@ -134,12 +133,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  todoColor: (backgroundColor: string) => ({
+    backgroundColor: backgroundColor,
+    width: 18,
+    height: 18,
+    borderRadius: 25,
+    marginRight: 6,
+  }),
   text: {
     fontSize: 14,
     color: Colors.light.bodyDefault,
     ...Platform.select({
       android: {lineHeight: 18},
     }),
+    marginRight: 6,
   },
   icon: {color: Colors.light.iconDefault},
   timer: {
