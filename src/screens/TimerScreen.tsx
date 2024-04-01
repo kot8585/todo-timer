@@ -10,6 +10,7 @@ import TodoList from '../components/TodoList';
 import DefaultText from '../components/ui/DefaultText';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
+import {getToday} from '../utils/formatDateTime';
 
 export default function TimerScreen() {
   const route = useRoute();
@@ -28,6 +29,10 @@ export default function TimerScreen() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startTimer = () => {
+    if (selectedDate !== getToday()) {
+      //TODO: 오늘날짜가 아니여서 측정할 수 없다고 하기
+      return;
+    }
     startDateTimeRef.current = dayjs();
     intervalRef.current = setInterval(() => {
       const currentTime = dayjs();
@@ -107,7 +112,9 @@ export default function TimerScreen() {
               <DefaultText text="시작" />
             </Pressable>
           )}
-          <Pressable onPress={() => handleStop('complete')}>
+          <Pressable
+            onPress={() => handleStop('complete')}
+            disabled={!intervalRef.current}>
             <DefaultText text="완료" />
           </Pressable>
         </View>

@@ -1,19 +1,14 @@
-import dayjs from 'dayjs';
 import React, {useRef, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useQuery} from 'react-query';
-import {getTimelines} from '../api/timeline';
+import {TimelineType} from '../api/types';
+import {Colors} from '../assets/color';
 import CreateTimelineModal from '../components/CreateTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
-import useUserStore from '../store/userStore';
-import {TimelineType} from '../api/types';
-import useSelectedDateStore from '../store/selecteDateStore';
 import useTimeline from '../hooks/useTimeline';
-import {Colors} from '../assets/color';
+import useSelectedDateStore from '../store/selecteDateStore';
 
 export default function TimelineScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
-  const user = useUserStore(state => state.user);
   const [showModal, setShowModal] = useState(false);
   const clickedTime = useRef(5);
   const handlePress = hour => {
@@ -52,6 +47,7 @@ export default function TimelineScreen() {
   const {
     getAllTimeline: {data, isLoading, error},
   } = useTimeline(selectedDate);
+  console.log('timeline 데이터', data);
 
   const [showUpdateTimelineModal, setShowUpdateTimelineModal] =
     useState<boolean>(false);

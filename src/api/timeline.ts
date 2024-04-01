@@ -2,10 +2,7 @@ import {CreateTimelineType, TimelineType, UpdateTimelineRequest} from './types';
 import client from './client';
 import dayjs from 'dayjs';
 
-export async function getTimelines(
-  userUid: string | undefined,
-  date: dayjs.Dayjs,
-) {
+export async function getTimelines(userUid: string | undefined, date: string) {
   console.log('timline조회 요청: ', date);
   const response = await client.get<TimelineType[]>('/timelines', {
     params: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable} from 'react-native';
+import {Pressable, Text} from 'react-native';
 import {TimelineType} from '../api/types';
 
 type TimelineEventProps = {
@@ -66,8 +66,9 @@ export default function TimelineEvent({
             backgroundColor: timelineEvent.todoColor,
             marginLeft: 1,
             opacity: 0.7,
-          }}
-        />,
+          }}>
+          <Text>{timelineEvent.todoTitle}</Text>
+        </Pressable>,
       );
     }
 

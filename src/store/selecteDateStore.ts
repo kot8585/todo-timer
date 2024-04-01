@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {create} from 'zustand';
+import {getToday} from '../utils/formatDateTime';
 
 interface SelectedDateStoreType {
   selectedDate: string;
@@ -8,9 +9,9 @@ interface SelectedDateStoreType {
 }
 
 const useSelectedDateStore = create<SelectedDateStoreType>(set => ({
-  selectedDate: dayjs().format('YYYY-MM-DD'),
+  selectedDate: getToday(),
   setSelectedDate: selectedDate => set({selectedDate}),
-  setToday: () => set({selectedDate: dayjs().format('YYYY-MM-DD')}),
+  setToday: () => set({selectedDate: getToday()}),
 }));
 
 export default useSelectedDateStore;
