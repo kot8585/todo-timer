@@ -1,20 +1,22 @@
-import {View, Text, Alert} from 'react-native';
-import React from 'react';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {signOut} from '../../lib/auth';
+import useUserStore from '../store/userStore';
 
 export default function CustomDrawer(props) {
+  const clearUser = useUserStore(state => state.clearUser);
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
         label="로그아웃"
         onPress={() => {
-          Alert.alert('로그아웃');
+          signOut();
+          clearUser();
         }}
       />
     </DrawerContentScrollView>

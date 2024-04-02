@@ -31,7 +31,6 @@ export default function LogInScreen({navigation}: any) {
     const user = await signIn({email: form.email, password: form.password});
     console.log('로그인된 유저', user);
     useUserStore.setState({user: user.user});
-    navigation.navigate('HomeScreen');
   };
 
   return (
