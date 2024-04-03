@@ -11,11 +11,13 @@ import {signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
+import LoadingBar from '../components/ui/LoadingBar';
 import TextButton from '../components/ui/TextButton';
 import useUserStore from '../store/userStore';
 
 //TODO: {navigation}: any 타입 지정하기
 export default function LogInScreen({navigation}: any) {
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -26,15 +28,18 @@ export default function LogInScreen({navigation}: any) {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     Keyboard.dismiss();
     console.log('회원가입 form 출력', form);
     const user = await signIn({email: form.email, password: form.password});
     console.log('로그인된 유저', user);
     useUserStore.setState({user: user.user});
+    setLoading(false);
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <LoadingBar loading={loading} />
       <BorderBottomInput
         placeholder="이메일"
         value={form.email}

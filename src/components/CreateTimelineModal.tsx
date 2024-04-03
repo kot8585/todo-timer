@@ -45,7 +45,7 @@ export default function CreateTimelineModal({
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
   const startMinuteRef = useRef<TextInput>();
-  const endHoureRef = useRef<TextInput>();
+  const endHourRef = useRef<TextInput>();
   const endMinuteRef = useRef<TextInput>();
 
   // 이거 모달을 보여줄때만 필요한거라  모달 안보여주면 가져올 필요없는데
@@ -189,30 +189,28 @@ export default function CreateTimelineModal({
               }
               value={form.startHour}
               placeholderTextColor="#a4a4a4"
-              onChangeText={(text: string) =>
-                handleChangeText('startHour', text)
-              }
-              autoFocus
-              onSubmitEditing={() => {
-                if (startMinuteRef.current) {
-                  startMinuteRef.current.focus();
+              onChangeText={(text: string) => {
+                handleChangeText('startHour', text);
+                if (text.length >= 2) {
+                  startMinuteRef.current?.focus();
                 }
               }}
+              autoFocus
+              onSubmitEditing={() => startMinuteRef.current?.focus()}
             />
             <Text style={styles.timeText}>:</Text>
             <TextInput
               keyboardType="numeric"
               placeholder="00"
               value={form.startMinute}
-              onChangeText={(text: string) =>
-                handleChangeText('startMinute', text)
-              }
-              ref={startMinuteRef}
-              onSubmitEditing={() => {
-                if (endHoureRef.current) {
-                  endHoureRef.current.focus();
+              onChangeText={(text: string) => {
+                handleChangeText('startMinute', text);
+                if (text.length >= 2) {
+                  endHourRef.current?.focus();
                 }
               }}
+              ref={startMinuteRef}
+              onSubmitEditing={() => endHourRef.current?.focus()}
               placeholderTextColor="#a4a4a4"
               style={[styles.inputTime, styles.timeText]}
             />
@@ -225,13 +223,14 @@ export default function CreateTimelineModal({
                   : updateTimeline!.endHour.toString()
               }
               value={form.endHour}
-              ref={endHoureRef}
-              onSubmitEditing={() => {
-                if (endMinuteRef.current) {
-                  endMinuteRef.current.focus();
+              ref={endHourRef}
+              onSubmitEditing={() => endMinuteRef.current?.focus()}
+              onChangeText={(text: string) => {
+                handleChangeText('endHour', text);
+                if (text.length >= 2) {
+                  endMinuteRef.current?.focus();
                 }
               }}
-              onChangeText={(text: string) => handleChangeText('endHour', text)}
               placeholderTextColor="#a4a4a4"
               style={[styles.inputTime, styles.timeText]}
             />

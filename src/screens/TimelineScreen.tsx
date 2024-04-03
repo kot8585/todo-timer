@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {TimelineType} from '../api/types';
 import {Colors} from '../assets/color';
 import CreateTimelineModal from '../components/CreateTimelineModal';
@@ -22,7 +22,7 @@ export default function TimelineScreen() {
     // 오전 5시부터 다음날 오전 4시까지 총 24줄 생성
     for (let hour = 5; hour <= 28; hour++) {
       // 시간에 따른 문자열 생성
-      const hourText = (hour % 24).toString().padStart(2, '0');
+      const hourText = hour % 24;
 
       // row 생성
       timeTableData.push(
@@ -33,7 +33,7 @@ export default function TimelineScreen() {
             handlePress(hour);
           }}>
           {/* 컬럼 생성 */}
-          <Text style={styles.hourText}>{hourText}</Text>
+          <Text style={styles.hourText}>{hourText === 0 ? 24 : hourText}</Text>
 
           {/* 10분 간격의 컬럼 생성 */}
           {[1, 2, 3, 4, 5, 6].map((_, index) => (
@@ -55,7 +55,7 @@ export default function TimelineScreen() {
   const updateTimelineRef = useRef<undefined | TimelineType>(undefined);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.timeTable}>
         {generateTimeTableData()}
 
@@ -82,7 +82,7 @@ export default function TimelineScreen() {
           updateTimeline={updateTimelineRef.current}
         />
       )}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 
   column: {
     width: '15%',
-    height: 25,
+    height: 24,
     borderLeftWidth: 1,
     borderColor: Colors.light.borderDefault,
   },

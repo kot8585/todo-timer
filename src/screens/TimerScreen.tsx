@@ -10,17 +10,13 @@ import TodoList from '../components/TodoList';
 import DefaultText from '../components/ui/DefaultText';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
-import {getToday} from '../utils/formatDateTime';
+import {formatTime, getToday} from '../utils/formatDateTime';
 
 export default function TimerScreen() {
   const route = useRoute();
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const [todo, setTodo] = useState(route.params?.todo);
-  useEffect(() => {
-    if (route.params?.todo) {
-      setTodo(route.params.todo);
-    }
-  }, [route.params?.todo]);
+
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const navigation = useNavigation();
 
@@ -48,12 +44,13 @@ export default function TimerScreen() {
   };
 
   useEffect(() => {
-    if (route.params) {
+    if (route.params?.todo) {
+      setTodo(route.params.todo);
       startTimer();
 
       return endTimer;
     }
-  }, [route.params]);
+  }, [route.params?.todo]);
 
   const {createTimelineMutation} = useTimeline(selectedDate);
 
@@ -69,14 +66,6 @@ export default function TimerScreen() {
     // mutation
     createTimelineMutation.mutate(timeline);
     navigation.navigate('TodoList');
-  };
-
-  const formatTime = (seconds: number): string => {
-    const formattedTime = dayjs()
-      .startOf('day')
-      .add(seconds, 'second')
-      .format('HH:mm:ss');
-    return formattedTime;
   };
 
   const todoHandlePress = (todo: TodoType) => {

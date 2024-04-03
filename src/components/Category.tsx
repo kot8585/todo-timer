@@ -1,10 +1,10 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CategoryType} from '../api/types';
 import {Colors} from '../assets/color';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import dayjs from 'dayjs';
-import {useNavigation} from '@react-navigation/native';
+import {formatTime} from '../utils/formatDateTime';
 
 type CategoryProps = {
   //이거 클래스로 만들어서 하는게 편할거같은데
@@ -19,10 +19,6 @@ export default function Category({
   showDotsIcon,
 }: CategoryProps) {
   const navigation = useNavigation();
-  const formattedTime = dayjs()
-    .startOf('day')
-    .add(category.executionTime, 'second')
-    .format('H[h] mm[m]');
 
   return (
     <View style={styles.container}>
@@ -31,7 +27,7 @@ export default function Category({
       </Pressable>
 
       <View style={{flexGrow: 1}} />
-      <Text style={styles.timeText}>{formattedTime}</Text>
+      <Text style={styles.timeText}>{formatTime(category.executionTime)}</Text>
       {showDotsIcon && (
         <Pressable
           onPress={() => navigation.navigate('EditCategoryScreen', category)}>

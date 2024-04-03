@@ -9,3 +9,7 @@ export function getToday() {
     return day.format('YYYY-MM-DD');
   }
 }
+
+export function formatTime(seconds: number): string {
+  return dayjs().startOf('day').add(seconds, 'second').format('HH:mm:ss');
+}

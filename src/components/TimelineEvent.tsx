@@ -15,7 +15,7 @@ export default function TimelineEvent({
 }: TimelineEventProps) {
   console.log('TimelineEvent', timelineEvent);
 
-  const height = 25;
+  const height = 24;
 
   const viewCount =
     (timelineEvent.endHour % 24) - (timelineEvent.startHour % 24) + 1;
@@ -66,6 +66,8 @@ export default function TimelineEvent({
             backgroundColor: timelineEvent.todoColor,
             marginLeft: 1,
             opacity: 0.7,
+            borderColor: timelineEvent.todoColor,
+            // borderWidth: 1,
           }}>
           <Text>{timelineEvent.todoTitle}</Text>
         </Pressable>,

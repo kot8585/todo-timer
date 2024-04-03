@@ -5,9 +5,6 @@ import ChangeEmailScreen from '../screens/ChangeEmailScreen';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import TimerScreen from '../screens/TimerScreen';
-import DrawerStack from './DrawerStack';
-import EditCategoryScreen from '../screens/EditCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +13,6 @@ export default function RootStack() {
     <Stack.Navigator
       screenOptions={{
         contentStyle: {backgroundColor: Colors.light.background},
-        headerShown: false,
       }}>
       <Stack.Screen
         name="LogInScreen"

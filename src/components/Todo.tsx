@@ -17,6 +17,7 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import DefaultText from './ui/DefaultText';
 import dayjs from 'dayjs';
 import {PanGestureHandler, State} from 'react-native-gesture-handler';
+import {formatTime} from '../utils/formatDateTime';
 
 type TodoProps = {
   todo: TodoType;
@@ -33,11 +34,6 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
 
   const {deleteTodoMutation, updateTodoMutation} = useTodo(selectedDate);
 
-  const formattedTime = dayjs()
-    .startOf('day')
-    .add(todo.executionTime, 'second')
-    .format('H[h] mm[m]');
-
   const [offsetX] = useState(new Animated.Value(0));
 
   const onGestureEvent = event => {
@@ -53,7 +49,7 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
         useNativeDriver: true,
       }).start();
 
-      todo.isCompleted = true;
+      todo.isCompleted = !todo.isCompleted;
       updateTodoMutation.mutate(todo);
     }
   };
@@ -75,7 +71,9 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
               <DefaultText text={todo.title} style={styles.todoText} />
             )}
             <View style={{flexGrow: 1}} />
-            <Text style={styles.timeText}>{formattedTime}</Text>
+            <Text style={styles.timeText}>
+              {formatTime(todo.executionTime)}
+            </Text>
             {showDotsIcon && (
               <Pressable
                 onPress={() => {
