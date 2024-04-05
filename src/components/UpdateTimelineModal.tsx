@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Alert,
   Pressable,
@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {TodoType} from '../api/types';
+import {TimelineType, TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useTimeline from '../hooks/useTimeline';
 import useTodo from '../hooks/useTodos';
@@ -20,7 +20,7 @@ import TodoList from './TodoList';
 type CreateTimelineModalProps = {
   visible: boolean;
   setModalVisible: (value: boolean) => void;
-  clickedTime: number;
+  updateTimeline: TimelineType;
 };
 
 function calculateDate(date: string, hour: number) {
@@ -31,12 +31,11 @@ function calculateDate(date: string, hour: number) {
   return dateFormat;
 }
 
-export default function CreateTimelineModal({
+export default function UpdateTimelineModal({
   visible,
   setModalVisible,
-  clickedTime,
+  updateTimeline,
 }: CreateTimelineModalProps) {
-  console.log('clickedTime', clickedTime);
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
@@ -49,37 +48,24 @@ export default function CreateTimelineModal({
   } = useTodo(selectedDate);
 
   const [form, setForm] = useState({
-    todoIdx: undefined,
-    todoColor: '#696969',
-    todoTitle: '작성된 할일이 없습니다',
+    todoIdx: updateTimeline.todoIdx,
+    todoColor: updateTimeline.todoColor,
+    todoTitle: updateTimeline.todoTitle,
     date: selectedDate,
-    startHour: clickedTime.toString().padStart(2, '0'),
-    startMinute: '00',
-    // TODO: 24시에서 더하면 1이 되어야함
-    endHour: (clickedTime + 1).toString().padStart(2, '0'),
-    endMinute: '00',
+    startHour: updateTimeline.startHour.toString().padStart(2, '0'),
+    startMinute: updateTimeline.startMinute.toString().padStart(2, '0'),
+    endHour: updateTimeline.endHour.toString().padStart(2, '0'),
+    endMinute: updateTimeline.endMinute.toString().padStart(2, '0'),
   });
-
-  useEffect(() => {
-    if (todos && todos.length > 0 && todos[0].data.length > 0) {
-      setForm(prevForm => ({
-        ...prevForm,
-        todoIdx: todos[0].data[0].idx,
-        todoColor: todos[0].data[0].color,
-        todoTitle: todos[0].data[0].title,
-      }));
-    }
-  }, [todos, clickedTime]);
 
   const handleChangeText = (name: string, value: string) => {
     setForm({...form, [name]: value});
   };
-  const {createTimelineMutation} = useTimeline(selectedDate);
+  const {updateTimelineMutation, deleteTimelineMutation} =
+    useTimeline(selectedDate);
 
-  // 이거를 add나 update로 바꿔야하는데 말이지
-  const handleSubmit = async () => {
+  const handleUpdate = async () => {
     //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
-    //TODO: 시작시간이 끝나는 시간보다 작을경우 보내지 않도록
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
@@ -88,18 +74,23 @@ export default function CreateTimelineModal({
     const endHour = parseInt(form.endHour);
     const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
-      .minute(parseInt(form.endMinute));
+      .minute(parseInt(form.endHour));
 
-    const CreateTimelineRequest = {
+    const UpdateTimelineRequest = {
+      idx: updateTimeline!.idx,
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
       executionTime: endDateTime.diff(startDateTime, 'second'),
-      action: 'stop',
     };
 
-    console.log('CreateTimelineRequest', CreateTimelineRequest);
-    createTimelineMutation.mutate(CreateTimelineRequest);
+    updateTimelineMutation.mutate(UpdateTimelineRequest);
+    setModalVisible(false);
+  };
+
+  const handleDelete = (idx: number) => {
+    deleteTimelineMutation.mutate(idx);
+    Alert.alert('타임라인이 삭제되었습니다.');
     setModalVisible(false);
   };
 
@@ -137,7 +128,7 @@ export default function CreateTimelineModal({
             <TextInput
               keyboardType="numeric"
               style={[styles.inputTime, styles.timeText]}
-              placeholder={(clickedTime + 1).toString()}
+              placeholder={updateTimeline!.startHour.toString()}
               value={form.startHour}
               placeholderTextColor="#a4a4a4"
               onChangeText={(text: string) => {
@@ -168,7 +159,7 @@ export default function CreateTimelineModal({
             <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
             <TextInput
               keyboardType="numeric"
-              placeholder={(clickedTime + 1).toString()}
+              placeholder={updateTimeline!.endHour.toString()}
               value={form.endHour}
               ref={endHourRef}
               onSubmitEditing={() => endMinuteRef.current?.focus()}
@@ -195,9 +186,16 @@ export default function CreateTimelineModal({
             />
           </View>
 
-          <Pressable onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>추가</Text>
-          </Pressable>
+          <View style={styles.buttons}>
+            <Pressable
+              onPress={() => handleDelete(updateTimeline!.idx)}
+              style={styles.button}>
+              <Text style={styles.buttonText}>삭제</Text>
+            </Pressable>
+            <Pressable onPress={handleUpdate} style={styles.button}>
+              <Text style={styles.buttonText}>수정</Text>
+            </Pressable>
+          </View>
         </View>
       </CustomModal>
       {showTodoListModal && (
@@ -248,6 +246,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
   },
+  buttons: {flexDirection: 'row', justifyContent: 'space-around', gap: 10},
   button: {
     backgroundColor: '#808080',
     borderColor: Colors.light.borderDefault,
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    flex: 1,
   },
   buttonText: {
     fontSize: 14,

@@ -6,6 +6,7 @@ import CreateTimelineModal from '../components/CreateTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
+import UpdateTimelineModal from '../components/UpdateTimelineModal';
 
 export default function TimelineScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -17,6 +18,7 @@ export default function TimelineScreen() {
     setShowModal(true);
   };
   // 시간표 데이터를 생성하는 함수
+  // 이거 그냥 저장해놓는게 좋을거같은데.
   const generateTimeTableData = () => {
     let timeTableData = [];
     // 오전 5시부터 다음날 오전 4시까지 총 24줄 생성
@@ -58,7 +60,6 @@ export default function TimelineScreen() {
     <View style={styles.container}>
       <View style={styles.timeTable}>
         {generateTimeTableData()}
-
         {data?.map(timelineEvent => (
           <TimelineEvent
             timelineEvent={timelineEvent}
@@ -72,14 +73,14 @@ export default function TimelineScreen() {
         <CreateTimelineModal
           visible={showModal}
           setModalVisible={setShowModal}
-          clickedTime={clickedTime.current.toString()}
+          clickedTime={clickedTime.current}
         />
       )}
       {showUpdateTimelineModal && (
-        <CreateTimelineModal
+        <UpdateTimelineModal
           visible={showUpdateTimelineModal}
           setModalVisible={setShowUpdateTimelineModal}
-          updateTimeline={updateTimelineRef.current}
+          updateTimeline={updateTimelineRef.current!}
         />
       )}
     </View>
