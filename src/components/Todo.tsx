@@ -1,23 +1,22 @@
 import React, {useState} from 'react';
 import {
+  Animated,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
-  Platform,
-  Animated,
 } from 'react-native';
+import {PanGestureHandler, State} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useTodo from '../hooks/useTodos';
+import useSelectedDateStore from '../store/selecteDateStore';
+import {formatTime} from '../utils/formatDateTime';
 import CustomModal from './CustomModal';
 import WriteTodoModal from './WriteTodoModal';
-import useSelectedDateStore from '../store/selecteDateStore';
 import DefaultText from './ui/DefaultText';
-import dayjs from 'dayjs';
-import {PanGestureHandler, State} from 'react-native-gesture-handler';
-import {formatTime} from '../utils/formatDateTime';
 
 type TodoProps = {
   todo: TodoType;

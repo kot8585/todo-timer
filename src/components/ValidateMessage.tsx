@@ -2,7 +2,11 @@ import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function ValidateMessage({message}) {
+type ValidateMessageType = {
+  message: string;
+};
+
+export default function ValidateMessage({message}: ValidateMessageType) {
   return (
     <View style={styles.container}>
       <Icon name="info-outline" size={16} style={styles.icon} />

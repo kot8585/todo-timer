@@ -10,7 +10,7 @@ const Drawer = createDrawerNavigator();
 export default function DrawerStack() {
   return (
     <Drawer.Navigator
-      screenOptions={{drawerPosition: 'right', headerShown: false}}
+      screenOptions={{drawerPosition: 'left', headerShown: false}}
       drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen
         name="HomeScreen"

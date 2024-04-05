@@ -1,27 +1,31 @@
-import React, {useState} from 'react';
-import {
-  Keyboard,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
+import {Alert, Keyboard, SafeAreaView, StyleSheet, View} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
 import {signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
 import LoadingBar from '../components/ui/LoadingBar';
 import TextButton from '../components/ui/TextButton';
+import {FIREBASE_ERROR_MSG} from '../constants/constant';
 import useUserStore from '../store/userStore';
 
-//TODO: {navigation}: any 타입 지정하기
-export default function LogInScreen({navigation}: any) {
+export default function LogInScreen() {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
+
+  const [validateMsg, setValidateMsg] = useState({
+    emailMsg: undefined,
+    passwordMsg: undefined,
+  });
+
+  const emailRef = useRef<TextInput>();
+  const passwordRef = useRef<TextInput>();
 
   const handleChangeText = (name: string, value: string) => {
     setForm({...form, [name]: value});
@@ -30,11 +34,42 @@ export default function LogInScreen({navigation}: any) {
   const handleSubmit = async () => {
     setLoading(true);
     Keyboard.dismiss();
-    console.log('회원가입 form 출력', form);
-    const user = await signIn({email: form.email, password: form.password});
-    console.log('로그인된 유저', user);
-    useUserStore.setState({user: user.user});
-    setLoading(false);
+    console.log('로그인 form 출력', form);
+
+    if (!emailValidate(form.email)) {
+      setValidateMsg({
+        ...validateMsg,
+        emailMsg: '올바른 이메일 형식이 아닙니다',
+      });
+      if (emailRef.current) {
+        emailRef.current.focus();
+      }
+      return;
+    }
+
+    if (!passwordValidate(form.password)) {
+      console.log('비번 에러');
+      setValidateMsg({
+        ...validateMsg,
+        passwordMsg: '비밀번호는 6자 이상이여야 합니다.',
+      });
+      if (passwordRef.current) {
+        passwordRef.current.focus();
+      }
+      return;
+    }
+
+    try {
+      const user = await signIn({email: form.email, password: form.password});
+      console.log('로그인된 유저', user);
+      useUserStore.setState({user: user.user});
+    } catch (e) {
+      const msg = FIREBASE_ERROR_MSG[e.code] || '로그인 실패';
+      Alert.alert(msg);
+      console.error('로그인 에러: ', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,12 +78,28 @@ export default function LogInScreen({navigation}: any) {
       <BorderBottomInput
         placeholder="이메일"
         value={form.email}
-        onChangeText={(text: string) => handleChangeText('email', text)}
+        onChangeText={(text: string) => {
+          handleChangeText('email', text);
+          if (validateMsg.emailMsg && emailValidate(text)) {
+            validateMsg.emailMsg = undefined;
+          }
+        }}
+        onSubmitEditing={() => passwordRef.current?.focus()}
+        ref={emailRef}
+        autoComplete="email"
+        keyboardType="email-address"
+        autoFocus
       />
       <BorderBottomInput
         placeholder="비밀번호(8자 이상)"
         value={form.password}
-        onChangeText={(text: string) => handleChangeText('password', text)}
+        onChangeText={(text: string) => {
+          handleChangeText('password', text);
+          if (validateMsg.passwordMsg && passwordValidate(text)) {
+            validateMsg.passwordMsg = undefined;
+          }
+        }}
+        ref={passwordRef}
         secureTextEntry
       />
       <BackgroundColorButton text="로그인" onPress={handleSubmit} />
@@ -72,11 +123,16 @@ export default function LogInScreen({navigation}: any) {
           }}
         />
       </View>
-      <Pressable onPress={() => navigation.navigate('HomeScreen')}>
-        <Text>투두리스트로</Text>
-      </Pressable>
     </SafeAreaView>
   );
+}
+
+function emailValidate(email: string) {
+  return email.trim().length > 4 && email.includes('@') && email.includes('.');
+}
+
+function passwordValidate(password: string) {
+  return password.trim().length > 5;
 }
 
 const styles = StyleSheet.create({

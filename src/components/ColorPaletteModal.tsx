@@ -2,26 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomModal from './CustomModal';
-
-type ColorPaletteModal = {
-  visible: boolean;
-  setModalVisible: (value: boolean) => void;
-};
-
-export const COLORS = [
-  '#E4D4C8',
-  '#D0B49F',
-  '#A47551',
-  '#523A28',
-  '#ACBAAD',
-  '#C7A19B',
-  '#7B794C',
-  '#3B4C64',
-  '#F0F7E0',
-  '#D3BBDD',
-  '#BC96CA',
-  '#95BA61',
-];
+import {COLORS} from '../constants/constant';
 
 type ColorPaletteModalType = {
   visible: boolean;

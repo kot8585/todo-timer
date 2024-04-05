@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Alert,
-  Modal,
   Pressable,
   StyleSheet,
   Text,
@@ -48,8 +47,6 @@ export default function CreateTimelineModal({
   const endHourRef = useRef<TextInput>();
   const endMinuteRef = useRef<TextInput>();
 
-  // 이거 모달을 보여줄때만 필요한거라  모달 안보여주면 가져올 필요없는데
-  // 수정일때도 바로 query 날릴 필요 없음
   const {
     getAllTodos: {data: todos},
   } = useTodo(selectedDate);
@@ -137,8 +134,6 @@ export default function CreateTimelineModal({
       executionTime: endDateTime.diff(startDateTime, 'second'),
     };
 
-    //TODO: 비어있으면 요청 안가도록
-
     updateTimelineMutation.mutate(UpdateTimelineRequest);
     setModalVisible(false);
   };
@@ -164,6 +159,7 @@ export default function CreateTimelineModal({
     }));
     setShowTodoListModal(false);
   };
+
   return (
     <View>
       <CustomModal

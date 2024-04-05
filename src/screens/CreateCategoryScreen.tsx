@@ -8,7 +8,8 @@ import useCategory from '../hooks/useCategory';
 import useSelectedDateStore from '../store/selecteDateStore';
 import {CreateCategoryType} from '../api/types';
 import {useNavigation} from '@react-navigation/native';
-import ColorPaletteModal, {COLORS} from '../components/ColorPaletteModal';
+import ColorPaletteModal from '../components/ColorPaletteModal';
+import {COLORS} from '../constants/constant';
 
 export default function CreateCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);

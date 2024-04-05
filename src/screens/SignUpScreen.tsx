@@ -17,7 +17,6 @@ export default function SignUpScreen({navigation}: any) {
   });
 
   const [validateMsg, setValidateMsg] = useState({
-    //이거 undefined를 넣어돋 되나?
     emailMsg: undefined,
     passwordMsg: undefined,
     confirmPasswordMsg: undefined,
@@ -33,12 +32,12 @@ export default function SignUpScreen({navigation}: any) {
 
   const handleSubmit = async () => {
     Keyboard.dismiss();
+    setLoading(true);
     const {email, password} = form;
     const info = {email, password};
 
     console.log('errorMsg', validateMsg);
 
-    //signup validation
     if (!emailValidate(email)) {
       setValidateMsg({
         ...validateMsg,
@@ -54,7 +53,7 @@ export default function SignUpScreen({navigation}: any) {
       console.log('비번 에러');
       setValidateMsg({
         ...validateMsg,
-        passwordMsg: '비밀번호는 8자 이상이여야 합니다.',
+        passwordMsg: '비밀번호는 6자 이상이여야 합니다.',
       });
       if (passwordRef.current) {
         passwordRef.current.focus();
@@ -75,16 +74,15 @@ export default function SignUpScreen({navigation}: any) {
     }
 
     try {
-      //TODO: 에러처리 하기
-      setLoading(true);
       const {user} = await signUp(info);
       useUserStore.setState({user: user});
       await sendEmail(user);
       console.log('user: ', user);
       navigation.navigate('ConfirmEmailScreen');
     } catch (e) {
-      Alert.alert('실패');
-      console.log(e);
+      const msg = FIREBASE_ERROR_MSG[e.code] || '로그인 실패';
+      Alert.alert(msg);
+      console.error('회원가입 에러: ', e);
     } finally {
       setLoading(false);
     }
@@ -173,7 +171,7 @@ function emailValidate(email: string) {
 }
 
 function passwordValidate(password: string) {
-  return password.trim().length > 7;
+  return password.trim().length > 5;
 }
 
 function confirmPasswordValidate(password: string, confirmPassword: string) {
