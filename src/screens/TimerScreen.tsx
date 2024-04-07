@@ -18,15 +18,18 @@ export default function TimerScreen() {
   const [todo, setTodo] = useState(route.params?.todo);
 
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
+  const setToday = useSelectedDateStore(state => state.setToday);
   const navigation = useNavigation();
 
   const [executionTime, setExecutionTime] = useState<number>(0);
   const startDateTimeRef = useRef<dayjs.Dayjs>(dayjs());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [showNotTodayModal, setShowNotTodayModal] = useState(false);
 
   const startTimer = () => {
     if (selectedDate !== getToday()) {
       //TODO: 오늘날짜가 아니여서 측정할 수 없다고 하기
+      setShowNotTodayModal(true);
       return;
     }
     startDateTimeRef.current = dayjs();
@@ -38,6 +41,7 @@ export default function TimerScreen() {
   };
 
   const endTimer = () => {
+    console.log('클리어타이머 홏루!!!!!!!!!!!!!!!!');
     clearInterval(intervalRef.current!);
     intervalRef.current = null;
     setExecutionTime(0);
@@ -114,6 +118,25 @@ export default function TimerScreen() {
         position={'under'}>
         <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
       </CustomModal>
+      <CustomModal
+        visible={showNotTodayModal}
+        setModalVisible={setShowNotTodayModal}
+        position={'middle'}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>
+            오늘의 날짜로 가서 타이머를 실행시켜주세요
+          </Text>
+          <Pressable
+            onPress={() => {
+              setToday();
+              setTodo(undefined);
+              setShowNotTodayModal(false);
+            }}
+            style={styles.button}>
+            <Text style={styles.buttonText}>{'오늘로 가기'}</Text>
+          </Pressable>
+        </View>
+      </CustomModal>
     </View>
   );
 }
@@ -136,6 +159,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginRight: 6,
   }),
+  modalContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingTop: 15,
+    gap: 10,
+    paddingBottom: 3,
+  },
+  modalText: {
+    fontSize: 14,
+    color: Colors.light.bodyDefault,
+  },
   text: {
     fontSize: 14,
     color: Colors.light.bodyDefault,
@@ -160,6 +194,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: Colors.light.buttonDefault,
+    borderColor: Colors.light.borderDefault,
+    height: 36,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buttonText: {
+    fontSize: 14,
+    color: '#626262',
   },
   underWhiteBox: {
     width: '100%',

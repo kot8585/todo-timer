@@ -5,7 +5,7 @@ import {getToday} from '../utils/formatDateTime';
 interface SelectedDateStoreType {
   selectedDate: string;
   setSelectedDate: (date: string) => void;
-  setToday: (date: string) => void;
+  setToday: () => void;
 }
 
 const useSelectedDateStore = create<SelectedDateStoreType>(set => ({
