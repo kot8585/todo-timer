@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -39,8 +39,10 @@ export default function CreateCategoryScreen() {
           <View />
         </View>
         <View style={styles.bodyContainer}>
-          <BorderBottomInput
-            placeholder="투두 입력"
+          <TextInput
+            style={styles.textInput(form.color)}
+            placeholderTextColor={'#6B6B6B'}
+            placeholder="투두입력"
             value={form.title}
             onChangeText={(text: string) => handleChangeText('title', text)}
           />
@@ -104,6 +106,14 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.light.borderDefault,
     height: 48,
   },
+  textInput: (color: string) => ({
+    borderBottomWidth: 2,
+    borderBottomColor: color,
+    color: color,
+    fontSize: 16,
+    height: 42,
+    fontWeight: 'bold',
+  }),
   icon: {
     color: Colors.light.captionDefault,
   },

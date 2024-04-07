@@ -71,6 +71,7 @@ export default function EditCategoryScreen() {
         <TextInput
           style={styles.textInput(category?.color)}
           placeholderTextColor={'#6B6B6B'}
+          placeholder="투두입력"
           value={form.title}
           onChangeText={(text: string) => handleChangeText('title', text)}
         />

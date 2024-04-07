@@ -114,23 +114,25 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
           visible={showConfirmDeleteModal}
           setModalVisible={setConfirmDeleteModal}
           position={'middle'}>
-          <Text style={styles.buttonText}>할일을 삭제하시겠어요?</Text>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>할일을 삭제하시겠어요?</Text>
 
-          <View style={styles.horizontalButtons}>
-            <Pressable
-              onPress={() => {
-                setConfirmDeleteModal(false);
-              }}
-              style={styles.button}>
-              <Text style={styles.buttonText}>취소</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                deleteTodoMutation.mutate(todo.idx);
-              }}
-              style={styles.button}>
-              <Text style={styles.buttonText}>삭제</Text>
-            </Pressable>
+            <View style={styles.horizontalButtons}>
+              <Pressable
+                onPress={() => {
+                  setConfirmDeleteModal(false);
+                }}
+                style={styles.button}>
+                <Text style={styles.buttonText}>취소</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  deleteTodoMutation.mutate(todo.idx);
+                }}
+                style={styles.button}>
+                <Text style={styles.buttonText}>삭제</Text>
+              </Pressable>
+            </View>
           </View>
         </CustomModal>
       )}
@@ -181,6 +183,17 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: Colors.light.captionDefault,
+  },
+  modalContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingTop: 15,
+    gap: 10,
+    paddingBottom: 3,
+  },
+  modalText: {
+    fontSize: 14,
+    color: Colors.light.bodyDefault,
   },
   buttonText: {
     fontSize: 14,
