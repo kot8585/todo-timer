@@ -6,7 +6,6 @@ import {
 } from './types';
 
 export async function getCategoryAndTodos(userUid: string, date: string) {
-  console.log('datedate', date);
   const response = await client.get<GetCategoryAndTodosResponse[]>(
     '/categories',
     {

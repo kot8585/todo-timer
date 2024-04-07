@@ -11,7 +11,7 @@ import TextButton from '../components/ui/TextButton';
 import {FIREBASE_ERROR_MSG} from '../constants/constant';
 import useUserStore from '../store/userStore';
 
-export default function LogInScreen() {
+export default function SignInScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({

@@ -41,7 +41,6 @@ export default function TimerScreen() {
   };
 
   const endTimer = () => {
-    console.log('클리어타이머 홏루!!!!!!!!!!!!!!!!');
     clearInterval(intervalRef.current!);
     intervalRef.current = null;
     setExecutionTime(0);

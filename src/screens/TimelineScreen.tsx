@@ -49,7 +49,6 @@ export default function TimelineScreen() {
   const {
     getAllTimeline: {data, isLoading, error},
   } = useTimeline(selectedDate);
-  console.log('timeline 데이터', data);
 
   const [showUpdateTimelineModal, setShowUpdateTimelineModal] =
     useState<boolean>(false);

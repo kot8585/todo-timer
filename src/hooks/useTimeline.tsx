@@ -7,9 +7,6 @@ import {
 } from '../api/timeline';
 import useUserStore from '../store/userStore';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
 
 export default function useTimeline(selectedDate: string) {
   const queryClient = useQueryClient();
@@ -23,8 +20,6 @@ export default function useTimeline(selectedDate: string) {
       .set('hour', 5)
       .set('minute', 0)
       .set('second', 0)
-      // 9시간 늦게 시간 세팅해서 백엔드로 보내는듯한데..
-      .add(9, 'hour')
       .format();
     return getTimelines(userUid, startDateTime);
   });

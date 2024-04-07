@@ -28,6 +28,7 @@ function calculateDate(date: string, hour: number) {
   if (hour < 5) {
     return dateFormat.add(1, 'day');
   }
+  console.log('dateFormat', dateFormat);
   return dateFormat;
 }
 
