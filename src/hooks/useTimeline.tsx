@@ -7,6 +7,9 @@ import {
 } from '../api/timeline';
 import useUserStore from '../store/userStore';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 export default function useTimeline(selectedDate: string) {
   const queryClient = useQueryClient();
@@ -20,7 +23,10 @@ export default function useTimeline(selectedDate: string) {
       .set('hour', 5)
       .set('minute', 0)
       .set('second', 0)
+      .utc()
       .format();
+
+    console.log('조회 startDateTime', startDateTime);
     return getTimelines(userUid, startDateTime);
   });
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
-import {TimelineType} from '../api/types';
+import {GetTimelineResponse, TimelineType} from '../api/types';
+import dayjs from 'dayjs';
 
 type TimelineEventProps = {
-  timelineEvent: TimelineType;
+  timelineEvent: GetTimelineResponse;
   updateTimelineRef: React.MutableRefObject<TimelineType | undefined>;
   setShowUpdateTimelineModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -15,11 +16,10 @@ export default function TimelineEvent({
   updateTimelineRef,
   setShowUpdateTimelineModal,
 }: TimelineEventProps) {
+  console.log('timelineEvent 클래스', timelineEvent);
   const {timelinePositions, widestTimelineOrdinary} = getTimelinePosition(
-    Number(timelineEvent.startHour),
-    Number(timelineEvent.startMinute),
-    Number(timelineEvent.endHour),
-    Number(timelineEvent.endMinute),
+    timelineEvent.startDateTime,
+    timelineEvent.endDateTime,
     timelineEvent.executionTime,
   );
 
@@ -58,12 +58,18 @@ export default function TimelineEvent({
 }
 
 function getTimelinePosition(
-  startHour: number,
-  startMinute: number,
-  endHour: number,
-  endMinute: number,
+  startDateTime: string,
+  endDateTime: string,
   executionTime: number,
 ) {
+  const formatStartDateTime = dayjs(startDateTime);
+  const startHour = formatStartDateTime.get('hour');
+  const startMinute = formatStartDateTime.get('minute');
+
+  const formatEndDateTime = dayjs(endDateTime);
+  const endHour = formatEndDateTime.get('hour');
+  const endMinute = formatEndDateTime.get('minute');
+  console.log('formatStartDateTime', formatStartDateTime, 'startHour');
   const timelinePositions = [];
   let widestTimelineOrdinary = 1;
   let widestWidth = 0;
@@ -71,11 +77,9 @@ function getTimelinePosition(
   const viewCount = (() => {
     // 다음날로 넘어가면 1시부터 시작하기때문에 24로 나눔
     const endHourStartHourSubtract = (endHour % 24) - (startHour % 24) + 1;
-    if (endMinute === 0) {
-      return endHourStartHourSubtract - 1;
-    }
     return endHourStartHourSubtract;
   })();
+  console.log('viewCount', viewCount);
 
   for (let i = 1; i <= viewCount; i++) {
     const width = (() => {
@@ -85,6 +89,10 @@ function getTimelinePosition(
       }
       if (i === 1) {
         return (60 - startMinute) * 1.5;
+      }
+
+      if (i === viewCount && endMinute === 0) {
+        return 0;
       }
 
       if (i === viewCount) {

@@ -1,9 +1,14 @@
-import {CreateTimelineType, TimelineType, UpdateTimelineRequest} from './types';
+import {
+  CreateTimelineType,
+  GetTimelineResponse,
+  TimelineType,
+  UpdateTimelineRequest,
+} from './types';
 import client from './client';
 
 export async function getTimelines(userUid: string | undefined, date: string) {
   console.log('timline조회 요청: ', date);
-  const response = await client.get<TimelineType[]>('/timelines', {
+  const response = await client.get<GetTimelineResponse[]>('/timelines', {
     params: {
       userUid: userUid,
       date: date,

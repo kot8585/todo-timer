@@ -54,7 +54,6 @@ export type GetCategoryAndTodosResponse = {
 
 export type TimelineType = {
   idx: number;
-  // 이거 string 맞나!!
   todoIdx: number;
   startHour: number;
   startMinute: number;
@@ -63,6 +62,16 @@ export type TimelineType = {
   executionTime: number;
   todoTitle: string;
   todoColor: string;
+};
+
+export type GetTimelineResponse = {
+  idx: number;
+  todoIdx: number;
+  executionTime: number;
+  todoTitle: string;
+  todoColor: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 export type CreateTimelineType = {
