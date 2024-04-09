@@ -3,8 +3,8 @@ import {create} from 'zustand';
 import {getToday} from '../utils/formatDateTime';
 
 interface SelectedDateStoreType {
-  selectedDate: string;
-  setSelectedDate: (date: string) => void;
+  selectedDate: dayjs.Dayjs;
+  setSelectedDate: (date: dayjs.Dayjs) => void;
   setToday: () => void;
 }
 

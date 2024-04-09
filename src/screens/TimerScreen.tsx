@@ -27,8 +27,7 @@ export default function TimerScreen() {
   const [showNotTodayModal, setShowNotTodayModal] = useState(false);
 
   const startTimer = () => {
-    if (selectedDate !== getToday()) {
-      //TODO: 오늘날짜가 아니여서 측정할 수 없다고 하기
+    if (selectedDate.format('YYYY-MM-DD') !== getToday().format('YYYY-MM-DD')) {
       setShowNotTodayModal(true);
       return;
     }
@@ -100,7 +99,14 @@ export default function TimerScreen() {
               <DefaultText text="중지" />
             </Pressable>
           ) : (
-            <Pressable onPress={startTimer} disabled={!todo?.title}>
+            <Pressable
+              onPress={() => {
+                if (!todo) {
+                  setShowTodoListModal(true);
+                } else {
+                  startTimer();
+                }
+              }}>
               <DefaultText text="시작" />
             </Pressable>
           )}
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    alignSelf: 'stretch',
   },
   buttonText: {
     fontSize: 14,
