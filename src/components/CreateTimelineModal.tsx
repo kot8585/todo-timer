@@ -1,13 +1,6 @@
 import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -52,12 +45,17 @@ export default function CreateTimelineModal({
   const [form, setForm] = useState({
     todoIdx: undefined,
     todoColor: '#696969',
-    todoTitle: '작성된 할일이 없습니다',
+    todoTitle: '작성된 투두가 없어요',
     date: selectedDate,
     startHour: clickedTime.toString().padStart(2, '0'),
     startMinute: '00',
-    // TODO: 24시에서 더하면 1이 되어야함
-    endHour: (clickedTime + 1).toString().padStart(2, '0'),
+
+    endHour: dayjs()
+      .set('hour', clickedTime)
+      .add(1, 'hour')
+      .get('hour')
+      .toString()
+      .padStart(2, '0'),
     endMinute: '00',
   });
 
@@ -77,20 +75,21 @@ export default function CreateTimelineModal({
   };
   const {createTimelineMutation} = useTimeline(selectedDate);
 
-  // 이거를 add나 update로 바꿔야하는데 말이지
   const handleSubmit = async () => {
     //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
     //TODO: 시작시간이 끝나는 시간보다 작을경우 보내지 않도록
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
-      .minute(parseInt(form.startMinute));
+      .minute(parseInt(form.startMinute))
+      .utc();
 
     const endHour = parseInt(form.endHour);
     const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
-      .minute(parseInt(form.endMinute));
-
+      .minute(parseInt(form.endMinute))
+      .utc();
+    console.log('startDateTime, endDateTime', startDateTime, endDateTime);
     const CreateTimelineRequest = {
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
@@ -121,7 +120,7 @@ export default function CreateTimelineModal({
   };
 
   return (
-    <View>
+    <>
       <CustomModal
         visible={visible}
         setModalVisible={setModalVisible}
@@ -209,7 +208,7 @@ export default function CreateTimelineModal({
           <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
         </CustomModal>
       )}
-    </View>
+    </>
   );
 }
 

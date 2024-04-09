@@ -17,9 +17,21 @@ export default function TimelineEvent({
   setShowUpdateTimelineModal,
 }: TimelineEventProps) {
   console.log('timelineEvent 클래스', timelineEvent);
+
+  //TODO: 이거 class로 사용할 수 있나 보기...
+  const formatStartDateTime = dayjs(timelineEvent.startDateTime);
+  const startHour = formatStartDateTime.get('hour');
+  const startMinute = formatStartDateTime.get('minute');
+
+  const formatEndDateTime = dayjs(timelineEvent.endDateTime);
+  const endHour = formatEndDateTime.get('hour');
+  const endMinute = formatEndDateTime.get('minute');
+
   const {timelinePositions, widestTimelineOrdinary} = getTimelinePosition(
-    timelineEvent.startDateTime,
-    timelineEvent.endDateTime,
+    startHour,
+    startMinute,
+    endHour,
+    endMinute,
     timelineEvent.executionTime,
   );
 
@@ -27,7 +39,13 @@ export default function TimelineEvent({
     <Pressable
       key={index}
       onPress={() => {
-        updateTimelineRef.current = timelineEvent;
+        updateTimelineRef.current = {
+          ...timelineEvent,
+          startHour,
+          startMinute,
+          endHour,
+          endMinute,
+        };
         setShowUpdateTimelineModal(true);
       }}
       style={{
@@ -58,18 +76,12 @@ export default function TimelineEvent({
 }
 
 function getTimelinePosition(
-  startDateTime: string,
-  endDateTime: string,
+  startHour: number,
+  startMinute: number,
+  endHour: number,
+  endMinute: number,
   executionTime: number,
 ) {
-  const formatStartDateTime = dayjs(startDateTime);
-  const startHour = formatStartDateTime.get('hour');
-  const startMinute = formatStartDateTime.get('minute');
-
-  const formatEndDateTime = dayjs(endDateTime);
-  const endHour = formatEndDateTime.get('hour');
-  const endMinute = formatEndDateTime.get('minute');
-  console.log('formatStartDateTime', formatStartDateTime, 'startHour');
   const timelinePositions = [];
   let widestTimelineOrdinary = 1;
   let widestWidth = 0;

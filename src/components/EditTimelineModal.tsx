@@ -17,7 +17,7 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import CustomModal from './CustomModal';
 import TodoList from './TodoList';
 
-type CreateTimelineModalProps = {
+type EditTimelineModalProps = {
   visible: boolean;
   setModalVisible: (value: boolean) => void;
   updateTimeline: TimelineType;
@@ -31,11 +31,11 @@ function calculateDate(date: string, hour: number) {
   return dateFormat;
 }
 
-export default function UpdateTimelineModal({
+export default function EditTimelineModal({
   visible,
   setModalVisible,
   updateTimeline,
-}: CreateTimelineModalProps) {
+}: EditTimelineModalProps) {
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
@@ -74,7 +74,7 @@ export default function UpdateTimelineModal({
     const endHour = parseInt(form.endHour);
     const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
-      .minute(parseInt(form.endHour));
+      .minute(parseInt(form.endMinute));
 
     const UpdateTimelineRequest = {
       idx: updateTimeline!.idx,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   inputTime: {
     backgroundColor: '#F1F1F1',
     borderRadius: 8,
-    padding: 10,
+    padding: 12,
   },
   buttons: {flexDirection: 'row', justifyContent: 'space-around', gap: 10},
   button: {
