@@ -1,10 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {CategoryType, TodoType} from '../api/types';
 import TodoList from '../components/TodoList';
 import WriteTodoModal from '../components/WriteTodoModal';
-import dayjs from 'dayjs';
 
 export default function TodoListScreen() {
   const navigation = useNavigation();
@@ -27,7 +26,7 @@ export default function TodoListScreen() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TodoList
         categoryHandlePress={categoryHandlePress}
         todoHandlePress={todoHandlePress}
@@ -44,3 +43,9 @@ export default function TodoListScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

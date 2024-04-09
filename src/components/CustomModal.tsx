@@ -26,12 +26,13 @@ export default function CustomModal({
             ? styles.middleBackground
             : styles.underBackground
         }>
-        <View
+        <Pressable
+          onPress={() => {}}
           style={
             position === 'middle' ? styles.middleWhiteBox : styles.underWhiteBox
           }>
           {children}
-        </View>
+        </Pressable>
       </Pressable>
     </Modal>
   );
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   middleWhiteBox: {
-    width: 300,
+    minWidth: 300,
     backgroundColor: Colors.light.background,
     elevation: 2,
     borderRadius: 8,

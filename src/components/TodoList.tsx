@@ -1,10 +1,12 @@
 import React from 'react';
-import {SectionList, StyleSheet, Text} from 'react-native';
+import {ActivityIndicator, SectionList, StyleSheet, Text} from 'react-native';
 import {CategoryType, TodoType} from '../api/types';
-import Category from './Category';
-import Todo from './Todo';
 import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
+import Category from './Category';
+import Todo from './Todo';
+import Loading from './ui/Loading';
+import LoadingModal from './ui/LoadingModal';
 
 type TodoListProps = {
   categoryHandlePress?: (category: CategoryType) => void;
@@ -24,19 +26,20 @@ export default function TodoList({
   } = useTodo(selectedDate);
 
   if (isLoading) {
-    return <Text>로딩 중...</Text>;
+    return <ActivityIndicator size="large" style={{flex: 1}} />;
   }
   if (error) {
     return <Text>에러 발생</Text>;
   }
+
   if (!data) {
-    return <Text>아직 데이터 없음</Text>;
+    return <Text>카테고리를 추가해주세요</Text>;
   }
 
   return (
     <SectionList
       sections={data}
-      keyExtractor={index => index.title}
+      keyExtractor={index => index.idx.toString()}
       renderItem={({item}) => (
         <Todo
           todo={item}

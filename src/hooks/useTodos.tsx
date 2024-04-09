@@ -2,21 +2,16 @@ import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {getCategoryAndTodos} from '../api/category';
 import {createTodo, deleteTodo, updateTodo} from '../api/todo';
 import useUserStore from '../store/userStore';
+import dayjs from 'dayjs';
 
-export default function useTodo(selectedDate: string) {
+export default function useTodo(selectedDate: dayjs.Dayjs) {
   const queryClient = useQueryClient();
   const user = useUserStore(state => state.user);
   const userUid = user?.uid;
-  console.log(
-    '실행 --- 왤케 실행을 많이 하지?',
-    'userUid: ' + userUid,
-    'selectedDate: ' + selectedDate,
-  );
 
   const getAllTodos = useQuery(
     ['todos', userUid, selectedDate],
     () => {
-      console.log('getAllTodos 실행');
       return getCategoryAndTodos(userUid, selectedDate);
     },
     {enabled: !!userUid},
@@ -32,6 +27,7 @@ export default function useTodo(selectedDate: string) {
       queryClient.invalidateQueries({
         queryKey: ['todos', userUid, selectedDate],
       });
+      console.log('createTodoMutation의 selectedDate', selectedDate);
       console.log('useMutation 성공', data);
     },
   });

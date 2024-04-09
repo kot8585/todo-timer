@@ -11,6 +11,7 @@ import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useSelectedDateStore from '../store/selecteDateStore';
 import useTodo from '../hooks/useTodos';
+import {convertLocalToUtc} from '../utils/formatDateTime';
 
 type WriteTodoModal = {
   visible: boolean;
@@ -45,7 +46,7 @@ export default function WriteTodoModal({
       : createTodoMutation.mutate({
           ...form,
           userUid: 'WouU7QJQKrTyvYXWgXLrgyyf9dh1',
-          startDate: selectedDate,
+          startDate: convertLocalToUtc(selectedDate),
           categoryIdx: categoryIdx,
           // 일단 todoColor는 catgory를 따라가도록 할게. 나중에 설정할 수 있도록 해야함
           color: categoryColor,

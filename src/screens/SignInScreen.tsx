@@ -6,7 +6,7 @@ import {signIn} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
-import LoadingBar from '../components/ui/LoadingBar';
+import LoadingBar from '../components/ui/LoadingModal';
 import TextButton from '../components/ui/TextButton';
 import {FIREBASE_ERROR_MSG} from '../constants/constant';
 import useUserStore from '../store/userStore';

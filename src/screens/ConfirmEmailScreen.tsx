@@ -5,7 +5,7 @@ import {changeEmail, getLogInUser} from '../../lib/auth';
 import {Colors} from '../assets/color';
 import EmailConfirmModal from '../components/EmailConfirmModal';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
-import LoadingBar from '../components/ui/LoadingBar';
+import LoadingBar from '../components/ui/LoadingModal';
 import TextButton from '../components/ui/TextButton';
 import useUserStore from '../store/userStore';
 

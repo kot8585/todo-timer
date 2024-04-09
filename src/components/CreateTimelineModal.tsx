@@ -18,7 +18,7 @@ type CreateTimelineModalProps = {
 
 function calculateDate(date: string, hour: number) {
   const dateFormat = dayjs(date);
-  if (hour < 5) {
+  if (hour <= 5) {
     return dateFormat.add(1, 'day');
   }
   console.log('dateFormat', dateFormat);
@@ -30,7 +30,6 @@ export default function CreateTimelineModal({
   setModalVisible,
   clickedTime,
 }: CreateTimelineModalProps) {
-  console.log('clickedTime', clickedTime);
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
@@ -76,8 +75,6 @@ export default function CreateTimelineModal({
   const {createTimelineMutation} = useTimeline(selectedDate);
 
   const handleSubmit = async () => {
-    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
-    //TODO: 시작시간이 끝나는 시간보다 작을경우 보내지 않도록
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
@@ -89,6 +86,14 @@ export default function CreateTimelineModal({
       .hour(endHour)
       .minute(parseInt(form.endMinute))
       .utc();
+
+    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
+    const executionTime = endDateTime.diff(startDateTime, 'second');
+    if (executionTime < 60) {
+      console.log('toast 띄우기');
+      return;
+    }
+
     console.log('startDateTime, endDateTime', startDateTime, endDateTime);
     const CreateTimelineRequest = {
       todoIdx: form.todoIdx,
@@ -194,7 +199,6 @@ export default function CreateTimelineModal({
               style={[styles.inputTime, styles.timeText]}
             />
           </View>
-
           <Pressable onPress={handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>추가</Text>
           </Pressable>
@@ -226,6 +230,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
+  todoText: {
+    fontSize: 14,
+  },
   todoColor: (backgroundColor: string) => ({
     backgroundColor: backgroundColor,
     width: 25,
@@ -248,6 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
   },
+
   button: {
     backgroundColor: '#808080',
     borderColor: Colors.light.borderDefault,
@@ -255,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    flexDirection: 'row',
   },
   buttonText: {
     fontSize: 14,

@@ -16,8 +16,6 @@ export default function TimelineEvent({
   updateTimelineRef,
   setShowUpdateTimelineModal,
 }: TimelineEventProps) {
-  console.log('timelineEvent 클래스', timelineEvent);
-
   //TODO: 이거 class로 사용할 수 있나 보기...
   const formatStartDateTime = dayjs(timelineEvent.startDateTime);
   const startHour = formatStartDateTime.get('hour');
@@ -28,6 +26,8 @@ export default function TimelineEvent({
   const endMinute = formatEndDateTime.get('minute');
 
   const {timelinePositions, widestTimelineOrdinary} = getTimelinePosition(
+    formatStartDateTime,
+    formatEndDateTime,
     startHour,
     startMinute,
     endHour,
@@ -76,6 +76,8 @@ export default function TimelineEvent({
 }
 
 function getTimelinePosition(
+  formatStartDateTime: dayjs.Dayjs,
+  formatEndDateTime: dayjs.Dayjs,
   startHour: number,
   startMinute: number,
   endHour: number,
@@ -88,10 +90,9 @@ function getTimelinePosition(
 
   const viewCount = (() => {
     // 다음날로 넘어가면 1시부터 시작하기때문에 24로 나눔
-    const endHourStartHourSubtract = (endHour % 24) - (startHour % 24) + 1;
-    return endHourStartHourSubtract;
+    const diffHour = formatEndDateTime.diff(formatStartDateTime, 'hour');
+    return diffHour;
   })();
-  console.log('viewCount', viewCount);
 
   for (let i = 1; i <= viewCount; i++) {
     const width = (() => {

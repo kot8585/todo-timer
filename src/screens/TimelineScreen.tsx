@@ -3,10 +3,10 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {TimelineType} from '../api/types';
 import {Colors} from '../assets/color';
 import CreateTimelineModal from '../components/CreateTimelineModal';
+import EditTimelineModal from '../components/EditTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
-import UpdateTimelineModal from '../components/UpdateTimelineModal';
 
 export default function TimelineScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -32,10 +32,10 @@ export default function TimelineScreen() {
           key={hour}
           style={styles.row}
           onPress={() => {
-            handlePress(hour);
+            handlePress(hourText);
           }}>
           {/* 컬럼 생성 */}
-          <Text style={styles.hourText}>{hourText === 0 ? 24 : hourText}</Text>
+          <Text style={styles.hourText}>{hourText}</Text>
 
           {/* 10분 간격의 컬럼 생성 */}
           {[1, 2, 3, 4, 5, 6].map((_, index) => (
@@ -76,7 +76,7 @@ export default function TimelineScreen() {
         />
       )}
       {showUpdateTimelineModal && (
-        <UpdateTimelineModal
+        <EditTimelineModal
           visible={showUpdateTimelineModal}
           setModalVisible={setShowUpdateTimelineModal}
           updateTimeline={updateTimelineRef.current!}

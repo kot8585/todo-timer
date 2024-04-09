@@ -5,7 +5,7 @@ type LoadingProps = {
   loading: boolean;
 };
 
-export default function LoadingBar({loading}: LoadingProps) {
+export default function LoadingModal({loading}: LoadingProps) {
   return (
     <Modal visible={loading} transparent={true}>
       <View style={styles.modalBackground}>
@@ -17,7 +17,7 @@ export default function LoadingBar({loading}: LoadingProps) {
 
 const styles = StyleSheet.create({
   modalBackground: {
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    backgroundColor: 'rgba(0, 0, 0, 0.147)',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

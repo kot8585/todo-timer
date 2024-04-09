@@ -7,7 +7,6 @@ import {Colors} from '../assets/color';
 import {formatTime} from '../utils/formatDateTime';
 
 type CategoryProps = {
-  //이거 클래스로 만들어서 하는게 편할거같은데
   category: CategoryType;
   handlePress?: (category: CategoryType) => void;
   showDotsIcon: boolean;
@@ -22,8 +21,11 @@ export default function Category({
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={handlePress ? () => handlePress(category) : () => {}}>
+      <Pressable
+        onPress={handlePress ? () => handlePress(category) : () => {}}
+        style={styles.categoryTextContainer}>
         <Text style={styles.categoryText}>{category.title}</Text>
+        <Icon name="plus" size={16} color={'#808080'} />
       </Pressable>
 
       <View style={{flexGrow: 1}} />
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     alignItems: 'center',
   },
+  categoryTextContainer: {flexDirection: 'row', alignItems: 'center', gap: 4},
   categoryText: {fontSize: 16, fontWeight: '700', color: '#535353'},
   timeText: {
     color: Colors.light.captionDefault,

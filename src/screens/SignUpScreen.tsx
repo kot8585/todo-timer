@@ -5,7 +5,7 @@ import {sendEmail, signUp} from '../../lib/auth';
 import ValidateMessage from '../components/ValidateMessage';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
-import LoadingBar from '../components/ui/LoadingBar';
+import LoadingBar from '../components/ui/LoadingModal';
 import useUserStore from '../store/userStore';
 
 export default function SignUpScreen({navigation}: any) {
