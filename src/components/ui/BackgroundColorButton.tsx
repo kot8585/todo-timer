@@ -1,18 +1,27 @@
 import React from 'react';
-import {GestureResponderEvent, Pressable, StyleSheet, Text} from 'react-native';
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from 'react-native';
 import {Colors} from '../../assets/color';
 
 type BackgroundColorButtonProps = {
   text: string;
   onPress: ((event: GestureResponderEvent) => void) | null | undefined;
+  buttonStyle?: StyleProp<ViewStyle>;
 };
 
 export default function BackgroundColorButton({
   text,
   onPress,
+  buttonStyle,
 }: BackgroundColorButtonProps) {
   return (
-    <Pressable onPress={onPress} style={styles.button}>
+    <Pressable onPress={onPress} style={[styles.button, buttonStyle]}>
       <Text style={styles.text}>{text}</Text>
     </Pressable>
   );

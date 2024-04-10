@@ -113,7 +113,8 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
         <CustomModal
           visible={showConfirmDeleteModal}
           setModalVisible={setConfirmDeleteModal}
-          position={'middle'}>
+          position={'middle'}
+          whiteBoxStyle={{width: 300}}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>할일을 삭제하시겠어요?</Text>
 
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
     color: Colors.light.captionDefault,
   },
   modalContainer: {
-    width: '100%',
+    // width: '100%',
     alignItems: 'center',
     paddingTop: 15,
     gap: 10,

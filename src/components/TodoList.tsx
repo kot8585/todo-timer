@@ -7,6 +7,7 @@ import Category from './Category';
 import Todo from './Todo';
 import Loading from './ui/Loading';
 import LoadingModal from './ui/LoadingModal';
+import Error from './Error';
 
 type TodoListProps = {
   categoryHandlePress?: (category: CategoryType) => void;
@@ -22,14 +23,14 @@ export default function TodoList({
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
   const {
-    getAllTodos: {data, isLoading, error},
+    getAllTodos: {data, isLoading, error, refetch},
   } = useTodo(selectedDate);
 
   if (isLoading) {
     return <ActivityIndicator size="large" style={{flex: 1}} />;
   }
   if (error) {
-    return <Text>에러 발생</Text>;
+    return <Error handlePress={refetch} />;
   }
 
   if (!data) {

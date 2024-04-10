@@ -16,6 +16,7 @@ import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
 import CustomModal from './CustomModal';
 import TodoList from './TodoList';
+import Toast from 'react-native-toast-message';
 
 type EditTimelineModalProps = {
   visible: boolean;
@@ -25,7 +26,8 @@ type EditTimelineModalProps = {
 
 function calculateDate(date: string, hour: number) {
   const dateFormat = dayjs(date);
-  if (hour < 5) {
+  console.log(dateFormat, '::::', hour);
+  if (hour <= 5) {
     return dateFormat.add(1, 'day');
   }
   return dateFormat;
@@ -39,6 +41,7 @@ export default function EditTimelineModal({
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
 
+  const startHourRef = useRef<TextInput>();
   const startMinuteRef = useRef<TextInput>();
   const endHourRef = useRef<TextInput>();
   const endMinuteRef = useRef<TextInput>();
@@ -65,23 +68,85 @@ export default function EditTimelineModal({
     useTimeline(selectedDate);
 
   const handleUpdate = async () => {
-    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
-    const startHour = parseInt(form.startHour);
+    if (!form.startHour) {
+      startHourRef.current?.focus();
+      return;
+    }
+    const startHour = parseInt(form.startHour, 10);
+    if (startHour > 23 || startHour < 0 || isNaN(startHour)) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 23까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
+    const endHour = parseInt(form.endHour, 10);
+    if (endHour > 23 || endHour < 0 || isNaN(endHour)) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 23까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
+
+    const startMinute = parseInt(form.startMinute, 10);
+    const endMinute = parseInt(form.endMinute, 10);
+    if (
+      startMinute > 61 ||
+      startMinute < 0 ||
+      isNaN(startMinute) ||
+      endMinute > 61 ||
+      endMinute < 0 ||
+      isNaN(endMinute)
+    ) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 60까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
+    if (!form.startMinute) {
+      startMinuteRef.current?.focus();
+      return;
+    }
+    if (!form.endHour) {
+      endHourRef.current?.focus();
+      return;
+    }
+    if (!form.endMinute) {
+      endMinuteRef.current?.focus();
+      return;
+    }
+
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
       .minute(parseInt(form.startMinute));
 
-    const endHour = parseInt(form.endHour);
     const endDateTime = dayjs(calculateDate(selectedDate, endHour))
       .hour(endHour)
       .minute(parseInt(form.endMinute));
+    console.log(startDateTime, '::', endDateTime);
+    //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
+    const executionTime = endDateTime.diff(startDateTime, 'second');
+    console.log('executionTime', executionTime);
+    if (executionTime < 60) {
+      Toast.show({
+        type: 'info',
+        text1: '1분 이상의 시간만 저장할 수 있어요',
+        position: 'top',
+      });
+      return;
+    }
 
     const UpdateTimelineRequest = {
       idx: updateTimeline!.idx,
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
-      executionTime: endDateTime.diff(startDateTime, 'second'),
+      executionTime: executionTime,
     };
 
     updateTimelineMutation.mutate(UpdateTimelineRequest);
@@ -126,7 +191,7 @@ export default function EditTimelineModal({
           </Pressable>
           <View style={styles.time}>
             <TextInput
-              keyboardType="numeric"
+              keyboardType="number-pad"
               style={[styles.inputTime, styles.timeText]}
               placeholder={updateTimeline!.startHour.toString()}
               value={form.startHour}
@@ -137,6 +202,7 @@ export default function EditTimelineModal({
                   startMinuteRef.current?.focus();
                 }
               }}
+              ref={startHourRef}
               autoFocus
               onSubmitEditing={() => startMinuteRef.current?.focus()}
             />

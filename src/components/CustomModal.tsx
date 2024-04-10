@@ -1,5 +1,7 @@
 import React, {ReactNode} from 'react';
-import {Modal, Pressable, StyleSheet, View} from 'react-native';
+import {Modal, Pressable, StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import Toast from 'react-native-toast-message';
+import {toastConfig} from '../../App';
 import {Colors} from '../assets/color';
 
 type CustomModalProps = {
@@ -7,6 +9,7 @@ type CustomModalProps = {
   setModalVisible: (value: boolean) => void;
   children: ReactNode;
   position: 'middle' | 'under';
+  whiteBoxStyle?: StyleProp<ViewStyle>;
 };
 
 export default function CustomModal({
@@ -14,6 +17,7 @@ export default function CustomModal({
   setModalVisible,
   children,
   position,
+  whiteBoxStyle,
 }: CustomModalProps) {
   return (
     <Modal visible={visible} transparent={true}>
@@ -28,12 +32,17 @@ export default function CustomModal({
         }>
         <Pressable
           onPress={() => {}}
-          style={
-            position === 'middle' ? styles.middleWhiteBox : styles.underWhiteBox
-          }>
+          style={[
+            position === 'middle'
+              ? styles.middleWhiteBox
+              : styles.underWhiteBox,
+            ,
+            whiteBoxStyle,
+          ]}>
           {children}
         </Pressable>
       </Pressable>
+      <Toast config={toastConfig} />
     </Modal>
   );
 }

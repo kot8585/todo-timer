@@ -9,6 +9,7 @@ import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
 import CustomModal from './CustomModal';
 import TodoList from './TodoList';
+import Toast from 'react-native-toast-message';
 
 type CreateTimelineModalProps = {
   visible: boolean;
@@ -32,7 +33,7 @@ export default function CreateTimelineModal({
 }: CreateTimelineModalProps) {
   const [showTodoListModal, setShowTodoListModal] = useState(false);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
-
+  const startHourRef = useRef<TextInput>();
   const startMinuteRef = useRef<TextInput>();
   const endHourRef = useRef<TextInput>();
   const endMinuteRef = useRef<TextInput>();
@@ -75,6 +76,30 @@ export default function CreateTimelineModal({
   const {createTimelineMutation} = useTimeline(selectedDate);
 
   const handleSubmit = async () => {
+    if (!form.todoIdx) {
+      Toast.show({
+        type: 'info',
+        text1: '투두를 선택해주세요',
+        position: 'top',
+      });
+      return;
+    }
+    if (!form.startHour) {
+      startHourRef.current?.focus();
+      return;
+    }
+    if (!form.startMinute) {
+      startHourRef.current?.focus();
+      return;
+    }
+    if (!form.endHour) {
+      startHourRef.current?.focus();
+      return;
+    }
+    if (!form.endMinute) {
+      startHourRef.current?.focus();
+      return;
+    }
     const startHour = parseInt(form.startHour);
     const startDateTime = dayjs(calculateDate(selectedDate, startHour))
       .hour(startHour)
@@ -89,8 +114,13 @@ export default function CreateTimelineModal({
 
     //TODO: executionTime이 1분 이하일 경우 추가하지 않도록 하기s
     const executionTime = endDateTime.diff(startDateTime, 'second');
+    console.log('executionTime', executionTime);
     if (executionTime < 60) {
-      console.log('toast 띄우기');
+      Toast.show({
+        type: 'info',
+        text1: '1분 이상의 시간만 저장할 수 있어요',
+        position: 'top',
+      });
       return;
     }
 
@@ -99,7 +129,7 @@ export default function CreateTimelineModal({
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
-      executionTime: endDateTime.diff(startDateTime, 'second'),
+      executionTime: executionTime,
       action: 'stop',
     };
 
@@ -151,6 +181,7 @@ export default function CreateTimelineModal({
                   startMinuteRef.current?.focus();
                 }
               }}
+              ref={startHourRef}
               autoFocus
               onSubmitEditing={() => startMinuteRef.current?.focus()}
             />

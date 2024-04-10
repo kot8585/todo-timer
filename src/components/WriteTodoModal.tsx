@@ -40,8 +40,9 @@ export default function WriteTodoModal({
     // 카테고리명은 어떻게 가져오지?
     todo
       ? updateTodoMutation.mutate({
-          ...form,
           ...todo,
+          title: form.title,
+          categoryIdx: form.categoryIdx,
         })
       : createTodoMutation.mutate({
           ...form,
