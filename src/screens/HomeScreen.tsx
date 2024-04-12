@@ -21,13 +21,15 @@ export default function HomeScreen() {
         <Pressable
           onPress={() => {
             navigation.openDrawer();
-          }}>
+          }}
+          hitSlop={10}>
           <Icon name="menu" size={24} style={styles.icon} />
         </Pressable>
         <Pressable
           onPress={() => {
             setShowCalendarModal(true);
-          }}>
+          }}
+          hitSlop={10}>
           <Text style={styles.headerText}>
             {dayjs(selectedDate).locale('ko').format('YYYY년 M월 D일(ddd)')}
           </Text>
@@ -44,7 +46,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, backgroundColor: Colors.light.background},
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

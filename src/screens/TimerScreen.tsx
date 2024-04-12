@@ -84,7 +84,8 @@ export default function TimerScreen() {
             setShowTodoListModal(true);
           }}
           disabled={!!intervalRef.current}
-          style={styles.todo}>
+          style={styles.todo}
+          hitSlop={10}>
           <View style={styles.todoColor(todo?.color || '#a4a4a4')} />
           <Text style={styles.text}>
             {todo?.title || '투두를 선택해주세요'}
@@ -106,13 +107,15 @@ export default function TimerScreen() {
                 } else {
                   startTimer();
                 }
-              }}>
+              }}
+              hitSlop={20}>
               <DefaultText text="시작" />
             </Pressable>
           )}
           <Pressable
             onPress={() => handleStop('complete')}
-            disabled={!intervalRef.current}>
+            disabled={!intervalRef.current}
+            hitSlop={20}>
             <DefaultText text="완료" />
           </Pressable>
         </View>

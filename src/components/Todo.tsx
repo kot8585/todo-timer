@@ -63,13 +63,13 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
               styles.todoContainer,
               {transform: [{translateX: offsetX}]},
             ]}>
-            <View style={styles.todoColor(todo.color)} />
+            {/* <View style={styles.todoColor(todo.color)} /> */}
             {todo.isCompleted ? (
               <Text style={styles.completeTodoText}>{todo.title}</Text>
             ) : (
               <DefaultText text={todo.title} style={styles.todoText} />
             )}
-            <View style={{flexGrow: 1}} />
+            {/* <View style={{flexGrow: 1}} /> */}
             <Text style={styles.timeText}>
               {formatTime(todo.executionTime)}
             </Text>
@@ -77,7 +77,8 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
               <Pressable
                 onPress={() => {
                   setShowEditDeleteModal(true);
-                }}>
+                }}
+                hitSlop={5}>
                 <Icon name="dots-vertical" size={18} style={styles.icon} />
               </Pressable>
             )}
@@ -94,15 +95,17 @@ export default function Todo({todo, todoHandlePress, showDotsIcon}: TodoProps) {
               onPress={() => {
                 setShowEditDeleteModal(false);
                 setShowTodoModal(true);
-              }}>
-              <Text style={styles.buttonText}>수정하기</Text>
+              }}
+              hitSlop={10}>
+              <DefaultText text="수정하기" />
             </Pressable>
             <Pressable
               onPress={() => {
                 setShowEditDeleteModal(false);
                 setConfirmDeleteModal(true);
-              }}>
-              <Text style={styles.buttonText}>삭제하기</Text>
+              }}
+              hitSlop={10}>
+              <DefaultText text="삭제하기" />
             </Pressable>
           </View>
         </CustomModal>
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#DADADA',
     borderBottomWidth: 1,
-    paddingVertical: 10,
+    paddingVertical: 11,
     alignItems: 'center',
     gap: 5,
   },
@@ -166,9 +169,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   }),
   todoText: {
+    flex: 1,
+    flexWrap: 'wrap',
     ...Platform.select({
       android: {lineHeight: 22},
     }),
+  },
+  dotsIconButton: {
+    backgroundColor: Colors.light.buttonDefault,
+    borderRadius: 8,
   },
   completeTodoText: {
     fontSize: 16,
@@ -181,9 +190,11 @@ const styles = StyleSheet.create({
   timeText: {
     color: Colors.light.captionDefault,
     fontSize: 14,
+    paddingLeft: 2,
   },
   icon: {
     color: Colors.light.captionDefault,
+    paddingVertical: 2,
   },
   modalContainer: {
     // width: '100%',
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   verticalButtons: {
-    gap: 10,
+    gap: 20,
     marginVertical: 4,
   },
   button: {

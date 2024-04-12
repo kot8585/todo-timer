@@ -8,7 +8,7 @@ type TextButtonProps = {
 
 export default function TextButton({text, onPress}: TextButtonProps) {
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container} hitSlop={10}>
       <Text style={styles.text}>{text}</Text>
     </Pressable>
   );

@@ -1,7 +1,7 @@
+import dayjs from 'dayjs';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {GetTimelineResponse, TimelineType} from '../api/types';
-import dayjs from 'dayjs';
 
 type TimelineEventProps = {
   timelineEvent: GetTimelineResponse;
@@ -64,8 +64,9 @@ export default function TimelineEvent({
       <View
         style={{
           backgroundColor: timelineEvent.todoColor,
-          opacity: 0.5,
           flex: 1,
+          opacity: 0.6,
+          paddingHorizontal: 3,
         }}>
         {index + 1 === widestTimelineOrdinary && (
           <Text>{timelineEvent.todoTitle}</Text>
@@ -126,7 +127,9 @@ function getTimelinePosition(
       widestTimelineOrdinary = i;
     }
 
-    timelinePositions.push({width, top, left});
+    if (width !== 0) {
+      timelinePositions.push({width, top, left});
+    }
   }
 
   return {timelinePositions, widestTimelineOrdinary};

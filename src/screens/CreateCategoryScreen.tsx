@@ -10,6 +10,7 @@ import {CreateCategoryType} from '../api/types';
 import {useNavigation} from '@react-navigation/native';
 import ColorPaletteModal from '../components/ColorPaletteModal';
 import {COLORS} from '../constants/constant';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function CreateCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -26,7 +27,7 @@ export default function CreateCategoryScreen() {
   };
 
   return (
-    <View>
+    <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.header}>
           <Pressable
@@ -73,7 +74,7 @@ export default function CreateCategoryScreen() {
         selectedColor={form.color}
         setSelectedColor={color => setForm({...form, color})}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

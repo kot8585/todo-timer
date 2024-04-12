@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   TextInput,
+  View,
 } from 'react-native';
 import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -69,17 +70,19 @@ export default function WriteTodoModal({
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.underWhiteBox}>
-          <TextInput
-            placeholder="할일 입력"
-            value={form.title}
-            onChangeText={(text: string) => handleChangeText('title', text)}
-            onSubmitEditing={handleSubmit}
-            autoComplete="off"
-            autoFocus
-            enterKeyHint="done"
-            placeholderTextColor={Colors.light.bodyInActive}
-            style={styles.input}
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="할일 입력"
+              value={form.title}
+              onChangeText={(text: string) => handleChangeText('title', text)}
+              onSubmitEditing={handleSubmit}
+              autoComplete="off"
+              autoFocus
+              enterKeyHint="done"
+              placeholderTextColor={Colors.light.bodyInActive}
+              style={styles.input}
+            />
+          </View>
         </KeyboardAvoidingView>
       </Pressable>
     </Modal>
@@ -102,7 +105,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 10,
   },
-  input: {
+  inputContainer: {
+    ...Platform.select({
+      ios: {marginBottom: 10},
+    }),
     width: '100%',
+  },
+  input: {
+    height: 40,
+    width: '100%',
+    paddingHorizontal: 10,
   },
 });

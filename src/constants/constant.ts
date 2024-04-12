@@ -2,7 +2,7 @@ export const FIREBASE_ERROR_MSG = {
   'auth/user-not-found': '존재하지 않는 계정입니다',
   'auth/invalid-email': '올바른 이메일 형식이 아닙니다',
   'auth/invalid-password': '비밀번호는 6자 이상이어야 합니다',
-  'auth/email-already-exists': '이미 존재하는 이메일입니다',
+  'auth/email-already-in-use': '이미 존재하는 이메일입니다',
 };
 
 export const COLORS = [

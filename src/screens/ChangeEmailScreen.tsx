@@ -5,6 +5,7 @@ import {changeEmail} from '../../lib/auth';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
 import useUserStore from '../store/userStore';
+import Toast from 'react-native-toast-message';
 
 export default function ChangeEmailScreen({navigation}: any) {
   const user = useUserStore(state => state.user);
@@ -17,6 +18,13 @@ export default function ChangeEmailScreen({navigation}: any) {
   };
 
   const handleSubmit = async () => {
+    if (!emailValidate(form.email)) {
+      Toast.show({
+        type: 'info',
+        text1: '올바른 이메일 형식이 아닙니다',
+        position: 'top',
+      });
+    }
     await changeEmail(user, form.email);
 
     setUser({...user, email: form.email});
@@ -34,6 +42,10 @@ export default function ChangeEmailScreen({navigation}: any) {
       <BackgroundColorButton text="확인" onPress={handleSubmit} />
     </SafeAreaView>
   );
+}
+
+function emailValidate(email: string) {
+  return email.trim().length > 4 && email.includes('@') && email.includes('.');
 }
 
 const styles = StyleSheet.create({

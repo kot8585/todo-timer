@@ -1,8 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {Colors} from '../assets/color';
-import ChangeEmailScreen from '../screens/ChangeEmailScreen';
-import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import LogInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 
@@ -24,7 +22,7 @@ export default function RootStack() {
         component={SignUpScreen}
         options={{title: '회원가입'}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ConfirmEmailScreen"
         component={ConfirmEmailScreen}
         options={{title: '이메일 인증'}}
@@ -33,7 +31,7 @@ export default function RootStack() {
         name="ChangeEmailScreen"
         component={ChangeEmailScreen}
         options={{title: '이메일 변경'}}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

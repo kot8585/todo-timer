@@ -9,6 +9,7 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import dayjs from 'dayjs';
 import CustomModal from '../components/CustomModal';
 import ColorPaletteModal from '../components/ColorPaletteModal';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function EditCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -54,7 +55,7 @@ export default function EditCategoryScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Pressable
           onPress={() => {
@@ -63,7 +64,7 @@ export default function EditCategoryScreen() {
           <Icon name="chevron-left" size={28} style={styles.icon} />
         </Pressable>
         <Text style={styles.headerText}>카테고리</Text>
-        <Pressable onPress={handleUpdate}>
+        <Pressable onPress={handleUpdate} hitSlop={10}>
           <DefaultText text="확인" />
         </Pressable>
       </View>
@@ -127,7 +128,7 @@ export default function EditCategoryScreen() {
         selectedColor={form.color}
         setSelectedColor={color => setForm({...form, color})}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -23,7 +23,11 @@ export default function Category({
     <View style={styles.container}>
       <Pressable
         onPress={handlePress ? () => handlePress(category) : () => {}}
-        style={styles.categoryTextContainer}>
+        style={styles.categoryTextContainer}
+        hitSlop={5}>
+        <View
+          style={[styles.categoryColor, {backgroundColor: category.color}]}
+        />
         <Text style={styles.categoryText}>{category.title}</Text>
         <Icon name="plus" size={16} color={'#808080'} />
       </Pressable>
@@ -32,7 +36,8 @@ export default function Category({
       <Text style={styles.timeText}>{formatTime(category.executionTime)}</Text>
       {showDotsIcon && (
         <Pressable
-          onPress={() => navigation.navigate('EditCategoryScreen', category)}>
+          onPress={() => navigation.navigate('EditCategoryScreen', category)}
+          hitSlop={5}>
           <Icon name="dots-vertical" size={18} style={styles.icon} />
         </Pressable>
       )}
@@ -44,10 +49,16 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingTop: 24,
-    paddingBottom: 2,
+    paddingBottom: 3,
     alignItems: 'center',
   },
+
   categoryTextContainer: {flexDirection: 'row', alignItems: 'center', gap: 4},
+  categoryColor: {
+    width: 5,
+    height: 18,
+    borderRadius: 4,
+  },
   categoryText: {fontSize: 16, fontWeight: '700', color: '#535353'},
   timeText: {
     color: Colors.light.captionDefault,

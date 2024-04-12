@@ -4,10 +4,8 @@ import {CategoryType, TodoType} from '../api/types';
 import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
 import Category from './Category';
-import Todo from './Todo';
-import Loading from './ui/Loading';
-import LoadingModal from './ui/LoadingModal';
 import Error from './Error';
+import Todo from './Todo';
 
 type TodoListProps = {
   categoryHandlePress?: (category: CategoryType) => void;

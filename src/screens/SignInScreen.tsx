@@ -10,6 +10,7 @@ import LoadingBar from '../components/ui/LoadingModal';
 import TextButton from '../components/ui/TextButton';
 import {FIREBASE_ERROR_MSG} from '../constants/constant';
 import useUserStore from '../store/userStore';
+import Toast from 'react-native-toast-message';
 
 export default function SignInScreen() {
   const navigation = useNavigation();
@@ -65,7 +66,11 @@ export default function SignInScreen() {
       useUserStore.setState({user: user.user});
     } catch (e) {
       const msg = FIREBASE_ERROR_MSG[e.code] || '로그인 실패';
-      Alert.alert(msg);
+      Toast.show({
+        type: 'info',
+        text1: msg,
+        position: 'top',
+      });
       console.error('로그인 에러: ', e);
     } finally {
       setLoading(false);
@@ -91,7 +96,7 @@ export default function SignInScreen() {
         autoFocus
       />
       <BorderBottomInput
-        placeholder="비밀번호(8자 이상)"
+        placeholder="비밀번호(6자 이상)"
         value={form.password}
         onChangeText={(text: string) => {
           handleChangeText('password', text);
@@ -115,14 +120,14 @@ export default function SignInScreen() {
           }}
         />
       </View>
-      <View style={styles.textButton}>
+      {/* <View style={styles.textButton}>
         <TextButton
           text="게스트로 시작하기"
           onPress={() => {
             console.log('게스트로 시작하기');
           }}
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }
