@@ -176,94 +176,90 @@ export default function EditTimelineModal({
   };
 
   return (
-    <View>
-      <CustomModal
-        visible={visible}
-        setModalVisible={setModalVisible}
-        position={'middle'}>
-        <View style={styles.container}>
-          <Text style={styles.headerText}>시간기록 추가</Text>
-          <Pressable onPress={handleTodoPress} style={styles.todo}>
-            <View style={styles.todoColor(form.todoColor)} />
-            <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
-            <View style={{flexGrow: 1}} />
-            <Icon name="chevron-right" size={24} color={'#808080'} />
-          </Pressable>
-          <View style={styles.time}>
-            <TextInput
-              keyboardType="number-pad"
-              style={[styles.inputTime, styles.timeText]}
-              placeholder={updateTimeline!.startHour.toString()}
-              value={form.startHour}
-              placeholderTextColor="#a4a4a4"
-              onChangeText={(text: string) => {
-                handleChangeText('startHour', text);
-                if (text.length >= 2) {
-                  startMinuteRef.current?.focus();
-                }
-              }}
-              ref={startHourRef}
-              autoFocus
-              onSubmitEditing={() => startMinuteRef.current?.focus()}
-            />
-            <Text style={styles.timeText}>:</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="00"
-              value={form.startMinute}
-              onChangeText={(text: string) => {
-                handleChangeText('startMinute', text);
-                if (text.length >= 2) {
-                  endHourRef.current?.focus();
-                }
-              }}
-              ref={startMinuteRef}
-              onSubmitEditing={() => endHourRef.current?.focus()}
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-            <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder={updateTimeline!.endHour.toString()}
-              value={form.endHour}
-              ref={endHourRef}
-              onSubmitEditing={() => endMinuteRef.current?.focus()}
-              onChangeText={(text: string) => {
-                handleChangeText('endHour', text);
-                if (text.length >= 2) {
-                  endMinuteRef.current?.focus();
-                }
-              }}
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-            <Text style={styles.timeText}>:</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="00"
-              value={form.endMinute}
-              ref={endMinuteRef}
-              onChangeText={(text: string) =>
-                handleChangeText('endMinute', text)
+    <CustomModal
+      visible={visible}
+      setModalVisible={setModalVisible}
+      position={'middle'}>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>시간기록 추가</Text>
+        <Pressable onPress={handleTodoPress} style={styles.todo}>
+          <View style={styles.todoColor(form.todoColor)} />
+          <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
+          <View style={{flexGrow: 1}} />
+          <Icon name="chevron-right" size={24} color={'#808080'} />
+        </Pressable>
+        <View style={styles.time}>
+          <TextInput
+            keyboardType="number-pad"
+            style={[styles.inputTime, styles.timeText]}
+            placeholder={updateTimeline!.startHour.toString()}
+            value={form.startHour}
+            placeholderTextColor="#a4a4a4"
+            onChangeText={(text: string) => {
+              handleChangeText('startHour', text);
+              if (text.length >= 2) {
+                startMinuteRef.current?.focus();
               }
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-          </View>
-
-          <View style={styles.buttons}>
-            <Pressable
-              onPress={() => handleDelete(updateTimeline!.idx)}
-              style={styles.button}>
-              <Text style={styles.buttonText}>삭제</Text>
-            </Pressable>
-            <Pressable onPress={handleUpdate} style={styles.button}>
-              <Text style={styles.buttonText}>수정</Text>
-            </Pressable>
-          </View>
+            }}
+            ref={startHourRef}
+            autoFocus
+            onSubmitEditing={() => startMinuteRef.current?.focus()}
+          />
+          <Text style={styles.timeText}>:</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="00"
+            value={form.startMinute}
+            onChangeText={(text: string) => {
+              handleChangeText('startMinute', text);
+              if (text.length >= 2) {
+                endHourRef.current?.focus();
+              }
+            }}
+            ref={startMinuteRef}
+            onSubmitEditing={() => endHourRef.current?.focus()}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
+          <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder={updateTimeline!.endHour.toString()}
+            value={form.endHour}
+            ref={endHourRef}
+            onSubmitEditing={() => endMinuteRef.current?.focus()}
+            onChangeText={(text: string) => {
+              handleChangeText('endHour', text);
+              if (text.length >= 2) {
+                endMinuteRef.current?.focus();
+              }
+            }}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
+          <Text style={styles.timeText}>:</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="00"
+            value={form.endMinute}
+            ref={endMinuteRef}
+            onChangeText={(text: string) => handleChangeText('endMinute', text)}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
         </View>
-      </CustomModal>
+
+        <View style={styles.buttons}>
+          <Pressable
+            onPress={() => handleDelete(updateTimeline!.idx)}
+            style={styles.button}>
+            <Text style={styles.buttonText}>삭제</Text>
+          </Pressable>
+          <Pressable onPress={handleUpdate} style={styles.button}>
+            <Text style={styles.buttonText}>수정</Text>
+          </Pressable>
+        </View>
+      </View>
       {showTodoListModal && (
         <CustomModal
           visible={showTodoListModal}
@@ -272,7 +268,7 @@ export default function EditTimelineModal({
           <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
         </CustomModal>
       )}
-    </View>
+    </CustomModal>
   );
 }
 
@@ -289,6 +285,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingVertical: 4,
   },
   todoColor: (backgroundColor: string) => ({
     backgroundColor: backgroundColor,
@@ -296,7 +293,7 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 25,
     marginRight: 8,
-    marginLeft: 4,
+    marginLeft: 2,
   }),
   time: {
     flexDirection: 'row',

@@ -17,9 +17,13 @@ type CreateTimelineModalProps = {
   clickedTime: number;
 };
 
-function calculateDate(date: string, hour: number) {
+function calculateDate(date: string, hour: number, isStartDate: boolean) {
   const dateFormat = dayjs(date);
-  if (hour <= 5) {
+  if (hour <= 5 && !isStartDate) {
+    return dateFormat.add(1, 'day');
+  }
+
+  if (isStartDate && hour < 5) {
     return dateFormat.add(1, 'day');
   }
   console.log('dateFormat', dateFormat);
@@ -88,6 +92,43 @@ export default function CreateTimelineModal({
       startHourRef.current?.focus();
       return;
     }
+    const startHour = parseInt(form.startHour, 10);
+    console.log('뭐야!@@startHour', startHour);
+    if (startHour > 23 || startHour < 0 || isNaN(startHour)) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 23까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
+    const endHour = parseInt(form.endHour, 10);
+    if (endHour > 23 || endHour < 0 || isNaN(endHour)) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 23까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
+
+    const startMinute = parseInt(form.startMinute, 10);
+    const endMinute = parseInt(form.endMinute, 10);
+    if (
+      startMinute > 61 ||
+      startMinute < 0 ||
+      isNaN(startMinute) ||
+      endMinute > 61 ||
+      endMinute < 0 ||
+      isNaN(endMinute)
+    ) {
+      Toast.show({
+        type: 'info',
+        text1: '시간은 0 ~ 60까지 설정 가능해요',
+        position: 'top',
+      });
+      return;
+    }
     if (!form.startMinute) {
       startHourRef.current?.focus();
       return;
@@ -100,14 +141,12 @@ export default function CreateTimelineModal({
       startHourRef.current?.focus();
       return;
     }
-    const startHour = parseInt(form.startHour);
-    const startDateTime = dayjs(calculateDate(selectedDate, startHour))
+    const startDateTime = dayjs(calculateDate(selectedDate, startHour, true))
       .hour(startHour)
       .minute(parseInt(form.startMinute))
       .utc();
 
-    const endHour = parseInt(form.endHour);
-    const endDateTime = dayjs(calculateDate(selectedDate, endHour))
+    const endDateTime = dayjs(calculateDate(selectedDate, endHour, false))
       .hour(endHour)
       .minute(parseInt(form.endMinute))
       .utc();
@@ -155,86 +194,82 @@ export default function CreateTimelineModal({
   };
 
   return (
-    <>
-      <CustomModal
-        visible={visible}
-        setModalVisible={setModalVisible}
-        position={'middle'}>
-        <View style={styles.container}>
-          <Text style={styles.headerText}>시간기록 추가</Text>
-          <Pressable onPress={handleTodoPress} style={styles.todo}>
-            <View style={styles.todoColor(form.todoColor)} />
-            <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
-            <View style={{flexGrow: 1}} />
-            <Icon name="chevron-right" size={24} color={'#808080'} />
-          </Pressable>
-          <View style={styles.time}>
-            <TextInput
-              keyboardType="numeric"
-              style={[styles.inputTime, styles.timeText]}
-              placeholder={(clickedTime + 1).toString()}
-              value={form.startHour}
-              placeholderTextColor="#a4a4a4"
-              onChangeText={(text: string) => {
-                handleChangeText('startHour', text);
-                if (text.length >= 2) {
-                  startMinuteRef.current?.focus();
-                }
-              }}
-              ref={startHourRef}
-              autoFocus
-              onSubmitEditing={() => startMinuteRef.current?.focus()}
-            />
-            <Text style={styles.timeText}>:</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="00"
-              value={form.startMinute}
-              onChangeText={(text: string) => {
-                handleChangeText('startMinute', text);
-                if (text.length >= 2) {
-                  endHourRef.current?.focus();
-                }
-              }}
-              ref={startMinuteRef}
-              onSubmitEditing={() => endHourRef.current?.focus()}
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-            <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder={(clickedTime + 1).toString()}
-              value={form.endHour}
-              ref={endHourRef}
-              onSubmitEditing={() => endMinuteRef.current?.focus()}
-              onChangeText={(text: string) => {
-                handleChangeText('endHour', text);
-                if (text.length >= 2) {
-                  endMinuteRef.current?.focus();
-                }
-              }}
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-            <Text style={styles.timeText}>:</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="00"
-              value={form.endMinute}
-              ref={endMinuteRef}
-              onChangeText={(text: string) =>
-                handleChangeText('endMinute', text)
+    <CustomModal
+      visible={visible}
+      setModalVisible={setModalVisible}
+      position={'middle'}>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>시간기록 추가</Text>
+        <Pressable onPress={handleTodoPress} style={styles.todo} hitSlop={7}>
+          <View style={styles.todoColor(form.todoColor)} />
+          <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
+          <View style={{flexGrow: 1}} />
+          <Icon name="chevron-right" size={24} color={'#808080'} />
+        </Pressable>
+        <View style={styles.time}>
+          <TextInput
+            keyboardType="numeric"
+            style={[styles.inputTime, styles.timeText]}
+            placeholder={(clickedTime + 1).toString()}
+            value={form.startHour}
+            placeholderTextColor="#a4a4a4"
+            onChangeText={(text: string) => {
+              handleChangeText('startHour', text);
+              if (text.length >= 2) {
+                startMinuteRef.current?.focus();
               }
-              placeholderTextColor="#a4a4a4"
-              style={[styles.inputTime, styles.timeText]}
-            />
-          </View>
-          <Pressable onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>추가</Text>
-          </Pressable>
+            }}
+            ref={startHourRef}
+            autoFocus
+            onSubmitEditing={() => startMinuteRef.current?.focus()}
+          />
+          <Text style={styles.timeText}>:</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="00"
+            value={form.startMinute}
+            onChangeText={(text: string) => {
+              handleChangeText('startMinute', text);
+              if (text.length >= 2) {
+                endHourRef.current?.focus();
+              }
+            }}
+            ref={startMinuteRef}
+            onSubmitEditing={() => endHourRef.current?.focus()}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
+          <Text style={[styles.timeText, styles.timeMid]}>ㅡ</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder={(clickedTime + 1).toString()}
+            value={form.endHour}
+            ref={endHourRef}
+            onSubmitEditing={() => endMinuteRef.current?.focus()}
+            onChangeText={(text: string) => {
+              handleChangeText('endHour', text);
+              if (text.length >= 2) {
+                endMinuteRef.current?.focus();
+              }
+            }}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
+          <Text style={styles.timeText}>:</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="00"
+            value={form.endMinute}
+            ref={endMinuteRef}
+            onChangeText={(text: string) => handleChangeText('endMinute', text)}
+            placeholderTextColor="#a4a4a4"
+            style={[styles.inputTime, styles.timeText]}
+          />
         </View>
-      </CustomModal>
+        <Pressable onPress={handleSubmit} style={styles.button}>
+          <Text style={styles.buttonText}>추가</Text>
+        </Pressable>
+      </View>
       {showTodoListModal && (
         <CustomModal
           visible={showTodoListModal}
@@ -243,7 +278,7 @@ export default function CreateTimelineModal({
           <TodoList todoHandlePress={todoHandlePress} showDotsIcon={false} />
         </CustomModal>
       )}
-    </>
+    </CustomModal>
   );
 }
 
@@ -260,6 +295,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingVertical: 4,
   },
   todoText: {
     fontSize: 14,
@@ -270,7 +306,7 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 25,
     marginRight: 8,
-    marginLeft: 4,
+    marginLeft: 2,
   }),
   time: {
     flexDirection: 'row',
