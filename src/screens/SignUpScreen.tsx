@@ -7,6 +7,8 @@ import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
 import LoadingBar from '../components/ui/LoadingModal';
 import useUserStore from '../store/userStore';
+import {createInitializeData} from '../api/initialize';
+import {FIREBASE_ERROR_MSG} from '../constants/constant';
 
 export default function SignUpScreen({navigation}: any) {
   const [loading, setLoading] = useState(false);
@@ -37,48 +39,48 @@ export default function SignUpScreen({navigation}: any) {
     const info = {email, password};
 
     console.log('errorMsg', validateMsg);
-
-    if (!emailValidate(email)) {
-      setValidateMsg({
-        ...validateMsg,
-        emailMsg: '올바른 이메일 형식이 아닙니다',
-      });
-      if (emailRef.current) {
-        emailRef.current.focus();
-      }
-      return;
-    }
-
-    if (!passwordValidate(password)) {
-      console.log('비번 에러');
-      setValidateMsg({
-        ...validateMsg,
-        passwordMsg: '비밀번호는 6자 이상이여야 합니다.',
-      });
-      if (passwordRef.current) {
-        passwordRef.current.focus();
-      }
-      return;
-    }
-
-    if (!confirmPasswordValidate) {
-      console.log('비번확인 에러');
-      setValidateMsg({
-        ...validateMsg,
-        confirmPasswordMsg: '비밀번호가 일치하지 않습니다.',
-      });
-      if (confirmPasswordRef.current) {
-        confirmPasswordRef.current.focus();
-      }
-      return;
-    }
-
     try {
+      if (!emailValidate(email)) {
+        setValidateMsg({
+          ...validateMsg,
+          emailMsg: '올바른 이메일 형식이 아닙니다',
+        });
+        if (emailRef.current) {
+          emailRef.current.focus();
+        }
+        return;
+      }
+
+      if (!passwordValidate(password)) {
+        console.log('비번 에러');
+        setValidateMsg({
+          ...validateMsg,
+          passwordMsg: '비밀번호는 6자 이상이여야 합니다.',
+        });
+        if (passwordRef.current) {
+          passwordRef.current.focus();
+        }
+        return;
+      }
+
+      if (!confirmPasswordValidate(form.password, form.confirmPassword)) {
+        console.log('비번확인 에러');
+        setValidateMsg({
+          ...validateMsg,
+          confirmPasswordMsg: '비밀번호가 일치하지 않습니다.',
+        });
+        if (confirmPasswordRef.current) {
+          confirmPasswordRef.current.focus();
+        }
+        return;
+      }
+
       const {user} = await signUp(info);
+      await createInitializeData(user.uid);
       useUserStore.setState({user: user});
-      await sendEmail(user);
+      // await sendEmail(user);
       console.log('user: ', user);
-      navigation.navigate('ConfirmEmailScreen');
+      // navigation.navigate('ConfirmEmailScreen');
     } catch (e) {
       const msg = FIREBASE_ERROR_MSG[e.code] || '로그인 실패';
       Alert.alert(msg);
@@ -120,7 +122,7 @@ export default function SignUpScreen({navigation}: any) {
       </View>
       <View>
         <BorderBottomInput
-          placeholder="비밀번호(8자 이상)"
+          placeholder="비밀번호(6자 이상)"
           value={form.password}
           onChangeText={(text: string) => {
             handleChangeText('password', text);
@@ -143,7 +145,7 @@ export default function SignUpScreen({navigation}: any) {
       </View>
       <View>
         <BorderBottomInput
-          placeholder="비밀번호 확인(8자 이상)"
+          placeholder="비밀번호 확인(6자 이상)"
           value={form.confirmPassword}
           onChangeText={(text: string) => {
             handleChangeText('confirmPassword', text);
