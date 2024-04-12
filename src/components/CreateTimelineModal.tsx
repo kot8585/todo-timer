@@ -10,6 +10,7 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import CustomModal from './CustomModal';
 import TodoList from './TodoList';
 import Toast from 'react-native-toast-message';
+import useUserStore from '../store/userStore';
 
 type CreateTimelineModalProps = {
   visible: boolean;
@@ -36,6 +37,7 @@ export default function CreateTimelineModal({
   clickedTime,
 }: CreateTimelineModalProps) {
   const [showTodoListModal, setShowTodoListModal] = useState(false);
+  const user = useUserStore(state => state.user);
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const startHourRef = useRef<TextInput>();
   const startMinuteRef = useRef<TextInput>();
@@ -165,6 +167,7 @@ export default function CreateTimelineModal({
 
     console.log('startDateTime, endDateTime', startDateTime, endDateTime);
     const CreateTimelineRequest = {
+      userUid: user.uid,
       todoIdx: form.todoIdx,
       startDateTime: startDateTime,
       endDateTime: endDateTime,

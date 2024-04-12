@@ -75,6 +75,7 @@ export type GetTimelineResponse = {
 };
 
 export type CreateTimelineType = {
+  userUid: string;
   todoIdx: number;
   startDateTime: dayjs.Dayjs;
   endDateTime: dayjs.Dayjs;

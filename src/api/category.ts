@@ -26,7 +26,6 @@ export async function getCategoryAndTodos(userUid: string, date: string) {
 }
 
 export async function createCategory(category: CreateCategoryType) {
-  category.userUid = 'WouU7QJQKrTyvYXWgXLrgyyf9dh1';
   const response = await client.post<CreateCategoryType>(
     '/categories',
     category,

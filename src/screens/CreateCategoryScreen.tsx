@@ -1,20 +1,21 @@
-import {View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import BorderBottomInput from '../components/ui/BorderBottomInput';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {CreateCategoryType} from '../api/types';
 import {Colors} from '../assets/color';
+import ColorPaletteModal from '../components/ColorPaletteModal';
 import DefaultText from '../components/ui/DefaultText';
+import {COLORS} from '../constants/constant';
 import useCategory from '../hooks/useCategory';
 import useSelectedDateStore from '../store/selecteDateStore';
-import {CreateCategoryType} from '../api/types';
-import {useNavigation} from '@react-navigation/native';
-import ColorPaletteModal from '../components/ColorPaletteModal';
-import {COLORS} from '../constants/constant';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import useUserStore from '../store/userStore';
 
 export default function CreateCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const {createCategoryMutation} = useCategory(selectedDate);
+  const user = useUserStore(state => state.user);
   const navigation = useNavigation();
   const [form, setForm] = useState<CreateCategoryType>({
     title: '',
@@ -61,7 +62,7 @@ export default function CreateCategoryScreen() {
         </View>
         <Pressable
           onPress={() => {
-            createCategoryMutation.mutate(form);
+            createCategoryMutation.mutate({...form, userUid: user?.uid});
             navigation.navigate('HomeScreen');
           }}
           style={styles.button}>

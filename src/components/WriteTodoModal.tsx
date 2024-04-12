@@ -13,6 +13,7 @@ import {Colors} from '../assets/color';
 import useSelectedDateStore from '../store/selecteDateStore';
 import useTodo from '../hooks/useTodos';
 import {convertLocalToUtc} from '../utils/formatDateTime';
+import useUserStore from '../store/userStore';
 
 type WriteTodoModal = {
   visible: boolean;
@@ -31,6 +32,7 @@ export default function WriteTodoModal({
 }: WriteTodoModal) {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const {createTodoMutation, updateTodoMutation} = useTodo(selectedDate);
+  const user = useUserStore(state => state.user);
   //
   const [form, setForm] = useState({
     title: todo ? todo.title : '',
@@ -47,7 +49,7 @@ export default function WriteTodoModal({
         })
       : createTodoMutation.mutate({
           ...form,
-          userUid: 'WouU7QJQKrTyvYXWgXLrgyyf9dh1',
+          userUid: user?.uid,
           startDate: convertLocalToUtc(selectedDate),
           categoryIdx: categoryIdx,
           // 일단 todoColor는 catgory를 따라가도록 할게. 나중에 설정할 수 있도록 해야함
