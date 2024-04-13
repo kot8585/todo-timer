@@ -159,13 +159,14 @@ const styles = StyleSheet.create({
   todo: {
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: 250,
   },
   todoColor: (backgroundColor: string) => ({
     backgroundColor: backgroundColor,
     width: 18,
     height: 18,
     borderRadius: 25,
-    marginRight: 6,
+    marginRight: 8,
   }),
   modalContainer: {
     width: '100%',
@@ -180,6 +181,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+    flexWrap: 'wrap',
+    flexShrink: 1,
     color: Colors.light.bodyDefault,
     ...Platform.select({
       android: {lineHeight: 18},

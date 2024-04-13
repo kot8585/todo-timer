@@ -1,6 +1,13 @@
 import dayjs from 'dayjs';
 import React, {useEffect, useRef, useState} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {TodoType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -27,7 +34,6 @@ function calculateDate(date: string, hour: number, isStartDate: boolean) {
   if (isStartDate && hour < 5) {
     return dateFormat.add(1, 'day');
   }
-  console.log('dateFormat', dateFormat);
   return dateFormat;
 }
 
@@ -66,11 +72,11 @@ export default function CreateTimelineModal({
   });
 
   useEffect(() => {
-    if (todos && todos.length > 0 && todos[0].data.length > 0) {
+    if (todos && todos?.length > 0 && todos[0].data.length > 0) {
       setForm(prevForm => ({
         ...prevForm,
         todoIdx: todos[0].data[0].idx,
-        todoColor: todos[0].data[0].color,
+        todoColor: todos[0].color,
         todoTitle: todos[0].data[0].title,
       }));
     }
@@ -190,7 +196,7 @@ export default function CreateTimelineModal({
     setForm(form => ({
       ...form,
       todoIdx: todo.idx,
-      todoColor: todo.color,
+      // todoColor: todo.color,
       todoTitle: todo.title,
     }));
     setShowTodoListModal(false);
@@ -205,7 +211,7 @@ export default function CreateTimelineModal({
         <Text style={styles.headerText}>시간기록 추가</Text>
         <Pressable onPress={handleTodoPress} style={styles.todo} hitSlop={7}>
           <View style={styles.todoColor(form.todoColor)} />
-          <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
+          <Text style={styles.todoText}>{form.todoTitle}</Text>
           <View style={{flexGrow: 1}} />
           <Icon name="chevron-right" size={24} color={'#808080'} />
         </Pressable>
@@ -301,7 +307,12 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   todoText: {
-    fontSize: 14,
+    fontSize: 16,
+    flexWrap: 'wrap',
+    flexShrink: 1,
+    ...Platform.select({
+      android: {lineHeight: 20},
+    }),
   },
   todoColor: (backgroundColor: string) => ({
     backgroundColor: backgroundColor,
@@ -318,7 +329,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   timeText: {fontSize: 20, fontWeight: 'bold', color: Colors.light.bodyDefault},
-  timeMid: {flexGrow: 1},
+  timeMid: {flexGrow: 1, textAlign: 'center'},
 
   inputTime: {
     backgroundColor: '#F1F1F1',

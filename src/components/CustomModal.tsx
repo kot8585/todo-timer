@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   middleWhiteBox: {
-    minWidth: 300,
+    width: 300,
     backgroundColor: Colors.light.background,
     elevation: 2,
     borderRadius: 8,

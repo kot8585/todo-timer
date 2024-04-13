@@ -70,7 +70,7 @@ export default function EditCategoryScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <TextInput
-          style={styles.textInput(category?.color)}
+          style={styles.textInput(form.color)}
           placeholderTextColor={'#6B6B6B'}
           placeholder="투두입력"
           value={form.title}

@@ -8,15 +8,15 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {TimelineType, TodoType} from '../api/types';
 import {Colors} from '../assets/color';
 import useTimeline from '../hooks/useTimeline';
-import useTodo from '../hooks/useTodos';
 import useSelectedDateStore from '../store/selecteDateStore';
 import CustomModal from './CustomModal';
 import TodoList from './TodoList';
-import Toast from 'react-native-toast-message';
+import {Platform} from 'react-native';
 
 type EditTimelineModalProps = {
   visible: boolean;
@@ -26,7 +26,6 @@ type EditTimelineModalProps = {
 
 function calculateDate(date: string, hour: number) {
   const dateFormat = dayjs(date);
-  console.log(dateFormat, '::::', hour);
   if (hour <= 5) {
     return dateFormat.add(1, 'day');
   }
@@ -45,10 +44,6 @@ export default function EditTimelineModal({
   const startMinuteRef = useRef<TextInput>();
   const endHourRef = useRef<TextInput>();
   const endMinuteRef = useRef<TextInput>();
-
-  const {
-    getAllTodos: {data: todos},
-  } = useTodo(selectedDate);
 
   const [form, setForm] = useState({
     todoIdx: updateTimeline.todoIdx,
@@ -181,10 +176,10 @@ export default function EditTimelineModal({
       setModalVisible={setModalVisible}
       position={'middle'}>
       <View style={styles.container}>
-        <Text style={styles.headerText}>시간기록 추가</Text>
+        <Text style={styles.headerText}>시간기록 수정</Text>
         <Pressable onPress={handleTodoPress} style={styles.todo}>
           <View style={styles.todoColor(form.todoColor)} />
-          <Text style={{fontSize: 16}}>{form.todoTitle}</Text>
+          <Text style={styles.todoText}>{form.todoTitle}</Text>
           <View style={{flexGrow: 1}} />
           <Icon name="chevron-right" size={24} color={'#808080'} />
         </Pressable>
@@ -287,6 +282,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: 4,
   },
+  todoText: {
+    fontSize: 16,
+    flexWrap: 'wrap',
+    flexShrink: 1,
+    ...Platform.select({
+      android: {lineHeight: 20},
+    }),
+  },
   todoColor: (backgroundColor: string) => ({
     backgroundColor: backgroundColor,
     width: 25,
@@ -302,7 +305,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   timeText: {fontSize: 20, fontWeight: 'bold', color: Colors.light.bodyDefault},
-  timeMid: {flexGrow: 1},
+  timeMid: {flexGrow: 1, textAlign: 'center'},
 
   inputTime: {
     backgroundColor: '#F1F1F1',
