@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
   },
   dotsIconButton: {
     backgroundColor: Colors.light.buttonDefault,
-    borderRadius: 8,
   },
   completeTodoText: {
     fontSize: 16,

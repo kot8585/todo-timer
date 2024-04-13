@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CategoryType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -52,19 +52,26 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     alignItems: 'center',
   },
-
   categoryTextContainer: {flexDirection: 'row', alignItems: 'center', gap: 4},
   categoryColor: {
     width: 5,
-    height: 18,
+    height: 20,
     borderRadius: 4,
   },
-  categoryText: {fontSize: 16, fontWeight: '700', color: '#535353'},
+  categoryText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#535353',
+    ...Platform.select({
+      android: {lineHeight: 22},
+    }),
+  },
   timeText: {
     color: Colors.light.captionDefault,
     fontSize: 14,
   },
   icon: {
     color: Colors.light.captionDefault,
+    paddingLeft: 3,
   },
 });

@@ -6,7 +6,7 @@ export const FIREBASE_ERROR_MSG = {
 };
 
 export const COLORS = [
-  '#E4D4C8',
+  '#FFC2C7',
   '#D0B49F',
   '#A47551',
   '#523A28',
@@ -14,8 +14,10 @@ export const COLORS = [
   '#C7A19B',
   '#7B794C',
   '#3B4C64',
-  '#F0F7E0',
+  '#B6E2D3',
   '#D3BBDD',
   '#BC96CA',
   '#95BA61',
+  '#EF7C8E',
+  '#458DC4',
 ];
