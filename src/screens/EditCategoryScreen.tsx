@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../assets/color';
@@ -13,17 +13,27 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function EditCategoryScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
-  const route = useRoute();
   const navigation = useNavigation();
+  const route = useRoute();
   const category = route.params;
+
+  useEffect(() => {
+    setForm({
+      idx: route.params?.idx,
+      title: route.params?.title,
+      color: route.params?.color,
+    });
+  }, [route.params]);
+
   const {updateCategoryMutation, deleteCategoryMutation} =
     useCategory(selectedDate);
 
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
 
   const [form, setForm] = useState({
-    title: category?.title,
-    color: category?.color,
+    idx: undefined,
+    title: undefined,
+    color: '#ffffff',
   });
 
   const [showColorPaletteModal, setShowColorPaletteModal] = useState(false);
@@ -35,20 +45,18 @@ export default function EditCategoryScreen() {
   const handleUpdate = () => {
     updateCategoryMutation.mutate({
       ...form,
-      idx: category?.idx,
     });
     navigation.goBack();
   };
 
   const handleDelete = () => {
-    deleteCategoryMutation.mutate(category?.idx);
+    deleteCategoryMutation.mutate(form.idx);
     navigation.goBack();
   };
 
   const handleEnd = () => {
     updateCategoryMutation.mutate({
       ...form,
-      idx: category?.idx,
       endDate: dayjs().format('YYYY-MM-DD'),
     });
     navigation.goBack();
@@ -104,8 +112,8 @@ export default function EditCategoryScreen() {
         visible={showDeleteConfirmModal}
         setModalVisible={setShowDeleteConfirmModal}
         position={'middle'}>
-        <Text>
-          {category?.title}에 포함된 할일들이 모두 삭제됩니다. {'\n'}과거의
+        <Text style={{textAlign: 'center'}}>
+          "{category?.title}"에 포함된 할일들이 모두 삭제됩니다. {'\n'}과거의
           할일들을 유지하고 싶다면 "종료하기" 버튼을 눌러주세요. {'\n'}정말
           삭제하시겠습니까?
         </Text>
