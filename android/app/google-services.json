@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:290638683653:android:a6ef238947f8fbb2fc866c",
         "android_client_info": {
-          "package_name": "com.todolist"
+          "package_name": "com.todotimer"
         }
       },
       "oauth_client": [],
