@@ -31,8 +31,12 @@ export default function TodoList({
     return <Error handlePress={refetch} />;
   }
 
-  if (!data) {
-    return <Text>카테고리를 추가해주세요</Text>;
+  if (!data || data.length === 0) {
+    return (
+      <Text style={{flex: 1, textAlign: 'center', textAlignVertical: 'center'}}>
+        카테고리를 추가해주세요
+      </Text>
+    );
   }
 
   return (
