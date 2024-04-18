@@ -11,6 +11,7 @@ import DefaultText from '../components/ui/DefaultText';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
 import {formatTime, getToday} from '../utils/formatDateTime';
+import useUserStore from '../store/userStore';
 
 export default function TimerScreen() {
   const route = useRoute();
@@ -19,6 +20,7 @@ export default function TimerScreen() {
 
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
   const setToday = useSelectedDateStore(state => state.setToday);
+  const user = useUserStore(state => state.user);
   const navigation = useNavigation();
 
   const [executionTime, setExecutionTime] = useState<number>(0);
@@ -45,6 +47,7 @@ export default function TimerScreen() {
     setExecutionTime(0);
   };
 
+  // 왜 startTimer를 useEffect에 넣어야하지?
   useEffect(() => {
     if (route.params?.todo) {
       setTodo(route.params.todo);
@@ -52,13 +55,14 @@ export default function TimerScreen() {
 
       return endTimer;
     }
-  }, [route.params?.todo]);
+  }, [route.params]);
 
   const {createTimelineMutation} = useTimeline(selectedDate);
 
-  const handleStop = (action: string) => {
+  const handleStop = (action: 'stop' | 'complete') => {
     endTimer();
     const timeline = {
+      userUid: user!.uid,
       todoIdx: todo?.idx,
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),

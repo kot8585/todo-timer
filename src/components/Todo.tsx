@@ -179,6 +179,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.buttonDefault,
   },
   completeTodoText: {
+    flex: 1,
+    flexWrap: 'wrap',
     fontSize: 16,
     textDecorationLine: 'line-through',
     color: Colors.light.bodyInActive,
