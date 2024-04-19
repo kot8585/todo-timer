@@ -92,8 +92,9 @@ function getTimelinePosition(
   const viewCount = (() => {
     // 다음날로 넘어가면 1시부터 시작하기때문에 24로 나눔
     const diffHour = formatEndDateTime.diff(formatStartDateTime, 'hour');
-    return diffHour;
+    return diffHour + 1;
   })();
+  console.log('viewCount', viewCount);
 
   for (let i = 1; i <= viewCount; i++) {
     const width = (() => {
