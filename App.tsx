@@ -8,6 +8,7 @@ import useUserStore from './src/store/userStore';
 import DrawerStack from './src/navigation/DrawerStack';
 import Toast, {InfoToast, ToastConfig} from 'react-native-toast-message';
 import {Colors} from './src/assets/color';
+import crashlytics from '@react-native-firebase/crashlytics';
 export const toastConfig: ToastConfig = {
   info: props => (
     <InfoToast
@@ -25,6 +26,10 @@ export const toastConfig: ToastConfig = {
 const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
+  useEffect(() => {
+    crashlytics().crash();
+  }, []);
+
   const user = useUserStore(state => state.user);
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,6 +40,7 @@ function App(): React.JSX.Element {
 
     fetchUser();
   }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
