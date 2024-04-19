@@ -52,10 +52,7 @@ export default function WriteTodoModal({
           userUid: user?.uid,
           startDate: convertLocalToUtc(selectedDate),
           categoryIdx: categoryIdx,
-          // 일단 todoColor는 catgory를 따라가도록 할게. 나중에 설정할 수 있도록 해야함
-          color: categoryColor,
         });
-    //이거 성공하면 뭐해야되지?
     setShowTodoModal(false);
   };
 

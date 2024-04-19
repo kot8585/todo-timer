@@ -90,7 +90,7 @@ export default function TimerScreen() {
           disabled={!!intervalRef.current}
           style={styles.todo}
           hitSlop={10}>
-          {/* <View style={styles.todoColor(todo?.color || '#a4a4a4')} /> */}
+          <View style={styles.todoColor(todo?.color || '#a4a4a4')} />
           <Text style={styles.text}>
             {todo?.title || '투두를 선택해주세요'}
           </Text>

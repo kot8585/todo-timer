@@ -17,12 +17,7 @@ export async function getCategoryAndTodos(userUid: string, date: string) {
     },
   );
 
-  const todosFieldToData = response.data.map(item => {
-    const {todos, ...rest} = item; // todos 필드와 나머지 필드 분리
-    return {data: todos, ...rest}; // data 필드와 나머지 필드 합치기
-  });
-
-  return todosFieldToData;
+  return response.data;
 }
 
 export async function createCategory(category: CreateCategoryType) {

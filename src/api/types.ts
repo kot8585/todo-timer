@@ -2,13 +2,8 @@ import dayjs from 'dayjs';
 
 export type TodoType = {
   idx: number;
-  userUid: string;
-  categoryIdx: number;
   title: string;
-  startDate: string;
   isCompleted: boolean;
-  createdAt: string;
-  updatedAt: string;
   color: string;
   executionTime: number;
 };
@@ -18,12 +13,11 @@ export type CreateTodoType = {
   categoryIdx: number;
   title: string;
   startDate: string;
-  color: string;
+  color?: string;
 };
 
 export type UpdateTodoType = {
   idx: number;
-  userUid: string;
   categoryIdx: number;
   title: string;
   startDate: string;
@@ -44,12 +38,10 @@ export type CategoryType = {
 
 export type GetCategoryAndTodosResponse = {
   idx: number;
-  userUid: string;
   title: string;
   color: string;
-  createdAt: string;
-  updatedAt: string;
-  todos: TodoType[];
+  executionTime: number;
+  data: TodoType[];
 };
 
 export type TimelineType = {
