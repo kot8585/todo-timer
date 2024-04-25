@@ -10,11 +10,11 @@ export default function useTodo(selectedDate: dayjs.Dayjs) {
   const userUid = user?.uid;
 
   const getAllTodos = useQuery(
-    ['todos', userUid, selectedDate],
+    ['home', userUid, selectedDate, 'todos'],
     () => {
       return getCategoryAndTodos(userUid, selectedDate);
     },
-    {enabled: !!userUid},
+    {enabled: !!userUid, staleTime: 1000 * 60 * 10},
   );
 
   const createTodoMutation = useMutation(createTodo, {
@@ -25,7 +25,7 @@ export default function useTodo(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate, 'todos'],
       });
       console.log('createTodoMutation의 selectedDate', selectedDate);
       console.log('useMutation 성공', data);
@@ -40,7 +40,7 @@ export default function useTodo(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate, 'todos'],
       });
       console.log('useMutation 성공', data);
     },
@@ -54,7 +54,7 @@ export default function useTodo(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate, 'todos'],
       });
       console.log('useMutation 성공', data);
     },

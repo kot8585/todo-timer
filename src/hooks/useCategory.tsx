@@ -17,7 +17,7 @@ export default function useCategory(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate, 'todos'],
       });
       console.log('useMutation 성공', data);
     },
@@ -31,7 +31,7 @@ export default function useCategory(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate],
       });
       console.log('useMutation 성공', data);
     },
@@ -45,7 +45,7 @@ export default function useCategory(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['todos', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate, 'todos'],
       });
       console.log('useMutation 성공', data);
     },

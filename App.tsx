@@ -1,14 +1,13 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {StatusBar} from 'react-native';
-import {QueryClient, QueryClientProvider} from 'react-query';
-import RootStack from './src/navigation/RootStack';
-import {getLogInUser} from './lib/auth';
-import useUserStore from './src/store/userStore';
-import DrawerStack from './src/navigation/DrawerStack';
 import Toast, {InfoToast, ToastConfig} from 'react-native-toast-message';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {getLogInUser} from './lib/auth';
 import {Colors} from './src/assets/color';
-import crashlytics from '@react-native-firebase/crashlytics';
+import DrawerStack from './src/navigation/DrawerStack';
+import RootStack from './src/navigation/RootStack';
+import useUserStore from './src/store/userStore';
 export const toastConfig: ToastConfig = {
   info: props => (
     <InfoToast
@@ -26,10 +25,6 @@ export const toastConfig: ToastConfig = {
 const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
-  useEffect(() => {
-    crashlytics().crash();
-  }, []);
-
   const user = useUserStore(state => state.user);
   useEffect(() => {
     const fetchUser = async () => {

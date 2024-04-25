@@ -19,12 +19,16 @@ export default function useTimeline(selectedDate: dayjs.Dayjs) {
   const userUid = user?.uid;
 
   // 근데 여기다가 state를 넣어버리면 얘가.. 흠..
-  const getAllTimeline = useQuery(['timelines', userUid, selectedDate], () => {
-    const startDateTime = convertLocalToUtc(selectedDate);
+  const getAllTimeline = useQuery(
+    ['home', userUid, selectedDate, 'timelines'],
+    () => {
+      const startDateTime = convertLocalToUtc(selectedDate);
 
-    console.log('조회 startDateTime', startDateTime);
-    return getTimelines(userUid, startDateTime);
-  });
+      console.log('조회 startDateTime', startDateTime);
+      return getTimelines(userUid, startDateTime);
+    },
+    {staleTime: 1000 * 60 * 10},
+  );
 
   const createTimelineMutation = useMutation(createTimeline, {
     onError: (error, variables, context) => {
@@ -34,7 +38,7 @@ export default function useTimeline(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 아니 여기서 date단위로 invalidate를 해야하는데 막혀버렸어
       queryClient.invalidateQueries({
-        queryKey: ['timelines', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate],
       });
       console.log('useMutation 성공', data);
     },
@@ -48,7 +52,7 @@ export default function useTimeline(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['timelines', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate],
       });
       console.log('useMutation 성공', data);
     },
@@ -62,7 +66,7 @@ export default function useTimeline(selectedDate: dayjs.Dayjs) {
     onSuccess: (data, variables, context) => {
       // 성공 시 처리
       queryClient.invalidateQueries({
-        queryKey: ['timelines', userUid, selectedDate],
+        queryKey: ['home', userUid, selectedDate],
       });
       console.log('useMutation 성공', data);
     },
