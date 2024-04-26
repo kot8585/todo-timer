@@ -1,4 +1,6 @@
 # 프로젝트 실행 
+1. todo-timer-back 프로젝트 실행하기
+2. 아래 명령어 실행
 ```
 npm run start
 ```
@@ -18,6 +20,6 @@ npm run start
 # 피그마 링크 
 [todo-timer 피그마](https://www.figma.com/file/GbCyVg5fXFxNCTf2QSL8nI/%EB%AC%B4%EB%93%9C%EB%B3%B4%EB%93%9C-%EC%95%B1?type=design&node-id=0%3A1&mode=design&t=DNVAd4FGbrPDSHTo-1)
 
-# API 정리
+# 화면
 
 
