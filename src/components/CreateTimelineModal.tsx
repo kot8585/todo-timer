@@ -196,7 +196,7 @@ export default function CreateTimelineModal({
     setForm(form => ({
       ...form,
       todoIdx: todo.idx,
-      // todoColor: todo.color,
+      todoColor: todo.color,
       todoTitle: todo.title,
     }));
     setShowTodoListModal(false);
