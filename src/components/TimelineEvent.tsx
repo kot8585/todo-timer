@@ -105,13 +105,11 @@ export function getTimelinePosition(
       .minute(0)
       .diff(startDateTime.minute(0), 'hour');
 
-    console.log('diffHour', diffHour);
     if (endMinute === 0) {
       return diffHour;
     }
     return diffHour + 1;
   })();
-  console.log('viewCount', viewCount);
 
   for (let i = 1; i <= viewCount; i++) {
     const width = (() => {
@@ -119,15 +117,12 @@ export function getTimelinePosition(
         // 초 단위라서 분 단위로 바꿔줌
         return (executionTime / 60) * 1.5;
       }
+
       if (i === 1) {
         return (60 - startMinute) * 1.5;
       }
 
-      if (endMinute === 0) {
-        return 60 * 1.5;
-      }
-
-      if (i === viewCount) {
+      if (i === viewCount && endMinute !== 0) {
         return endMinute * 1.5;
       }
 
@@ -146,9 +141,7 @@ export function getTimelinePosition(
       widestTimelineOrdinary = i;
     }
 
-    if (width !== 0) {
-      timelinePositions.push({width, top, left});
-    }
+    timelinePositions.push({width, top, left});
   }
 
   return {
