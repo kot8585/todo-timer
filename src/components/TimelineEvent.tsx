@@ -105,6 +105,7 @@ export function getTimelinePosition(
       .minute(0)
       .diff(startDateTime.minute(0), 'hour');
 
+    console.log('diffHour', diffHour);
     if (endMinute === 0) {
       return diffHour;
     }
@@ -122,8 +123,8 @@ export function getTimelinePosition(
         return (60 - startMinute) * 1.5;
       }
 
-      if (i === viewCount && endMinute === 0) {
-        return 0;
+      if (endMinute === 0) {
+        return 60 * 1.5;
       }
 
       if (i === viewCount) {
