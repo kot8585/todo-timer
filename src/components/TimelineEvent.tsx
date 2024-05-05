@@ -16,18 +16,16 @@ export default function TimelineEvent({
   updateTimelineRef,
   setShowUpdateTimelineModal,
 }: TimelineEventProps) {
-  //TODO: 이거 class로 사용할 수 있나 보기...
-  const formatStartDateTime = dayjs(timelineEvent.startDateTime);
-  const startHour = formatStartDateTime.get('hour');
-  const startMinute = formatStartDateTime.get('minute');
-
-  const formatEndDateTime = dayjs(timelineEvent.endDateTime);
-  const endHour = formatEndDateTime.get('hour');
-  const endMinute = formatEndDateTime.get('minute');
+  const {hour: startHour, minute: startMinute} = getLocalHourMinute(
+    timelineEvent.startDateTime,
+  );
+  const {hour: endHour, minute: endMinute} = getLocalHourMinute(
+    timelineEvent.endDateTime,
+  );
 
   const {timelinePositions, widestTimelineOrdinary} = getTimelinePosition(
-    formatStartDateTime,
-    formatEndDateTime,
+    timelineEvent.startDateTime,
+    timelineEvent.endDateTime,
     startHour,
     startMinute,
     endHour,
@@ -76,22 +74,40 @@ export default function TimelineEvent({
   ));
 }
 
-function getTimelinePosition(
-  formatStartDateTime: dayjs.Dayjs,
-  formatEndDateTime: dayjs.Dayjs,
+export function getLocalHourMinute(utcDateTimeStr: string) {
+  const startDateTime = dayjs(utcDateTimeStr);
+  const hour = startDateTime.get('hour');
+  const minute = startDateTime.get('minute');
+  return {hour, minute};
+}
+
+export type TimelinePositionType = {width: number; top: number; left: number}[];
+export function getTimelinePosition(
+  startDateTimeStr: string,
+  endDateTimeStr: string,
   startHour: number,
   startMinute: number,
   endHour: number,
   endMinute: number,
   executionTime: number,
 ) {
-  const timelinePositions = [];
+  const timelinePositions: TimelinePositionType = [];
   let widestTimelineOrdinary = 1;
   let widestWidth = 0;
 
+  const startDateTime = dayjs(startDateTimeStr);
+
+  const endDateTime = dayjs(endDateTimeStr);
+
   const viewCount = (() => {
     // 다음날로 넘어가면 1시부터 시작하기때문에 24로 나눔
-    const diffHour = formatEndDateTime.diff(formatStartDateTime, 'hour');
+    const diffHour = endDateTime
+      .minute(0)
+      .diff(startDateTime.minute(0), 'hour');
+
+    if (endMinute === 0) {
+      return diffHour;
+    }
     return diffHour + 1;
   })();
   console.log('viewCount', viewCount);
@@ -121,6 +137,7 @@ function getTimelinePosition(
       startHour + i >= 6
         ? (startHour + i - 6) * HEIGHT + (startHour + i - 6)
         : (startHour + i + 18) * HEIGHT + (startHour + i + 18);
+
     const left = i === 1 ? startMinute * 1.5 + 10 : 10;
 
     if (widestWidth < width) {
@@ -133,5 +150,14 @@ function getTimelinePosition(
     }
   }
 
-  return {timelinePositions, widestTimelineOrdinary};
+  return {
+    timelinePositions,
+    widestTimelineOrdinary,
+    startDateTime,
+    startHour,
+    startMinute,
+    endDateTime,
+    endMinute,
+    endHour,
+  };
 }
