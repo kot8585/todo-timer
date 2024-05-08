@@ -8,7 +8,7 @@ import {Colors} from './src/assets/color';
 import DrawerStack from './src/navigation/DrawerStack';
 import RootStack from './src/navigation/RootStack';
 import useUserStore from './src/store/userStore';
-import codePush from 'react-native-code-push';
+import CodePush from 'react-native-code-push';
 
 export const toastConfig: ToastConfig = {
   info: props => (
@@ -26,16 +26,8 @@ export const toastConfig: ToastConfig = {
 };
 const queryClient = new QueryClient();
 
-const updateCheck = async () => {
-  const update = await codePush.checkForUpdate();
-  console.log('update', update);
-};
-
 function App(): React.JSX.Element {
   const user = useUserStore(state => state.user);
-  useEffect(() => {
-    updateCheck();
-  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -59,4 +51,4 @@ function App(): React.JSX.Element {
   );
 }
 
-export default codePush({checkFrequency: codePush.CheckFrequency.MANUAL})(App);
+export default CodePush(App);
