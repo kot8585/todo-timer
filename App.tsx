@@ -8,6 +8,8 @@ import {Colors} from './src/assets/color';
 import DrawerStack from './src/navigation/DrawerStack';
 import RootStack from './src/navigation/RootStack';
 import useUserStore from './src/store/userStore';
+import CodePush from 'react-native-code-push';
+
 export const toastConfig: ToastConfig = {
   info: props => (
     <InfoToast
@@ -26,6 +28,7 @@ const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
   const user = useUserStore(state => state.user);
+
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getLogInUser();
@@ -48,4 +51,4 @@ function App(): React.JSX.Element {
   );
 }
 
-export default App;
+export default CodePush(App);
