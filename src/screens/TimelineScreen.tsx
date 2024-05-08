@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {TimelineType} from '../api/types';
 import {Colors} from '../assets/color';
@@ -7,7 +7,6 @@ import EditTimelineModal from '../components/EditTimelineModal';
 import TimelineEvent from '../components/TimelineEvent';
 import useTimeline from '../hooks/useTimeline';
 import useSelectedDateStore from '../store/selecteDateStore';
-import Toast from 'react-native-toast-message';
 
 export default function TimelineScreen() {
   const selectedDate = useSelectedDateStore(state => state.selectedDate);
@@ -21,8 +20,7 @@ export default function TimelineScreen() {
   };
 
   // 시간표 데이터를 생성하는 함수
-  // 이거 그냥 저장해놓는게 좋을거같은데.
-  const generateTimeTableData = () => {
+  const generateTimeTableView = useMemo(() => {
     let timeTableData = [];
     // 오전 5시부터 다음날 오전 4시까지 총 24줄 생성
     for (let hour = 5; hour <= 28; hour++) {
@@ -48,7 +46,8 @@ export default function TimelineScreen() {
       );
     }
     return timeTableData;
-  };
+  }, []);
+
   const {
     getAllTimeline: {data, isLoading, error},
   } = useTimeline(selectedDate);
@@ -61,7 +60,7 @@ export default function TimelineScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.timeTable}>
-        {generateTimeTableData()}
+        {generateTimeTableView}
         {data?.map(timelineEvent => (
           <TimelineEvent
             timelineEvent={timelineEvent}
