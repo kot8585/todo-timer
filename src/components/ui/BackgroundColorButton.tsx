@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: Colors.light.buttonDefault,
     borderColor: Colors.light.borderDefault,
-    height: 44,
+    height: 48,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

@@ -1,4 +1,4 @@
-import auth, {updateEmail} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
 export async function signIn({email, password}) {
   return await auth().signInWithEmailAndPassword(email, password);
@@ -20,10 +20,18 @@ export function signOut() {
   return auth().signOut();
 }
 
+export function withdraw() {
+  return auth().currentUser.delete();
+}
+
 export function sendEmail(user) {
   return user.sendEmailVerification();
 }
 
 export function changeEmail(user, changeEmail) {
   return user.verifyBeforeUpdateEmail(changeEmail);
+}
+
+export function findPassword(email: string) {
+  return auth().sendPasswordResetEmail(email);
 }

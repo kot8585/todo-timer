@@ -15,10 +15,9 @@ export default function TextButton({text, onPress}: TextButtonProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
   text: {
     fontSize: 14,
-    color: '#949494',
+    color: '#7f7f7f',
     textAlign: 'center',
   },
 });

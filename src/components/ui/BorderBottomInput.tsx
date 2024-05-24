@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
       ? Colors.light.borderActive
       : Colors.light.borderDefault,
     fontSize: 16,
-    height: 42,
+    height: 48,
     opacity: 0.9,
   }),
 });
