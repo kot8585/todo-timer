@@ -1,16 +1,16 @@
 import React, {useRef, useState} from 'react';
 import {Alert, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {sendEmail, signUp} from '../../lib/auth';
+import {signUp} from '../../lib/auth';
+import {createInitializeData} from '../api/initialize';
 import ValidateMessage from '../components/ValidateMessage';
 import BackgroundColorButton from '../components/ui/BackgroundColorButton';
 import BorderBottomInput from '../components/ui/BorderBottomInput';
 import LoadingBar from '../components/ui/LoadingModal';
-import useUserStore from '../store/userStore';
-import {createInitializeData} from '../api/initialize';
 import {FIREBASE_ERROR_MSG} from '../constants/constant';
+import useUserStore from '../store/userStore';
 
-export default function SignUpScreen({navigation}: any) {
+export default function SignUpScreen() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: '',

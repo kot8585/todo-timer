@@ -3,6 +3,7 @@ export const FIREBASE_ERROR_MSG = {
   'auth/invalid-email': '올바른 이메일 형식이 아닙니다',
   'auth/invalid-password': '비밀번호는 6자 이상이어야 합니다',
   'auth/email-already-in-use': '이미 존재하는 이메일입니다',
+  'auth/invalidate-credential': '이메일과 비밀번호를 다시 확인해주세요',
 };
 
 export const COLORS = [

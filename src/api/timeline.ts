@@ -9,6 +9,7 @@ import client from './client';
 export async function getTimelines(userUid: string | undefined, date: string) {
   console.log('timline조회 요청: ', date);
   const response = await client.get<GetTimelineResponse[]>('/timelines', {
+    timeout: 10000,
     params: {
       userUid: userUid,
       date: date,

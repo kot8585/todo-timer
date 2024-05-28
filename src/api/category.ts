@@ -9,6 +9,7 @@ export async function getCategoryAndTodos(userUid: string, date: string) {
   const response = await client.get<GetCategoryAndTodosResponse[]>(
     '/categories',
     {
+      timeout: 10000,
       params: {
         userUid: userUid,
         getTodos: true,
