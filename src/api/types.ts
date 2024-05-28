@@ -72,7 +72,6 @@ export type CreateTimelineType = {
   startDateTime: dayjs.Dayjs;
   endDateTime: dayjs.Dayjs;
   executionTime: number;
-  action: 'stop' | 'complete';
 };
 
 export type UpdateTimelineRequest = {

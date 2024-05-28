@@ -59,7 +59,7 @@ export default function TimerScreen() {
 
   const {createTimelineMutation} = useTimeline(selectedDate);
 
-  const handleStop = (action: 'stop' | 'complete') => {
+  const handleComplete = () => {
     endTimer();
     const timeline = {
       userUid: user!.uid,
@@ -67,7 +67,6 @@ export default function TimerScreen() {
       startDateTime: startDateTimeRef.current,
       endDateTime: dayjs(),
       executionTime: executionTime,
-      action: action,
     };
     // mutation
     createTimelineMutation.mutate(timeline);
@@ -100,8 +99,12 @@ export default function TimerScreen() {
         <Text style={styles.timer}>{formatTime(executionTime)}</Text>
         <View style={styles.buttonContainer}>
           {intervalRef.current ? (
-            <Pressable onPress={() => handleStop('stop')}>
-              <DefaultText text="중지" />
+            <Pressable
+              onPress={() => {
+                endTimer();
+                navigation.navigate('TodoList');
+              }}>
+              <DefaultText text="취소" />
             </Pressable>
           ) : (
             <Pressable
@@ -117,7 +120,7 @@ export default function TimerScreen() {
             </Pressable>
           )}
           <Pressable
-            onPress={() => handleStop('complete')}
+            onPress={() => handleComplete()}
             disabled={!intervalRef.current}
             hitSlop={20}>
             <DefaultText text="완료" />
