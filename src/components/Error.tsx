@@ -1,13 +1,16 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import BackgroundColorButton from './ui/BackgroundColorButton';
 import DefaultText from './ui/DefaultText';
 
 type ErrorProps = {
   handlePress: () => {};
+  error: any;
 };
 
-export default function Error({handlePress}: ErrorProps) {
+export default function Error({handlePress, error}: ErrorProps) {
+  const [showError, setShowError] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -19,6 +22,21 @@ export default function Error({handlePress}: ErrorProps) {
         onPress={handlePress}
         buttonStyle={styles.button}
       />
+      <View>
+        <Pressable onPress={() => setShowError(!showError)}>
+          <Text>자세히 보기</Text>
+        </Pressable>
+        {showError && (
+          <View>
+            <Text>code: {error.code}</Text>
+            <Text>message : {error.messsage}</Text>
+            <Text>
+              request : {error?.request?._method} & {error?.request?._perfKey}
+            </Text>
+            <Text>response: {error?.response?.data}</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {TimelineType} from '../api/types';
 import {Colors} from '../assets/color';
 import CreateTimelineModal from '../components/CreateTimelineModal';
@@ -58,7 +58,7 @@ export default function TimelineScreen() {
   const updateTimelineRef = useRef<undefined | TimelineType>(undefined);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.timeTable}>
         {generateTimeTableView}
         {data?.map(timelineEvent => (
@@ -84,7 +84,7 @@ export default function TimelineScreen() {
           updateTimeline={updateTimelineRef.current!}
         />
       )}
-    </View>
+    </ScrollView>
   );
 }
 

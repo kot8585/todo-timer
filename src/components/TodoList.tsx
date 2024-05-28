@@ -6,7 +6,6 @@ import useSelectedDateStore from '../store/selecteDateStore';
 import Category from './Category';
 import Error from './Error';
 import Todo from './Todo';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 type TodoListProps = {
   categoryHandlePress?: (category: CategoryType) => void;
@@ -29,9 +28,8 @@ export default function TodoList({
     return <ActivityIndicator size="large" style={{flex: 1}} />;
   }
   if (error) {
-    console.error(error);
     // crashlytics().log(error);
-    return <Error handlePress={refetch} />;
+    return <Error handlePress={refetch} error={error} />;
   }
 
   if (!data || data.length === 0) {
