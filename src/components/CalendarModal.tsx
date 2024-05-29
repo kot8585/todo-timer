@@ -41,6 +41,7 @@ export default function CalendarModal({
             selectedColor: 'orange',
           },
         }}
+        monthFormat={'yyyy.MM'}
       />
     </CustomModal>
   );

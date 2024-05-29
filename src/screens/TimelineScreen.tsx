@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   hourText: {
     width: '10%', // 1열은 시간을 나타내므로 너비를 조절하여 글자에 맞게 설정
     textAlign: 'center',
+    color: Colors.light.bodyInActive,
   },
 
   column: {

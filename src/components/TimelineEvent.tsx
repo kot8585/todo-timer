@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {GetTimelineResponse, TimelineType} from '../api/types';
+import {Colors} from '../assets/color';
 
 type TimelineEventProps = {
   timelineEvent: GetTimelineResponse;
@@ -67,7 +68,9 @@ export default function TimelineEvent({
           paddingHorizontal: 3,
         }}>
         {index + 1 === widestTimelineOrdinary && (
-          <Text>{timelineEvent.todoTitle}</Text>
+          <Text style={{color: Colors.light.bodyInActive}}>
+            {timelineEvent.todoTitle}
+          </Text>
         )}
       </View>
     </Pressable>
