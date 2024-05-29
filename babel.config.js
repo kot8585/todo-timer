@@ -7,8 +7,7 @@ module.exports = {
       {
         envName: 'APP_ENV',
         moduleName: '@env',
-        // path: `.env.${process.env.APP_ENV || 'local'}`,
-        path: '.env.prod',
+        path: `.env.${process.env.APP_ENV}`,
         blocklist: null,
         allowlist: null,
         blacklist: null,
