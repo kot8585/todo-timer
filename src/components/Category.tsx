@@ -48,8 +48,8 @@ export default function Category({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingTop: 24,
-    paddingBottom: 3,
+    paddingTop: 26,
+    paddingBottom: 5,
     alignItems: 'center',
   },
   categoryTextContainer: {flexDirection: 'row', alignItems: 'center', gap: 4},

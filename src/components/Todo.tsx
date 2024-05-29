@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#DADADA',
     borderBottomWidth: 1,
-    paddingVertical: 11,
+    paddingVertical: 9,
     alignItems: 'center',
     gap: 5,
   },
