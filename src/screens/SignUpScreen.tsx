@@ -138,6 +138,7 @@ export default function SignUpScreen() {
           }}
           ref={passwordRef}
           secureTextEntry
+          autoCapitalize="none"
         />
         {validateMsg.passwordMsg && (
           <ValidateMessage message={validateMsg.passwordMsg} />
@@ -158,6 +159,7 @@ export default function SignUpScreen() {
           }}
           ref={confirmPasswordRef}
           secureTextEntry
+          autoCapitalize="none"
         />
         {validateMsg.confirmPasswordMsg && (
           <ValidateMessage message={validateMsg.confirmPasswordMsg} />

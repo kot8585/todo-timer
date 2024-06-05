@@ -117,6 +117,7 @@ export default function SignInScreen() {
           }}
           onSubmitEditing={() => passwordRef.current?.focus()}
           ref={emailRef}
+          autoCapitalize="none"
           autoComplete="email"
           keyboardType="email-address"
           autoFocus
@@ -137,6 +138,7 @@ export default function SignInScreen() {
           }}
           ref={passwordRef}
           secureTextEntry
+          autoCapitalize="none"
         />
         {validateMsg.passwordMsg && (
           <ValidateMessage message={validateMsg.passwordMsg} />
